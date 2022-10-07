@@ -1,11 +1,10 @@
 #include <iostream>
 #include "Player.h"
+#include "UserInterface.h"
 using namespace std;
 
 int main() {
-	cout << "The Devil's Mansion!!" << endl;
-	Player player1;
-	player1.setName("Jason Shupper");
-	cout << "The name of the player is " << player1.getName() << endl;
+	UserInterface Game;
+	cout << Game.getStartingDescription() << endl;
 	return 0;
 }
