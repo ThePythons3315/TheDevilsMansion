@@ -8,6 +8,11 @@ Room::Room() {
 	roomDescription = "";
 }
 
+Room::Room(string name_input, string desc) {
+	name = name_input;
+	roomDescription = desc;
+}
+
 // Mutator Functions -- Functions that will be allowed to change private variables
 void Room::setName(string n) {
 	name = n;

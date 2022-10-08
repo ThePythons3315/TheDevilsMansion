@@ -1,27 +1,26 @@
 #pragma once
-#ifndef ROOM_H
-#define ROOM_H
+#ifndef MONSTER_H
+#define MONSTER_H
 
 #include <iostream>
 #include <string.h>
 using namespace std;
 
-class Room {
+class Monster {
 private:
 	string name;
-	string roomDescription;
+	string description;
 public:
 	// Constructors
-	Room();
-	Room(string, string);
+	Monster();
+	Monster(string, string);
 
 	// Mutator Functions
 	void setName(string);
-	void setRoomDescription(string);
+	void setDescription(string);
 
 	// Accessor Functions
 	string getName();
-	string getRoomDescription();
-
+	string getDescription();
 };
-#endif // !ROOM_H
+#endif // !PLAYER_H
