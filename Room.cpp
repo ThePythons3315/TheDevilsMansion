@@ -1,21 +1,27 @@
-#include "Player.h"
+#include "Room.h"
 #include <string.h>
 using namespace std;
 
 // Constructors
-Player::Player() {
+Room::Room() {
 	name = "";
-};
-Player::Player(string n) {
-	name = n;
+	roomDescription = "";
 }
 
 // Mutator Functions -- Functions that will be allowed to change private variables
-void Player::setName(string n) {
+void Room::setName(string n) {
 	name = n;
 }
 
+void Room::setRoomDescription(string d) {
+	roomDescription = d;
+}
+
 // Accessor Functions -- Functions that will return values of private functions
-string Player::getName() {
+string Room::getName() {
 	return name;
+}
+
+string Room::getRoomDescription() {
+	return roomDescription;
 }
