@@ -15,11 +15,11 @@ public:
 	Room();
 	Room(string, string);
 
-	// Mutator Functions
+	// Mutator Functions -- Functions that will be allowed to change private variables
 	void setName(string);
 	void setRoomDescription(string);
 
-	// Accessor Functions
+	// Accessor Functions -- Functions that will return values of private functions
 	string getName();
 	string getRoomDescription();
 

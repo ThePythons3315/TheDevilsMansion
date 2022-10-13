@@ -17,16 +17,18 @@ public:
 	// Constructors
 	UserInterface();
 
-	// Mutator Functions
+	// Mutator Functions -- Functions that will be allowed to change private variables
 	void setStartingDescription(string);
 	void setMainCharacter(Player);
 
-	// Accessor Functions
+	// Accessor Functions -- Functions that will return values of private functions
 	string getStartingDescription();
 	Player getMainCharacter();
 
-	// Other functions
+	// Accepts input from user
 	string acceptInputFromUser(string);
+
+	// Gets info of player, creates the player object
 	void getPlayerInfo();
 
 };

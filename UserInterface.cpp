@@ -33,7 +33,7 @@ string UserInterface::acceptInputFromUser(string prompt) {
 	string input = "";
 	cout << prompt;
 	getline(cin, input);
-	// ToDo: Validate the input from the user
+	// ToDo: Validate the input from the user?? Maybe don't need right now
 	return input;
 }
 

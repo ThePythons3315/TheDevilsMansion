@@ -1,4 +1,4 @@
-// Version 1.04
+// Version 1.05
 
 #include <iostream>
 #include <string>
@@ -28,10 +28,11 @@ int main() {
 						   "-----Enter better description of how to play the game-----\n");
 
 	// Start the actual running of the game
-	cout << "Welcome to the Devil's Mansion V1.04" << endl;
+	cout << "Welcome to the Devil's Mansion V1.05" << endl;
 	game.getPlayerInfo();
 
-	/*game.setinputfromuser("please enter something: ");*/
+	// Move the player from the starting steps to the inside the mansion
+	// display the rules of the game
 	cout << game.getStartingDescription() << endl;
 	cout << startingSteps.getRoomDescription() << endl;
 	cout << devil.getDialogOpening();

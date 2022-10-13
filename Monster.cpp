@@ -14,7 +14,7 @@ Monster::Monster(string nameInput, string descrip, string openDialog) {
 	dialogOpening = openDialog;
 }
 
-// Mutator Functions
+// Mutator Functions -- Functions that will be allowed to change private variables
 void Monster::setName(string nameInput) {
 	name = nameInput;
 }
@@ -25,7 +25,7 @@ void Monster::setDialogOpening(string dialog) {
 	dialogOpening = dialog;
 }
 
-// Accessor Functions
+// Accessor Functions -- Functions that will return values of private functions
 string Monster::getName() {
 	return name;
 }

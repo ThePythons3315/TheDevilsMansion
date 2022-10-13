@@ -16,12 +16,12 @@ public:
 	Monster();
 	Monster(string, string, string);
 
-	// Mutator Functions
+	// Mutator Functions -- Functions that will be allowed to change private variables
 	void setName(string);
 	void setMonsterDescription(string);
 	void setDialogOpening(string);
 
-	// Accessor Functions
+	// Accessor Functions -- Functions that will return values of private functions
 	string getName();
 	string getMonsterDescription();
 	string getDialogOpening();
