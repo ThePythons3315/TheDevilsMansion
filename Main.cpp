@@ -1,6 +1,7 @@
-// Version 1.03
+// Version 1.04
 
 #include <iostream>
+#include <string>
 #include "Player.h"
 #include "UserInterface.h"
 #include "Room.h"
@@ -11,11 +12,6 @@ int main() {
 	// Create a game instance which will allow for user input and console output
 	// to be used.
 	UserInterface game;
-	//cout << Game.getStartingDescription() << endl;
-
-	// Create the player object of the main character in the game. This player will
-	// be the one playing through the entirety of the game, fighting bosses, finding items, etc.
-	Player mainCharacter;
 
 	// Create the starting steps. This will be the first area the player is dropped in
 	// at the start of the game.
@@ -31,6 +27,11 @@ int main() {
 						   "This has resulted in you being sent down to my mansion to play a little game.\n"
 						   "-----Enter better description of how to play the game-----\n");
 
+	// Start the actual running of the game
+	cout << "Welcome to the Devil's Mansion V1.04" << endl;
+	game.getPlayerInfo();
+
+	/*game.setinputfromuser("please enter something: ");*/
 	cout << game.getStartingDescription() << endl;
 	cout << startingSteps.getRoomDescription() << endl;
 	cout << devil.getDialogOpening();
