@@ -5,25 +5,33 @@ using namespace std;
 // Constructors
 Monster::Monster() {
 	name = "";
-	description = "";
+	monsterDescription = "";
+	dialogOpening = "";
 }
-Monster::Monster(string name_input, string descrip) {
-	name = name_input;
-	description = descrip;
+Monster::Monster(string nameInput, string descrip, string openDialog) {
+	name = nameInput;
+	monsterDescription = descrip;
+	dialogOpening = openDialog;
 }
 
 // Mutator Functions
-void Monster::setName(string n) {
-	name = n;
+void Monster::setName(string nameInput) {
+	name = nameInput;
 }
-void Monster::setDescription(string d) {
-	description = d;
+void Monster::setMonsterDescription(string descrip) {
+	monsterDescription = descrip;
+}
+void Monster::setDialogOpening(string dialog) {
+	dialogOpening = dialog;
 }
 
 // Accessor Functions
 string Monster::getName() {
 	return name;
 }
-string Monster::getDescription() {
-	return description;
+string Monster::getMonsterDescription() {
+	return monsterDescription;
+}
+string Monster::getDialogOpening() {
+	return dialogOpening;
 }

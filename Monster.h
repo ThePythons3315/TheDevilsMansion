@@ -9,18 +9,21 @@ using namespace std;
 class Monster {
 private:
 	string name;
-	string description;
+	string monsterDescription;
+	string dialogOpening;
 public:
 	// Constructors
 	Monster();
-	Monster(string, string);
+	Monster(string, string, string);
 
 	// Mutator Functions
 	void setName(string);
-	void setDescription(string);
+	void setMonsterDescription(string);
+	void setDialogOpening(string);
 
 	// Accessor Functions
 	string getName();
-	string getDescription();
+	string getMonsterDescription();
+	string getDialogOpening();
 };
 #endif // !PLAYER_H
