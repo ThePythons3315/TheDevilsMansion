@@ -10,8 +10,7 @@ using namespace std;
 class UserInterface {
 private:
 	string startingDescription;
-	
-	Player mainCharacter;
+	//Player mainCharacter;
 
 public:
 	// Constructors
@@ -19,17 +18,15 @@ public:
 
 	// Mutator Functions -- Functions that will be allowed to change private variables
 	void setStartingDescription(string);
-	void setMainCharacter(Player);
+	//void setMainCharacter(Player);
 
 	// Accessor Functions -- Functions that will return values of private functions
 	string getStartingDescription();
-	Player getMainCharacter();
 
-	// Accepts input from user
-	string acceptInputFromUser(string);
-
-	// Gets info of player, creates the player object
-	void getPlayerInfo();
+	// Other Functions
+	string getUserInput();
+	string getUserInput(string);
+	void printString(string);
 
 };
 #endif // !USERINTERFACE_H

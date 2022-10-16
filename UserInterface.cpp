@@ -14,22 +14,25 @@ UserInterface::UserInterface() {
 void UserInterface::setStartingDescription(string descrip) {
 	startingDescription = descrip;
 }
-void UserInterface::setMainCharacter(Player character) {
-	mainCharacter = character;
-}
 
 // Accessor Functions -- Functions that will return values of private functions
 string UserInterface::getStartingDescription() {
 	return startingDescription;
 }
-Player UserInterface::getMainCharacter() {
-	return mainCharacter;
-}
 
-// Function that will accept input from the user. A prompt can be passed into the
-// function and will be displayed before asking the user for the input. The input
-// will be validated before it can be returned
-string UserInterface::acceptInputFromUser(string prompt) {
+// Fucnction to get input from the user. It will ask the user what they would like to do
+// and once they enter their input it will validate the input before proceeding.
+// A different prompt can also be entered as a parameter if the default saying
+// is not sufficient.
+string UserInterface::getUserInput() {
+	string input = "";
+	string prompt = "What would you like to do: ";
+	cout << prompt;
+	getline(cin, input);
+	// ToDo: Validate the input from the user?? Maybe don't need right now
+	return input;
+}
+string UserInterface::getUserInput(string prompt) {
 	string input = "";
 	cout << prompt;
 	getline(cin, input);
@@ -37,21 +40,8 @@ string UserInterface::acceptInputFromUser(string prompt) {
 	return input;
 }
 
-// Function that gets the main characters information from the user, creates
-// the main character's object and sets their name to the proper name inputted
-// by the user
-void UserInterface::getPlayerInfo() {
-	// Get the input from the user
-	string prompt = "Hello there, please enter the name you would like your character to have: ";
-	string name = "";
-	name = acceptInputFromUser(prompt);
-
-	// Create the main player object
-	Player player(name);
-	mainCharacter = player;
-
-	// Set the starting description to address the player by their chosen name
-	setStartingDescription("\nHello there " + mainCharacter.getName() + ".\n"
-						   "You have just died and been sent down to The Devils Mansion.\n"
-						   "Currently you are outside of the mansion and standing on the starting steps.\n");
+// Function to print a string to the console. Whatever string is passed to the
+// function will be displayed in the console.
+void UserInterface::printString(string output) {
+	cout << output << endl;
 }
