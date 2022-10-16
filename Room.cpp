@@ -7,7 +7,6 @@ Room::Room() {
 	name = "";
 	roomDescription = "";
 }
-
 Room::Room(string name_input, string desc) {
 	name = name_input;
 	roomDescription = desc;
@@ -17,16 +16,21 @@ Room::Room(string name_input, string desc) {
 void Room::setName(string n) {
 	name = n;
 }
-
 void Room::setRoomDescription(string d) {
 	roomDescription = d;
 }
+void Room::setPlayer(Player character) {
+	player = character;
+}
+
 
 // Accessor Functions -- Functions that will return values of private functions
 string Room::getName() {
 	return name;
 }
-
 string Room::getRoomDescription() {
 	return roomDescription;
+}
+Player Room::getPlayer() {
+	return player;
 }

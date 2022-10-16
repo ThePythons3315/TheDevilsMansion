@@ -29,15 +29,26 @@ string UserInterface::getUserInput() {
 	string prompt = "What would you like to do: ";
 	cout << prompt;
 	getline(cin, input);
-	// ToDo: Validate the input from the user?? Maybe don't need right now
+	// ToDo: Convert the user input to all lowercase
+	// input = convertLower(input)
+	// ToDo: Validate the input from the user
 	return input;
 }
 string UserInterface::getUserInput(string prompt) {
 	string input = "";
 	cout << prompt;
 	getline(cin, input);
+	// ToDo: Convert the user input to all lowercase
+	// input = convertLower(input)
 	// ToDo: Validate the input from the user?? Maybe don't need right now
 	return input;
+}
+
+// Function that takes a string and returns the string in all lowercase
+string UserInterface::convertLower(string sentence) {
+	// ToDo: Add code to this function to make sure all user input
+	// is in lowercase, standardize user input
+	return sentence;
 }
 
 // Function to print a string to the console. Whatever string is passed to the
