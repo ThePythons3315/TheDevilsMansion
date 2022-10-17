@@ -1,7 +1,8 @@
-// Version 1.07
+// Version 1.08
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include "Player.h"
 #include "UserInterface.h"
 #include "Room.h"
@@ -9,7 +10,7 @@
 using namespace std;
 
 // Definitions of functions -- initialized below
-bool validateInput(string arr[], string sentence);
+bool validateInput(vector<string>& vect, string sentence);
 void switchRoom(Room currentRoom, Room newRoom);
 
 int main() {
@@ -21,7 +22,8 @@ int main() {
 	// run the game and continuoulsy ask for user input.
 	bool mainLoop = true;
 	string input = "";
-	string keyWords[5] = { "q", "jason shupper", "move", "back", "yes"};
+	vector <string> keyWords = { "q", "jason shupper", "move", "back", "yes"};
+	//vector<Room> rooms;
 
 	// Create a game instance which will allow for user input and console output
 	// to be used.
@@ -54,7 +56,7 @@ int main() {
 	// Introduction for the game. Ask the user to enter their name. 
 	// The user input will be used to run the game and progress throughout the game.
 	///////////////////////////////////////////////////////////////////////////////////////////
-	cout << "Welcome to the Devil's Mansion V1.07" << endl;
+	cout << "Welcome to the Devil's Mansion V1.08" << endl;
 
 	// Get the name the user would like to play with
 	string prompt = "Hello there, please enter the name you would like your character to have: ";
@@ -101,10 +103,15 @@ int main() {
 }
 
 // Validate that the input from the user is a correct command.
-// Correct commands will be in the keyWords array.
-bool validateInput(string arr[], string sentence) {
+// Correct commands will be in the keyWords vector.
+bool validateInput(vector<string>& vect, string sentence) {
 	// ToDo: Make function be able to validate input
-	return true;
+	for (int i = 0; i < vect.size(); i++) {
+		if (vect.at(i) == sentence) {
+			return true;
+		}
+	}
+	return false;
 }
 
 // Switch the room the player is in. Take their object

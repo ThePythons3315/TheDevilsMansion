@@ -1,6 +1,7 @@
 #include "UserInterface.h"
 #include <string.h>
 #include <string>
+#include <algorithm>
 using namespace std;
 
 // Constructors for UserInterface Class
@@ -29,8 +30,7 @@ string UserInterface::getUserInput() {
 	string prompt = "What would you like to do: ";
 	cout << prompt;
 	getline(cin, input);
-	// ToDo: Convert the user input to all lowercase
-	// input = convertLower(input)
+	input = convertLower(input);
 	// ToDo: Validate the input from the user
 	return input;
 }
@@ -38,16 +38,19 @@ string UserInterface::getUserInput(string prompt) {
 	string input = "";
 	cout << prompt;
 	getline(cin, input);
-	// ToDo: Convert the user input to all lowercase
-	// input = convertLower(input)
-	// ToDo: Validate the input from the user?? Maybe don't need right now
+	input = convertLower(input);
+	// ToDo: Validate the input from the user
 	return input;
 }
 
 // Function that takes a string and returns the string in all lowercase
+// This is done as a way to standardize all user input
 string UserInterface::convertLower(string sentence) {
-	// ToDo: Add code to this function to make sure all user input
-	// is in lowercase, standardize user input
+	// The transform function is part of the <algorithms> library
+	// sequentially applies an operation to the elements of an array.
+	// In this case we are applying the tolower function to the string to convert all
+	// characters to lowercase.
+	transform(sentence.begin(), sentence.end(), sentence.begin(), ::tolower);
 	return sentence;
 }
 
