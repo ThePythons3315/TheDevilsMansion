@@ -6,22 +6,13 @@ using namespace std;
 
 // Constructors for UserInterface Class
 UserInterface::UserInterface() {
-	startingDescription = "Hello there player.\n"
+	/*startingDescription = "Hello there player.\n"
 						  "You have just died and been sent down to The Devils Mansion.\n"
 						  "Currently you are outside of the mansion and standing on the starting steps.\n";
+	*/
 }
 
-// Mutator Functions -- Functions that will be allowed to change private variables
-void UserInterface::setStartingDescription(string descrip) {
-	startingDescription = descrip;
-}
-
-// Accessor Functions -- Functions that will return values of private functions
-string UserInterface::getStartingDescription() {
-	return startingDescription;
-}
-
-// Fucnction to get input from the user. It will ask the user what they would like to do
+// Function to get input from the user. It will ask the user what they would like to do
 // and once they enter their input it will validate the input before proceeding.
 // A different prompt can also be entered as a parameter if the default saying
 // is not sufficient.
