@@ -3,8 +3,9 @@
 #define ROOM_H
 
 #include <iostream>
-#include <string.h>
+#include <string>
 #include "Player.h"
+#include "Inventory.h"
 using namespace std;
 
 class Room {
@@ -13,6 +14,7 @@ private:
 	string roomDescription;
 	Player player;
 	int roomLevel;
+	Inventory inventory;
 	// int roomID; - will be implemented later
 public:
 	// Constructors
@@ -24,6 +26,7 @@ public:
 	void setRoomDescription(string);
 	void setPlayer(Player);
 	void setRoomLevel(int);
+	void setInventory(Inventory);
 	// void setRoomID(int); - will be implemented later
 
 	// Accessor Functions -- Functions that will return values of private functions
@@ -31,6 +34,7 @@ public:
 	string getRoomDescription();
 	Player getPlayer();
 	int getRoomLevel();
+	Inventory getInventory();
 	// int getRoomID(); - will be implemented later
 };
 #endif // !ROOM_H

@@ -3,25 +3,22 @@
 #define INVENTORY_H
 
 #include <iostream>
-#include <string.h>
-
+#include <string>
+#include <vector>
+#include "Item.h"
 using namespace std;
 
 
 class Inventory
 {
 private:
-
-	string inventory[8];
-	string item;
-
+	vector<Item> inventory;
 public:
 	//constructors
 	Inventory();
-	Inventory(string);
 
 	//Funtion that adds items to inventory
-	void addItem(string);
+	void addItem(Item);
 
 	//Function to display all the items in the player inventory
 	void displayInventory();

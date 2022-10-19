@@ -33,6 +33,9 @@ void Room::setPlayer(Player character) {
 void Room::setRoomLevel(int level) {
 	roomLevel = level;
 }
+void Room::setInventory(Inventory invent) {
+	inventory = invent;
+}
 /*void Room::setRoomID(int id) {
 	roomID = id;
 }*/
@@ -50,6 +53,9 @@ Player Room::getPlayer() {
 }
 int Room::getRoomLevel() {
 	return roomLevel;
+}
+Inventory Room::getInventory() {
+	return inventory;
 }
 /*int Room::getRoomID() {
 	return roomID;

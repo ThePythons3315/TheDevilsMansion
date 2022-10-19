@@ -1,4 +1,4 @@
-// Version 1.12
+// Version 1.13
 
 #include <iostream>
 #include <string>
@@ -22,9 +22,14 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Various string variables that will be used throughout the game
-	string version = "Welcome to the Devil's Mansion V1.12\n";
+	string version = "Welcome to the Devil's Mansion V1.13\n";
 	string endSentence = "\nThanks for playing The Devil's Mansion";
+	string askCharacterName = "Hello there, please enter the name you would like your character to have: ";
 	string askUserToMove = "Please enter `move` to go through the door: ";
+	string blueberryOnFloor = "It seems as though the devil dropped something on the ground.\n"
+							  "It looks to be a blueberry.\n"
+							  "That would probably be something cool to pick up.\n"
+							  "Please enter `blueberry` to pick up the blueberry: ";
 	string startingDescription = ""; //Will be given a value after player has entered their name
 
 	// Loop variable that starts off as true. While the variable is true the mainloop will
@@ -51,6 +56,13 @@ int main() {
 	// to be used.
 	UserInterface ui;
 
+	//Creates player inventory and first room inventory object's using default parameters
+	Inventory playerInventory;
+	Inventory roomInventory1;
+
+	// Create a blueberry object.
+	Item blueberry("Blueberry");
+
 	// Create the starting steps. This will be the first area the player is dropped in
 	// at the start of the game.
 	Room startingSteps("Starting Steps", "\nYou are currently at the starting steps.\n"
@@ -63,6 +75,11 @@ int main() {
 	Room startingRoom("Starting Room",  "\nYou are now in the starting room.\n"
 										"The starting room is a large open dark room with creepy crawlers everywhere.\n"
 										"Standing before you is the devil\n", 1);
+
+	// Create an item called a blue berry. This item will eventually be able to be eaten and
+	// give the player health points.
+	roomInventory1.addItem(blueberry);
+	startingRoom.setInventory(roomInventory1);
 	
 	// Add all of the rooms to the rooms vector. This will hold rooms that are 
 	// currently being used as well as rooms that are not currently being used
@@ -79,29 +96,26 @@ int main() {
 						   "That is the end of my spiel. Hopefully you can figure out the rest\n"
 						   "...The devil zoomed away\n");
 
-
+	
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Introduction for the game. Ask the user to enter their name. 
 	// The user input will be used to run the game and progress throughout the game.
 	///////////////////////////////////////////////////////////////////////////////////////////
+
+	// Print the current version of the game
 	ui.printString(version);
 
 	// Get the name the user would like to play with
-	string prompt = "Hello there, please enter the name you would like your character to have: ";
-	string name = "";
 	do {
-		name = ui.getUserInput(prompt);
-	} while (name == "");
+		input = ui.getUserInput(askCharacterName);
+	} while (input == "");
 	
 	// Create the main player object and set the starting steps as their current room
-	Player player(name);
+	Player player(input);
 	startingSteps.setPlayer(player);
 	roomPointer = &startingSteps;
-
-	//Creates player inventory object using default parameters
-	Inventory playerInventory;
 
 	// Print the starting descriptions of the game to the screen. 
 	startingDescription = "\nHello there " + player.getName() + ".\n"
@@ -123,9 +137,15 @@ int main() {
 		ui.printString(devil.getMonsterDescription());
 		ui.printString(devil.getDialogOpening());
 	}
+
 	// Reset the room so the devil is not displayed after the first entrance
 	roomPointer->setRoomDescription("\nYou are now in the starting room.\n"
 									"The starting room is a large open dark room with creepy crawlers everywhere.\n");
+	
+	// Let the player see there is a blueberry on the ground.
+	do {
+		input = ui.getUserInput(blueberryOnFloor);
+	} while (input != "blueberry");
 
 
 
@@ -149,6 +169,7 @@ int main() {
 		else if (input == "move") {
 			moveForwardRoom(rooms, roomPointer);
 			ui.printString(roomPointer->getRoomDescription());
+			//roomPointer->getInventory().displayInventory();
 		}
 		// Move the player back to the starting room if they type back
 		else if (input == "back") {
