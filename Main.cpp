@@ -60,8 +60,7 @@ int main() {
 	// This room will come after the starting steps and will house the devil.
 	// In this room the devil will explain the rules of the game to you.
 	Room startingRoom("Starting Room",  "\nYou are now in the starting room.\n"
-										"The starting room is a large open dark room with creepy crawlers everywhere.\n"
-										"Standing before you is the devil\n", 1);
+										"The starting room is a large open dark room with creepy crawlers everywhere.\n", 1);
 	
 	// Add all of the rooms to the rooms vector. This will hold rooms that are 
 	// currently being used as well as rooms that are not currently being used
@@ -71,8 +70,9 @@ int main() {
 	// Create the Devil who will be the main villain of the game. He will also be the one
 	// to give the player info on how to play the game.
 	Monster devil("Devil", "The devil is a tall, red, and overwhelmingly handsome man\n", "");
-	devil.setDialogOpening("Welcome to my mansion!!\n"
-						   "My name is the Devil and you have died in real life.\n"
+	devil.setDialogOpening("Standing before you is the devil\n"
+						   "Welcome to my mansion!!\n"
+						   "I am the Devil and you have died in real life.\n"
 						   "This has resulted in you being sent down to my mansion to play a little game.\n"
 						   "-----Enter better description of how to play the game-----\n"
 						   "That is the end of my spiel. Hopefully you can figure out the rest\n"
