@@ -1,4 +1,4 @@
-// Version 1.11
+// Version 1.12
 
 #include <iostream>
 #include <string>
@@ -8,6 +8,7 @@
 #include "Room.h"
 #include "Monster.h"
 #include "Inventory.h"
+#include "Item.h"
 using namespace std;
 
 // Definitions of functions -- initialized below
@@ -21,7 +22,7 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Various string variables that will be used throughout the game
-	string version = "Welcome to the Devil's Mansion V1.11\n";
+	string version = "Welcome to the Devil's Mansion V1.12\n";
 	string endSentence = "\nThanks for playing The Devil's Mansion";
 	string askUserToMove = "Please enter `move` to go through the door: ";
 	string startingDescription = ""; //Will be given a value after player has entered their name
