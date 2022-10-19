@@ -7,6 +7,7 @@
 #include "UserInterface.h"
 #include "Room.h"
 #include "Monster.h"
+#include "Inventory.h"
 using namespace std;
 
 // Definitions of functions -- initialized below
@@ -36,7 +37,7 @@ int main() {
 	// Vector of keywords that will be valid inputs when playing the game.
 	// Eventually this will be broken up into different vectors with each vector
 	// holding specific types of key words. Ex. movement vector, items in use vector, etc.
-	vector <string> keyWords = { "q", "quit", "move", "back"};
+	vector <string> keyWords = { "q", "quit", "move", "back", "inventory"};
 
 	// Vector of created rooms that are currently not in use. A room object that will
 	// hold the current room the player is in. 
@@ -98,6 +99,9 @@ int main() {
 	startingSteps.setPlayer(player);
 	roomPointer = &startingSteps;
 
+	//Creates player inventory object using default parameters
+	Inventory playerInventory;
+
 	// Print the starting descriptions of the game to the screen. 
 	startingDescription = "\nHello there " + player.getName() + ".\n"
 						  "You have just died and been sent down to The Devils Mansion.\n"
@@ -146,6 +150,9 @@ int main() {
 		else if (input == "back") {
 			moveBackRoom(rooms, roomPointer);
 			ui.printString(roomPointer->getRoomDescription());
+		}
+		else if (input == "inventory") {
+			playerInventory.displayInventory();
 		}
 	}
 	ui.printString(endSentence);
