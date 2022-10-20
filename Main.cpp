@@ -159,8 +159,6 @@ int main() {
 	// Let the player see there is a blueberry on the ground.
 	do {
 		input = ui.getUserInput(blueberryOnFloor);
-		if (input == "blueberry")
-			playerInventory.addItem(blueberry);
 	} while (input != "blueberry");
 
 	// Move the blueberry from the room to the player
