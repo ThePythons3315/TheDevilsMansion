@@ -1,4 +1,4 @@
-// Version 1.13
+// Version 1.14
 
 #include <iostream>
 #include <string>
@@ -15,6 +15,7 @@ using namespace std;
 bool validateInput(vector<string>& vect, string sentence);
 void moveForwardRoom(vector<Room>& vect, Room *&currentRoom);
 void moveBackRoom(vector<Room>& vect, Room *&currentRoom);
+void itemFromRoomToPlayer(Room*& room, string itemName);
 
 int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -22,7 +23,7 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Various string variables that will be used throughout the game
-	string version = "Welcome to the Devil's Mansion V1.13\n";
+	string version = "Welcome to the Devil's Mansion V1.14\n";
 	string endSentence = "\nThanks for playing The Devil's Mansion";
 	string askCharacterName = "Hello there, please enter the name you would like your character to have: ";
 	string askUserToMove = "Please enter `move` to go through the door: ";
@@ -30,6 +31,9 @@ int main() {
 							  "It looks to be a blueberry.\n"
 							  "That would probably be something cool to pick up.\n"
 							  "Please enter `blueberry` to pick up the blueberry: ";
+	string checkInventory = "Please now type `inventory` to see what you have in your inventory: ";
+	string endOfIntro = "\nYou are now aware of how to move and how to pick up items.\n"
+						"Please continue with the game on your own...\n";
 	string startingDescription = ""; //Will be given a value after player has entered their name
 
 	// Loop variable that starts off as true. While the variable is true the mainloop will
@@ -61,7 +65,8 @@ int main() {
 	Inventory roomInventory1;
 
 	// Create a blueberry object.
-	Item blueberry("Blueberry");
+	Item blueberry("blueberry");
+	Item squash("squash");
 
 	// Create the starting steps. This will be the first area the player is dropped in
 	// at the start of the game.
@@ -79,6 +84,7 @@ int main() {
 	// Create an item called a blue berry. This item will eventually be able to be eaten and
 	// give the player health points.
 	roomInventory1.addItem(blueberry);
+	roomInventory1.addItem(squash);
 	startingRoom.setInventory(roomInventory1);
 	
 	// Add all of the rooms to the rooms vector. This will hold rooms that are 
@@ -113,7 +119,7 @@ int main() {
 	} while (input == "");
 	
 	// Create the main player object and set the starting steps as their current room
-	Player player(input);
+	Player player(input, playerInventory);
 	startingSteps.setPlayer(player);
 	roomPointer = &startingSteps;
 
@@ -149,8 +155,12 @@ int main() {
 			playerInventory.addItem(blueberry);
 	} while (input != "blueberry");
 
+	// Move the blueberry from the room to the player
+	itemFromRoomToPlayer(roomPointer, "blueberry");
 
-
+	// Show the end of the introduction statement, the player is on there own for 
+	// the most part from now on.
+	ui.printString(endOfIntro);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Start the main loop of the game. The main loop will continuously ask the user for input.
@@ -179,9 +189,11 @@ int main() {
 			ui.printString(roomPointer->getRoomDescription());
 		}
 		else if (input == "inventory") {
-			playerInventory.displayInventory();
+			roomPointer->getPlayer().getInventory().displayInventory();
 		}
 	}
+
+	// Thank the user for playing the game
 	ui.printString(endSentence);
 }
 
@@ -251,16 +263,57 @@ void moveBackRoom(vector<Room>& vect, Room*& currentRoom) {
 		if (nextLevel == vect.at(i).getRoomLevel()) {
 			// Move the player object from the currentRoom to the newRoom
 			vect.at(i).setPlayer(currentRoom->getPlayer());
-			//cout << "The name of the player in the new room is: " << vect.at(i).getPlayer().getName() << endl;
 
 			// Clear the player from the old room
 			currentRoom->setPlayer(defaultPlayer);
-			//cout << "The name of the player in the old room is: " << currentRoom->getPlayer().getName() << endl;
 
 			// Move the pointer from the old room to the new room
 			currentRoom = &vect.at(i);
-			//cout << "The name of the player in the new room is: " << currentRoom->getPlayer().getName() << endl;
-			//cout << "This was a check to make sure the pointer moved.\n";
 		}
 	}
+}
+
+// Moves a specified item from the room's inventory to the player's
+// inventory. It adds the item to the player's inventory and removes it
+// from the room's inventory.
+void itemFromRoomToPlayer(Room*& room, string itemName) {
+	// Variables
+	Player tempPlayer;
+	Inventory roomInventory;
+	Inventory playerInventory;
+	vector<Item> items;
+	int size;
+	
+	// Set all of the variables to their corresponding values from the
+	// room. Just doing this to make it the code simpler to look at
+	roomInventory = room->getInventory();
+	playerInventory = room->getPlayer().getInventory();
+	size = roomInventory.getSize();
+	items = roomInventory.getInventory();
+
+	// Add the item to the player and remove it from the room
+	for (int i = 0; i < size; i++) {
+		if (items.at(i).getName() == itemName) {
+			// Add the item to the player's inventory
+			playerInventory.addItem(items.at(i));
+
+			// Remove the item from the room
+			roomInventory.removeItem(i);
+		}
+	}
+
+	// Set the room's inventory to the updated room inventory
+	room->setInventory(roomInventory);
+
+	// Set the player's inventory to the updated player's inventory
+	tempPlayer.setInventory(playerInventory);
+	tempPlayer.setName(room->getPlayer().getName());
+	room->setPlayer(tempPlayer);
+
+	// Display the inventories of the room and the player
+	cout << "\nYou have just picked up a " << itemName << endl;
+	cout << "\nRoom Inventory is now: " << endl;
+	room->getInventory().displayInventory();
+	cout << "Player Inventory is now: " << endl;
+	room->getPlayer().getInventory().displayInventory();
 }

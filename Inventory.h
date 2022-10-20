@@ -23,6 +23,15 @@ public:
 	//Function to display all the items in the player inventory
 	void displayInventory();
 
+	// Get the number of items being stored in the inventory
+	int getSize();
+
+	// Function that returns a vector of the items in the inventory
+	vector<Item> getInventory();
+
+	// Remove an item from the inventory
+	void removeItem(int);
+
 };
 
 

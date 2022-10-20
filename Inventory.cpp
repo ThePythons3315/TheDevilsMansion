@@ -5,7 +5,6 @@ using namespace std;
 Inventory::Inventory()
 {
 	inventory = {};
-	// Probably should add something here?????	
 }
 
 //Funtion that adds items to inventory
@@ -25,4 +24,16 @@ void Inventory::displayInventory()
 			cout << "-" << inventory.at(i).getName() << endl;
 		}
 	}
+}
+
+int Inventory::getSize() {
+	return inventory.size();
+}
+
+vector<Item> Inventory::getInventory() {
+	return inventory;
+}
+
+void Inventory::removeItem(int index) {
+	inventory.erase(inventory.begin() + index);
 }
