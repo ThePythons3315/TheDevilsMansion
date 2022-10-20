@@ -23,14 +23,11 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Various string variables that will be used throughout the game
-	string version = "Welcome to the Devil's Mansion V1.14\n";
-	string endSentence = "\nThanks for playing The Devil's Mansion";
+	string version = "Welcome to the Devil's Mansion V1.14!!\n";
+	string endSentence = "\nThanks for playing The Devil's Mansion!!";
 	string askCharacterName = "Hello there, please enter the name you would like your character to have: ";
 	string askUserToMove = "Please enter `move` to go through the door: ";
-	string blueberryOnFloor = "It seems as though the devil dropped something on the ground.\n"
-							  "It looks to be a blueberry.\n"
-							  "That would probably be something cool to pick up.\n"
-							  "Please enter `blueberry` to pick up the blueberry: ";
+	string blueberryOnFloor = "Please enter `blueberry` to pick up the blueberry: ";
 	string checkInventory = "Please now type `inventory` to see what you have in your inventory: ";
 	string endOfIntro = "\nYou are now aware of how to move and how to pick up items.\n"
 						"Please continue with the game on your own...\n";
@@ -66,25 +63,26 @@ int main() {
 
 	// Create a blueberry object.
 	Item blueberry("blueberry");
-	Item squash("squash");
+	//Item squash("squash");
 
 	// Create the starting steps. This will be the first area the player is dropped in
 	// at the start of the game.
 	Room startingSteps("Starting Steps", "\nYou are currently at the starting steps.\n"
-										 "The starting steps lead up to a large and tall mansion in front of you\n"
-										 "The mansion is dark, mysterious and gives you a chill you did not think possible\n"
+										 "The starting steps lead up to a large and tall mansion in front of you.\n"
+										 "The mansion is dark, mysterious and gives you a chill you did not think possible.\n"
 									     "Before you is a door.\n", 0);
 	// Create the starting room. This is the 2nd location that the user can go to.
 	// This room will come after the starting steps and will house the devil.
 	// In this room the devil will explain the rules of the game to you.
 	Room startingRoom("Starting Room",  "\nYou are now in the starting room.\n"
-										"The starting room is a large open dark room with creepy crawlers everywhere.\n"
-										"Standing before you is the devil\n", 1);
+										"The starting room is a large open dark room with spider webs everywhere.\n"
+										"Someone should really dust in here.\n"
+										"Standing before you is the devil.\n", 1);
 
 	// Create an item called a blue berry. This item will eventually be able to be eaten and
 	// give the player health points.
 	roomInventory1.addItem(blueberry);
-	roomInventory1.addItem(squash);
+	//roomInventory1.addItem(squash);
 	startingRoom.setInventory(roomInventory1);
 	
 	// Add all of the rooms to the rooms vector. This will hold rooms that are 
@@ -94,12 +92,18 @@ int main() {
 
 	// Create the Devil who will be the main villain of the game. He will also be the one
 	// to give the player info on how to play the game.
-	Monster devil("Devil", "The devil is a tall, red, and overwhelmingly handsome man\n", "");
+	Monster devil("Devil", "The devil is a tall, crimson red, and overwhelmingly handsome man.\n", "");
 	devil.setDialogOpening("Welcome to my mansion!!\n"
 						   "I am the Devil and you have died in real life.\n"
 						   "This has resulted in you being sent down to my mansion to play a little game.\n"
-						   "-----Enter better description of how to play the game-----\n"
-						   "That is the end of my spiel. Hopefully you can figure out the rest\n"
+						   "I have minions all over my mansion from skeletons to lava hounds.\n"
+						   "You will have to face all of my minions in battle to make it through the mansion.\n"
+						   "If you successfully make it out, you will have won your life back.\n\n"
+						   "Since this is a video game and everything is fake, I guess i'll tell you the controls.\n"
+						   "To move forward a room enter `move` and to move backwards a room enter `back`.\n"
+						   "To pick up an item, type the name of the item.\n"
+						   "To show your inventory enter `inventory`.\n\n"
+						   "That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
 						   "...The devil zoomed away\n");
 
 	
@@ -146,8 +150,12 @@ int main() {
 
 	// Reset the room so the devil is not displayed after the first entrance
 	roomPointer->setRoomDescription("\nYou are now in the starting room.\n"
-									"The starting room is a large open dark room with creepy crawlers everywhere.\n");
+									"The starting room is a large open dark room with spider webs everywhere.\n");
 	
+	ui.printString("It seems as though the devil dropped something on the ground.\n"
+				   "It looks to be a blueberry.\n"
+		           "That would probably be something cool to pick up.\n");
+
 	// Let the player see there is a blueberry on the ground.
 	do {
 		input = ui.getUserInput(blueberryOnFloor);
