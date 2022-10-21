@@ -1,4 +1,4 @@
-// Version 1.14
+// Version 2.01
 
 #include <iostream>
 #include <string>
@@ -23,7 +23,7 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Various string variables that will be used throughout the game
-	string version = "Welcome to the Devil's Mansion V1.14!!\n";
+	string version = "Welcome to the Devil's Mansion V2.01!!\n";
 	string endSentence = "\nThanks for playing The Devil's Mansion!!";
 	string askCharacterName = "Hello there, please enter the name you would like your character to have: ";
 	string askUserToMove = "Please enter `move` to go through the door: ";
@@ -119,7 +119,7 @@ int main() {
 
 	// Get the name the user would like to play with
 	do {
-		input = ui.getUserInput(askCharacterName);
+		input = ui.getUnstandardizedUserInput(askCharacterName);
 	} while (input == "");
 	
 	// Create the main player object and set the starting steps as their current room
@@ -136,7 +136,7 @@ int main() {
 
 	// Make the user enter `move` so they go from the starting steps to the starting room
 	do {
-		input = ui.getUserInput(askUserToMove);
+		input = ui.getStandardizedUserInput(askUserToMove);
 	} while (input != "move");
 
 	// Once the user enters `move`, send them into the starting room and have the devil 
@@ -158,7 +158,7 @@ int main() {
 
 	// Let the player see there is a blueberry on the ground.
 	do {
-		input = ui.getUserInput(blueberryOnFloor);
+		input = ui.getStandardizedUserInput(blueberryOnFloor);
 	} while (input != "blueberry");
 
 	// Move the blueberry from the room to the player
@@ -176,7 +176,7 @@ int main() {
 		// Get input from the user continuously until a correct
 		// key word is entered
 		do {
-			input = ui.getUserInput();
+			input = ui.getStandardizedUserInput();
 		} while (validateInput(keyWords, input) == false);
 
 		// If the user enter's `q`, then break the main loop and end the game.

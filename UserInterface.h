@@ -15,8 +15,10 @@ public:
 	UserInterface();
 
 	// Other Functions
-	string getUserInput();
-	string getUserInput(string);
+	string getStandardizedUserInput();
+	string getStandardizedUserInput(string);
+	string getUnstandardizedUserInput();
+	string getUnstandardizedUserInput(string);
 	string convertLower(string);
 	void printString(string);
 };
