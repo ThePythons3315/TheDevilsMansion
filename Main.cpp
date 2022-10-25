@@ -16,6 +16,7 @@ bool validateInput(vector<string>& vect, string sentence);
 void moveForwardRoom(vector<Room>& vect, Room *&currentRoom);
 void moveBackRoom(vector<Room>& vect, Room *&currentRoom);
 void itemFromRoomToPlayer(Room*& room, string itemName);
+void itemFromPlayerToRoom(Room*& room, string itemName);
 
 int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +45,7 @@ int main() {
 	// Vector of keywords that will be valid inputs when playing the game.
 	// Eventually this will be broken up into different vectors with each vector
 	// holding specific types of key words. Ex. movement vector, items in use vector, etc.
-	vector <string> keyWords = { "q", "quit", "move", "back", "inventory"};
+	vector <string> keyWords = { "q", "quit", "move", "back", "inventory","drop blueberry"};
 
 	// Vector of created rooms that are currently not in use. A room object that will
 	// hold the current room the player is in. 
@@ -197,6 +198,9 @@ int main() {
 		else if (input == "inventory") {
 			roomPointer->getPlayer().getInventory().displayInventory();
 		}
+		else if (input == "drop blueberry") {
+			itemFromPlayerToRoom(roomPointer,"blueberry");
+		}
 	}
 
 	// Thank the user for playing the game
@@ -318,6 +322,52 @@ void itemFromRoomToPlayer(Room*& room, string itemName) {
 
 	// Display the inventories of the room and the player
 	cout << "\nYou have just picked up a " << itemName << endl;
+	cout << "\nRoom Inventory is now: " << endl;
+	room->getInventory().displayInventory();
+	cout << "Player Inventory is now: " << endl;
+	room->getPlayer().getInventory().displayInventory();
+}
+
+// Moves a specified item from the playher's inventory to the rooms's
+// inventory. It adds the item to the player's inventory and removes it
+// from the room's inventory.
+void itemFromPlayerToRoom(Room*& room, string itemName)
+{
+	// Variables
+	Player tempPlayer;
+	Inventory roomInventory;
+	Inventory playerInventory;
+	vector<Item> items;
+	int size;
+
+	// Set all of the variables to their corresponding values from the
+	// room. Just doing this to make it the code simpler to look at
+	roomInventory = room->getInventory();
+	playerInventory = room->getPlayer().getInventory();
+	size = playerInventory.getSize();
+	items = playerInventory.getInventory();
+
+	// Add the item to the player and remove it from the room
+	for (int i = 0; i < size; i++) {
+		if (items.at(i).getName() == itemName) {
+			// Add the item to the room's inventory
+			roomInventory.addItem(items.at(i));
+
+			// Remove the item from the player
+			playerInventory.removeItem(i);
+		}
+	}
+
+	// Set the room's inventory to the updated room inventory
+	room->setInventory(roomInventory);
+
+	// Set the player's inventory to the updated player's inventory
+	tempPlayer.setInventory(playerInventory);
+	tempPlayer.setName(room->getPlayer().getName());
+	room->setPlayer(tempPlayer);
+
+	// Display the inventories of the room and the player
+	cout << "\nYou have just dropped " << itemName << endl;
 	cout << "\nRoom Inventory is now: " << endl;
 	room->getInventory().displayInventory();
 	cout << "Player Inventory is now: " << endl;
