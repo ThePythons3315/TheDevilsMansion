@@ -333,7 +333,7 @@ void itemFromRoomToPlayer(Room*& room, string itemName) {
 	room->setPlayer(tempPlayer);
 
 	// Display the inventories of the room and the player
-	cout << "\nYou have just picked up a " << itemName << endl;
+	cout << "\nYou have just picked up a " << itemName << "\nType 'drop ItemName' to drop that item " << endl;
 	cout << "\nRoom Inventory is now: " << endl;
 	room->getInventory().displayInventory();
 	cout << "Player Inventory is now: " << endl;
