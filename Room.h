@@ -36,5 +36,8 @@ public:
 	int getRoomLevel();
 	Inventory getInventory();
 	// int getRoomID(); - will be implemented later
+
+	// Function that will display both room description and the inventory of the room
+	void getRoomInformation();
 };
 #endif // !ROOM_H

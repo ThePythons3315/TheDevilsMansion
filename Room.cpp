@@ -60,3 +60,11 @@ Inventory Room::getInventory() {
 /*int Room::getRoomID() {
 	return roomID;
 }*/
+
+// Function that will display both room description and the inventory of the room
+void Room::getRoomInformation() {
+	cout << getRoomDescription() << endl;
+	cout << "Room inventory:\n";
+	inventory.displayInventory();
+
+}

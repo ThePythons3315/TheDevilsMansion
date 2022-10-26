@@ -17,6 +17,7 @@ void moveForwardRoom(vector<Room>& vect, Room *&currentRoom);
 void moveBackRoom(vector<Room>& vect, Room *&currentRoom);
 void itemFromRoomToPlayer(Room*& room, string itemName);
 void itemFromPlayerToRoom(Room*& room, string itemName);
+bool checkIfItemIsInRoom(Room*& room, string itemName);
 
 int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -45,7 +46,7 @@ int main() {
 	// Vector of keywords that will be valid inputs when playing the game.
 	// Eventually this will be broken up into different vectors with each vector
 	// holding specific types of key words. Ex. movement vector, items in use vector, etc.
-	vector <string> keyWords = { "q", "quit", "move", "back", "inventory","drop blueberry"};
+	vector <string> keyWords = { "q", "quit", "move", "back", "inventory","drop blueberry", "blueberry"};
 
 	// Vector of created rooms that are currently not in use. A room object that will
 	// hold the current room the player is in. 
@@ -187,16 +188,27 @@ int main() {
 		// Move the player to the 2nd room if they type move
 		else if (input == "move") {
 			moveForwardRoom(rooms, roomPointer);
-			ui.printString(roomPointer->getRoomDescription());
+			roomPointer->getRoomInformation();
+			//ui.printString(roomPointer->getRoomDescription());
 			//roomPointer->getInventory().displayInventory();
 		}
 		// Move the player back to the starting room if they type back
 		else if (input == "back") {
 			moveBackRoom(rooms, roomPointer);
-			ui.printString(roomPointer->getRoomDescription());
+			//ui.printString(roomPointer->getRoomDescription());
+			roomPointer->getRoomInformation();
 		}
 		else if (input == "inventory") {
 			roomPointer->getPlayer().getInventory().displayInventory();
+		}
+		else if (input == "blueberry"){
+			if (checkIfItemIsInRoom(roomPointer, "blueberry") == true) {
+				itemFromRoomToPlayer(roomPointer, "blueberry");
+			}
+			else {
+				cout << "The item you have entered is not in this room.\n";
+				cout << "Check the other rooms or your inventory it may be in there.\n";
+			}
 		}
 		else if (input == "drop blueberry") {
 			itemFromPlayerToRoom(roomPointer,"blueberry");
@@ -372,4 +384,30 @@ void itemFromPlayerToRoom(Room*& room, string itemName)
 	room->getInventory().displayInventory();
 	cout << "Player Inventory is now: " << endl;
 	room->getPlayer().getInventory().displayInventory();
+}
+
+bool checkIfItemIsInRoom(Room*& room, string itemName)
+{
+	//Variables
+	Player tempPlayer;
+	Inventory roomInventory;
+	vector<Item> items;
+	int size;
+	bool found = false;
+
+	// Set all of the variables to their corresponding values from the
+	// room. Just doing this to make it the code simpler to look at
+	roomInventory = room->getInventory();
+	size = roomInventory.getSize();
+	items = roomInventory.getInventory();
+
+	// Checks the inventory of the room to see if the item is in the room or not, if the
+	// item is in the room then it will return true and allow player to pick it up.
+	for (int i = 0; i < size; i++) {
+		if (items.at(i).getName() == itemName) {
+			found = true;
+			break;
+		}
+	}
+	return found;
 }
