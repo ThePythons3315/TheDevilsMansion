@@ -93,7 +93,7 @@ void Room::getRoomInformation() {
 	cout << getRoomDescription() << endl;
 	cout << "Room inventory:\n";
 	inventory.displayInventory();
-
+	cout << player.getName() << "'s health: " << player.getPlayerHealth() << endl;
 }
 
 void Room::moveRoom(string direction) {

@@ -141,7 +141,7 @@ int main() {
 	} while (input == "");
 	
 	// Create the main player object and set the starting steps as their current room
-	Player player(input, playerInventory);
+	Player player(input, playerInventory, 50);
 	startingSteps.setPlayer(player);
 	roomPointer = &startingSteps;
 
