@@ -6,18 +6,20 @@ using namespace std;
 Room::Room() {
 	name = "";
 	roomDescription = "";
-	// Room level will be the determining factor for which rooms are allowed
-	// to access other rooms. For one room to be able to access another room
-	// the room level must be adjacent in value to the other room. Ex. rooms
-	// with room level of 1 can access rooms of room level's 0 or 2
-	roomLevel = 0;
-	// roomID = 0;
+	roomID = 0;
+	leftRoom = nullptr;
+	centerRoom = nullptr;
+	rightRoom = nullptr;
+	backRoom = nullptr;
 }
-Room::Room(string name_input, string desc, int level) {
+Room::Room(string name_input, string desc, int id) {
 	name = name_input;
 	roomDescription = desc;
-	roomLevel = level;
-	// roomID = id;
+	roomID = id;
+	leftRoom = nullptr;
+	centerRoom = nullptr;
+	rightRoom = nullptr;
+	backRoom = nullptr;
 }
 
 // Mutator Functions -- Functions that will be allowed to change private variables
@@ -30,15 +32,31 @@ void Room::setRoomDescription(string d) {
 void Room::setPlayer(Player character) {
 	player = character;
 }
-void Room::setRoomLevel(int level) {
-	roomLevel = level;
-}
 void Room::setInventory(Inventory invent) {
 	inventory = invent;
 }
-/*void Room::setRoomID(int id) {
+void Room::setRoomID(int id) {
 	roomID = id;
+}
+void Room::setLeftRoom(Room& left) {
+	leftRoom = &left;
+}// Take the address of the room object
+void Room::setCenterRoom(Room& center) {
+	centerRoom = &center;
+}// Take the address of the room object
+void Room::setRightRoom(Room& right) {
+	rightRoom = &right;
+}// Take the address of the room object
+void Room::setBackRoom(Room& back) {
+	backRoom = &back;
+}// Take the address of the room object
+/*void Room::setAssociatedRooms(Room& left, Room& center, Room& right, Room& back) {
+	leftRoom = &left;
+	centerRoom = &center;
+	rightRoom = &right;
+	backRoom = &back;
 }*/
+
 
 
 // Accessor Functions -- Functions that will return values of private functions
@@ -51,15 +69,24 @@ string Room::getRoomDescription() {
 Player Room::getPlayer() {
 	return player;
 }
-int Room::getRoomLevel() {
-	return roomLevel;
-}
 Inventory Room::getInventory() {
 	return inventory;
 }
-/*int Room::getRoomID() {
+int Room::getRoomID() {
 	return roomID;
-}*/
+}
+Room* Room::getLeftRoom() {
+	return leftRoom;
+}
+Room* Room::getCenterRoom() {
+	return centerRoom;
+}
+Room* Room::getRightRoom() {
+	return rightRoom;
+}
+Room* Room::getBackRoom() {
+	return backRoom;
+}
 
 // Function that will display both room description and the inventory of the room
 void Room::getRoomInformation() {
@@ -67,4 +94,52 @@ void Room::getRoomInformation() {
 	cout << "Room inventory:\n";
 	inventory.displayInventory();
 
+}
+
+void Room::moveRoom(string direction) {
+	// Default player object. This object will be placed in the current room
+	// after passing the player object to the new room.
+	Player defaultPlayer;
+
+	// Move the player to the new room based off which direction they asked
+	// to go. Only move the player as long as there is a room to move the 
+	// player to. If the pointer to the room you would like to move to is 
+	// null, then outprint that the room was not valid and the player stays in
+	// the current room.
+	if (direction == "center") {
+		centerRoom->setPlayer(player);
+		cout << "The player has been moved to the " << centerRoom->getName() << endl;
+		player = defaultPlayer;
+	}
+	else if (direction == "left") {
+		leftRoom->setPlayer(player);
+		cout << "The player has been moved to the " << leftRoom->getName() << endl;
+		player = defaultPlayer;
+	}
+	else if (direction == "right") {
+		rightRoom->setPlayer(player);
+		cout << "The player has been moved to the " << rightRoom->getName() << endl;
+		player = defaultPlayer;
+	}
+	else if (direction == "back") {
+		backRoom->setPlayer(player);
+		cout << "The player has been moved to the " << backRoom->getName() << endl;
+		player = defaultPlayer;
+	}
+}
+
+bool Room::validatePossibleRoom(string direction) {
+	if (direction == "center" && centerRoom != nullptr) {
+		return true;
+	}
+	else if (direction == "left" && leftRoom != nullptr) {
+		return true;
+	}
+	else if (direction == "right" && rightRoom != nullptr) {
+		return true;
+	}
+	else if (direction == "back" && backRoom != nullptr) {
+		return true;
+	}
+	return false;
 }

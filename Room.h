@@ -13,9 +13,12 @@ private:
 	string name;
 	string roomDescription;
 	Player player;
-	int roomLevel;
 	Inventory inventory;
-	// int roomID; - will be implemented later
+	int roomID;
+	Room* leftRoom; // pointer to a room object
+	Room* centerRoom; // pointer to a room object
+	Room* rightRoom; // pointer to a room object
+	Room* backRoom; // pointer to a room object
 public:
 	// Constructors
 	Room();
@@ -25,19 +28,30 @@ public:
 	void setName(string);
 	void setRoomDescription(string);
 	void setPlayer(Player);
-	void setRoomLevel(int);
 	void setInventory(Inventory);
-	// void setRoomID(int); - will be implemented later
+	void setRoomID(int);
+	void setLeftRoom(Room&); // Take the address of the room object
+	void setCenterRoom(Room&); // Take the address of the room object
+	void setRightRoom(Room&); // Take the address of the room object
+	void setBackRoom(Room&); // Take the address of the room object
+	//void setAssociatedRooms(Room&, Room&, Room&, Room&);
 
 	// Accessor Functions -- Functions that will return values of private functions
 	string getName();
 	string getRoomDescription();
 	Player getPlayer();
-	int getRoomLevel();
 	Inventory getInventory();
-	// int getRoomID(); - will be implemented later
+	int getRoomID();
+	Room* getLeftRoom();
+	Room* getCenterRoom();
+	Room* getRightRoom();
+	Room* getBackRoom();
 
 	// Function that will display both room description and the inventory of the room
 	void getRoomInformation();
+
+	void moveRoom(string);
+
+	bool validatePossibleRoom(string);
 };
 #endif // !ROOM_H

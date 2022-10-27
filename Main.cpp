@@ -1,4 +1,4 @@
-// Version 2.01
+// Version 2.02
 
 #include <iostream>
 #include <string>
@@ -13,8 +13,6 @@ using namespace std;
 
 // Definitions of functions -- initialized below
 bool validateInput(vector<string>& vect, string sentence);
-void moveForwardRoom(vector<Room>& vect, Room *&currentRoom);
-void moveBackRoom(vector<Room>& vect, Room *&currentRoom);
 void itemFromRoomToPlayer(Room*& room, string itemName);
 void itemFromPlayerToRoom(Room*& room, string itemName);
 bool checkIfItemIsInRoom(Room*& room, string itemName);
@@ -25,14 +23,15 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Various string variables that will be used throughout the game
-	string version = "Welcome to the Devil's Mansion V2.01!!\n";
+	string version = "Welcome to the Devil's Mansion V2.02\n";
 	string endSentence = "\nThanks for playing The Devil's Mansion!!";
 	string askCharacterName = "Hello there, please enter the name you would like your character to have: ";
-	string askUserToMove = "Please enter `move` to go through the door: ";
+	string askUserToMove = "Please enter `center` to go through the door: ";
 	string blueberryOnFloor = "Please enter `blueberry` to pick up the blueberry: ";
 	string checkInventory = "Please now type `inventory` to see what you have in your inventory: ";
 	string endOfIntro = "\nYou are now aware of how to move and how to pick up items.\n"
 						"Please continue with the game on your own...\n";
+	string incorrectRoom = "\nThat was not a valid room.\nThe player will stay in the current room.\n";
 	string startingDescription = ""; //Will be given a value after player has entered their name
 
 	// Loop variable that starts off as true. While the variable is true the mainloop will
@@ -46,11 +45,11 @@ int main() {
 	// Vector of keywords that will be valid inputs when playing the game.
 	// Eventually this will be broken up into different vectors with each vector
 	// holding specific types of key words. Ex. movement vector, items in use vector, etc.
-	vector <string> keyWords = { "q", "quit", "move", "back", "inventory","drop blueberry", "blueberry"};
+	vector <string> keyWords = { "q", "quit", "left", "center", "right", "back", "inventory","drop blueberry", "blueberry"};
 
 	// Vector of created rooms that are currently not in use. A room object that will
 	// hold the current room the player is in. 
-	vector<Room> rooms;
+	//vector<Room> rooms;
 
 	// Pointer variable that will point to the current room the player is in
 	Room *roomPointer = nullptr; 
@@ -65,7 +64,6 @@ int main() {
 
 	// Create a blueberry object.
 	Item blueberry("blueberry");
-	//Item squash("squash");
 
 	// Create the starting steps. This will be the first area the player is dropped in
 	// at the start of the game.
@@ -80,17 +78,34 @@ int main() {
 										"The starting room is a large open dark room with spider webs everywhere.\n"
 										"Someone should really dust in here.\n"
 										"Standing before you is the devil.\n", 1);
+	Room testRoom1("TEST ROOM 1", "TEST ROOM 1 - DESCRIPTION", 2);
+	Room testRoom2("TEST ROOM 2", "TEST ROOM 2 - DESCRIPTION", 3);
+	Room testRoom3("TEST ROOM 3", "TEST ROOM 3 - DESCRIPTION", 4);
+	Room testRoom4("TEST ROOM 4", "TEST ROOM 4 - DESCRIPTION", 5);
+	
+	// Starting Steps - associated rooms
+	startingSteps.setCenterRoom(startingRoom);
+
+	// Starting Room - associated rooms
+	startingRoom.setBackRoom(startingSteps);
+	startingRoom.setCenterRoom(testRoom1);
+
+	// Test Room 1 - associated rooms
+	testRoom1.setBackRoom(startingRoom);
+	testRoom1.setLeftRoom(testRoom2);
+	testRoom1.setCenterRoom(testRoom3);
+	testRoom1.setRightRoom(testRoom4);
+
+	// Other Rooms - associated rooms
+	testRoom2.setRightRoom(testRoom1);
+	testRoom3.setBackRoom(testRoom1);
+	testRoom4.setLeftRoom(testRoom1);
 
 	// Create an item called a blue berry. This item will eventually be able to be eaten and
 	// give the player health points.
 	roomInventory1.addItem(blueberry);
-	//roomInventory1.addItem(squash);
 	startingRoom.setInventory(roomInventory1);
-	
-	// Add all of the rooms to the rooms vector. This will hold rooms that are 
-	// currently being used as well as rooms that are not currently being used
-	rooms.push_back(startingSteps);
-	rooms.push_back(startingRoom);
+
 
 	// Create the Devil who will be the main villain of the game. He will also be the one
 	// to give the player info on how to play the game.
@@ -102,7 +117,8 @@ int main() {
 						   "You will have to face all of my minions in battle to make it through the mansion.\n"
 						   "If you successfully make it out, you will have won your life back.\n\n"
 						   "Since this is a video game and everything is fake, I guess i'll tell you the controls.\n"
-						   "To move forward a room enter `move` and to move backwards a room enter `back`.\n"
+						   "To move straight forward a room enter `center` and to move backwards a room enter `back`.\n"
+						   "To move left a room enter `left` and to move right a room enter `right`.\n"
 						   "To pick up an item, type the name of the item.\n"
 						   "To show your inventory enter `inventory`.\n\n"
 						   "That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
@@ -136,19 +152,17 @@ int main() {
 	ui.printString(startingDescription);
 	ui.printString(startingSteps.getRoomDescription());
 
-	// Make the user enter `move` so they go from the starting steps to the starting room
+	// Once the user enters `center`, send them into the starting room and have the devil 
+	// give his little spiel about how the game works and runs.
 	do {
 		input = ui.getStandardizedUserInput(askUserToMove);
-	} while (input != "move");
+	} while (input != "center");
+	roomPointer->moveRoom(input);
+	roomPointer = roomPointer->getCenterRoom();
+	ui.printString(roomPointer->getRoomDescription());
+	ui.printString(devil.getMonsterDescription());
+	ui.printString(devil.getDialogOpening());
 
-	// Once the user enters `move`, send them into the starting room and have the devil 
-	// give his little spiel about how the game works and runs.
-	if (input == "move") {
-		moveForwardRoom(rooms, roomPointer);
-		ui.printString(roomPointer->getRoomDescription());
-		ui.printString(devil.getMonsterDescription());
-		ui.printString(devil.getDialogOpening());
-	}
 
 	// Reset the room so the devil is not displayed after the first entrance
 	roomPointer->setRoomDescription("\nYou are now in the starting room.\n"
@@ -163,7 +177,7 @@ int main() {
 		input = ui.getStandardizedUserInput(blueberryOnFloor);
 	} while (input != "blueberry");
 
-	// Move the blueberry from the room to the player
+	// ToDo: Move the blueberry from the room to the player
 	itemFromRoomToPlayer(roomPointer, "blueberry");
 
 	// Show the end of the introduction statement, the player is on there own for 
@@ -185,22 +199,55 @@ int main() {
 		if (input == "q" || input == "quit") {
 			break;
 		}
-		// Move the player to the 2nd room if they type move
-		else if (input == "move") {
-			moveForwardRoom(rooms, roomPointer);
-			roomPointer->getRoomInformation();
-			//ui.printString(roomPointer->getRoomDescription());
-			//roomPointer->getInventory().displayInventory();
+		// Lets the player move to the room to the left
+		else if (input == "left") {
+			if (roomPointer->validatePossibleRoom(input)) {
+				roomPointer->moveRoom("left");
+				roomPointer = roomPointer->getLeftRoom();
+				roomPointer->getRoomInformation();
+			}
+			else {
+				ui.printString(incorrectRoom);
+			}
 		}
-		// Move the player back to the starting room if they type back
+		// Lets the player move to the room to the center
+		else if (input == "center") {
+			if (roomPointer->validatePossibleRoom(input)) {
+				roomPointer->moveRoom("center");
+				roomPointer = roomPointer->getCenterRoom();
+				roomPointer->getRoomInformation();
+			}
+			else {
+				ui.printString(incorrectRoom);
+			}
+		}
+		// Lets the player move to the room to the right
+		else if (input == "right") {
+			if (roomPointer->validatePossibleRoom(input)) {
+				roomPointer->moveRoom("right");
+				roomPointer = roomPointer->getRightRoom();
+				roomPointer->getRoomInformation();
+			}
+			else {
+				ui.printString(incorrectRoom);
+			}
+		}
+		// Lets the player move back a room
 		else if (input == "back") {
-			moveBackRoom(rooms, roomPointer);
-			//ui.printString(roomPointer->getRoomDescription());
-			roomPointer->getRoomInformation();
+			if (roomPointer->validatePossibleRoom(input)) {
+				roomPointer->moveRoom("back");
+				roomPointer = roomPointer->getBackRoom();
+				roomPointer->getRoomInformation();
+			}
+			else {
+				ui.printString(incorrectRoom);
+			}
 		}
+		// Lets the user redisplay their inventory
 		else if (input == "inventory") {
 			roomPointer->getPlayer().getInventory().displayInventory();
 		}
+		// Lets the user pick up the blueberry
 		else if (input == "blueberry"){
 			if (checkIfItemIsInRoom(roomPointer, "blueberry") == true) {
 				itemFromRoomToPlayer(roomPointer, "blueberry");
@@ -210,6 +257,7 @@ int main() {
 				cout << "Check the other rooms or your inventory it may be in there.\n";
 			}
 		}
+		// Lets the user drop the blueberry
 		else if (input == "drop blueberry") {
 			itemFromPlayerToRoom(roomPointer,"blueberry");
 		}
@@ -235,64 +283,6 @@ bool validateInput(vector<string>& vect, string sentence) {
 		}
 	}
 	return false;
-}
-
-// Switch the room the player is in forward one room. The function takes a vector
-// that is holding all of the different rooms and it also takes a pointer that is
-// pointing to the current room. The pointer will be switched to the new room the 
-// player is being moved to.
-void moveForwardRoom(vector<Room>& vect, Room *&currentRoom) {
-	// ToDo: Combine this with the moveBackRoom function
-	
-	Player defaultPlayer;
-	// Variable to hold the room level that is one above the current room.
-	// This variable will be used to find the new room that the player will
-	// be moved to. It is plus one because they are moving forward.
-	int nextLevel = currentRoom->getRoomLevel() + 1;
-
-	// Move the player to the new room, get rid of the player from the old room
-	// and move the pointer from the old room to the new room
-	for (int i = 0; i < vect.size(); i++) {
-		if (nextLevel == vect.at(i).getRoomLevel()) {
-			// Move the player object from the currentRoom to the newRoom
-			vect.at(i).setPlayer(currentRoom->getPlayer());
-
-			// Clear the player from the old room
-			currentRoom->setPlayer(defaultPlayer);
-		
-			// Move the pointer from the old room to the new room
-			currentRoom = &vect.at(i);
-		}
-	}
-}
-
-// Switch the room the player is in backwards one room. The function takes a vector
-// that is holding all of the different rooms and it also takes a pointer that is
-// pointing to the current room. The pointer will be switched to the new room the 
-// player is being moved to.
-void moveBackRoom(vector<Room>& vect, Room*& currentRoom) {
-	// ToDo: Combine this with the moveForwardRoom function
-
-	Player defaultPlayer;
-	// Variable to hold the room level that is one below the current room.
-	// This variable will be used to find the new room that the player will
-	// be moved to. It is minus one because they are moving backwards.
-	int nextLevel = currentRoom->getRoomLevel() - 1;
-
-	// Move the player to the new room, get rid of the player from the old room
-	// and move the pointer from the old room to the new room
-	for (int i = 0; i < vect.size(); i++) {
-		if (nextLevel == vect.at(i).getRoomLevel()) {
-			// Move the player object from the currentRoom to the newRoom
-			vect.at(i).setPlayer(currentRoom->getPlayer());
-
-			// Clear the player from the old room
-			currentRoom->setPlayer(defaultPlayer);
-
-			// Move the pointer from the old room to the new room
-			currentRoom = &vect.at(i);
-		}
-	}
 }
 
 // Moves a specified item from the room's inventory to the player's
@@ -386,6 +376,8 @@ void itemFromPlayerToRoom(Room*& room, string itemName)
 	room->getPlayer().getInventory().displayInventory();
 }
 
+// Checks if a specified item is already in a room. Returns true if 
+// the item is already in the room and false if it is not.
 bool checkIfItemIsInRoom(Room*& room, string itemName)
 {
 	//Variables
