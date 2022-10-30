@@ -63,7 +63,7 @@ int main() {
 	Inventory roomInventory1;
 
 	// Create a blueberry object.
-	Item blueberry("blueberry");
+	Item blueberry("blueberry", 50);
 
 	// Create the starting steps. This will be the first area the player is dropped in
 	// at the start of the game.
