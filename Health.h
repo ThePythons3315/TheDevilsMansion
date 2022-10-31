@@ -20,6 +20,7 @@ public:
 	// Mutator Functions -- Functions that will be allowed to change private variables
 	void setHealth(int);
 	void setMaxHealth(int);
+	void changeHealth(int);
 
 	// Accessor Functions -- Functions that will return values of private functions
 	int getHealth();

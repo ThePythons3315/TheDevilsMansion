@@ -1,4 +1,4 @@
-// Version 2.03
+// Version 2.04
 
 #include <iostream>
 #include <string>
@@ -16,6 +16,7 @@ bool validateInput(vector<string>& vect, string sentence);
 void itemFromRoomToPlayer(Room*& room, string itemName);
 void itemFromPlayerToRoom(Room*& room, string itemName);
 bool checkIfItemIsInRoom(Room*& room, string itemName);
+void addItemHealthToPlayer(Room*& room, string itemName);
 
 int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -35,7 +36,9 @@ int main() {
 	// Vector of keywords that will be valid inputs when playing the game.
 	// Eventually this will be broken up into different vectors with each vector
 	// holding specific types of key words. Ex. movement vector, items in use vector, etc.
-	vector <string> keyWords = { "q", "quit", "left", "center", "right", "back", "inventory", "drop blueberry", "blueberry" };
+	vector <string> keyWords = { "q", "quit", "left", "center", "right", "back", "inventory", "drop blueberry", "blueberry",
+								 "eat blueberry"};
+	// "squash", "eat squash", "drop squash" - Tester items strings
 
 	// Pointer variable that will point to the current room the player is in
 	Room* roomPointer = nullptr;
@@ -49,7 +52,7 @@ int main() {
 	// Create all string variables of text that will be used as dialog throughout the game.
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	string version = "Welcome to the Devil's Mansion V2.03\n";
+	string version = "Welcome to the Devil's Mansion V2.04\n";
 	string endSentence = "\nThanks for playing The Devil's Mansion!!";
 	string askCharacterName = "Hello there, please enter the name you would like your character to have: ";
 	string askUserToMove = "Please enter `center` to go through the door: ";
@@ -74,6 +77,7 @@ int main() {
 
 	Health playerHealth(90, 100);
 	Health blueberryHealth(10, 10);
+	//Health squashHealth(5, 5);
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -81,6 +85,7 @@ int main() {
 	// and monster inventories
 	///////////////////////////////////////////////////////////////////////////////////////////
 	Item blueberry("blueberry", blueberryHealth);
+	//Item squash("squash", squashHealth); - Tester
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -123,8 +128,10 @@ int main() {
 	testRoom3.setBackRoom(testRoom1);
 	testRoom4.setLeftRoom(testRoom1);
 
-	// Create an item called a blue berry. This item will eventually be able to be eaten and
-	// give the player health points.
+	///////////////////////////////////////////////////////////////////////////////////////////
+	// Add item objects to room inventories, add room inventories to actual room objects
+	///////////////////////////////////////////////////////////////////////////////////////////
+	//roomInventory1.addItem(squash); - Tester
 	roomInventory1.addItem(blueberry);
 	startingRoom.setInventory(roomInventory1);
 
@@ -169,10 +176,6 @@ int main() {
 	startingSteps.setPlayer(player);
 	roomPointer = &startingSteps;
 
-	// TODO: Remove
-	//cout << "PLayer's current health: " << roomPointer->getPlayer().getPlayerHealth().getHealth() << endl;
-	//cout << "PLayer's current  MAX health: " << roomPointer->getPlayer().getPlayerHealth().getMaxHealth() << endl;
-
 	// Print the starting descriptions of the game to the screen. 
 	startingDescription = "\nHello there " + player.getName() + ".\n"
 						  "You have just died and been sent down to The Devils Mansion.\n"
@@ -190,15 +193,6 @@ int main() {
 	ui.printString(roomPointer->getRoomDescription());
 	ui.printString(devil.getMonsterDescription());
 	ui.printString(devil.getDialogOpening());
-	
-	// TODO: Remove
-	roomPointer->getRoomInformation();
-
-	// TODO: Remove
-	//cout << "PLayer's current health: " << roomPointer->getPlayer().getPlayerHealth().getHealth() << endl;
-	//cout << "PLayer's current  MAX health: " << roomPointer->getPlayer().getPlayerHealth().getMaxHealth() << endl;
-
-
 
 	// Reset the room so the devil is not displayed after the first entrance
 	roomPointer->setRoomDescription("\nYou are now in the starting room.\n"
@@ -295,8 +289,25 @@ int main() {
 		}
 		// Lets the user drop the blueberry
 		else if (input == "drop blueberry") {
-			itemFromPlayerToRoom(roomPointer,"blueberry");
+			itemFromPlayerToRoom(roomPointer, "blueberry");
 		}
+		else if (input == "eat blueberry") {
+			addItemHealthToPlayer(roomPointer, "blueberry");
+		}
+		// Lets the user pick up the squash
+		/*else if (input == "squash") {
+			if (checkIfItemIsInRoom(roomPointer, "squash") == true) {
+				itemFromRoomToPlayer(roomPointer, "squash");
+			}
+			else {
+				cout << "The item you have entered is not in this room.\n";
+				cout << "Check the other rooms or your inventory it may be in there.\n";
+			}
+		}*/
+		/*else if (input == "eat squash") {
+			addItemHealthToPlayer(roomPointer, "squash");
+		}*/
+		// Tester
 	}
 
 	// Thank the user for playing the game
@@ -439,4 +450,47 @@ bool checkIfItemIsInRoom(Room*& room, string itemName)
 		}
 	}
 	return found;
+}
+
+void addItemHealthToPlayer(Room*& room, string itemName) {
+	// Variables
+	Player tempPlayer;
+	Inventory playerInventory;
+	Health playerHealth;
+	vector<Item> items;
+	int size;
+	int itemHealth;
+
+	// Set all of the variables to their corresponding values from the
+	// room. Just doing this to make it the code simpler to look at
+	playerInventory = room->getPlayer().getInventory();
+	playerHealth = room->getPlayer().getPlayerHealth();
+	size = playerInventory.getSize();
+	items = playerInventory.getInventory();
+
+	// Check to make sure the item is in the player's inventory
+	// ToDo: Add a type attribute to the item class, use that to check
+	// if an item is a health item before trying to add health to the player
+
+	// Add the item's health to the player and then delete the item from the
+	// player's inventory
+	for (int i = 0; i < size; i++) {
+		if (items.at(i).getName() == itemName) {
+			itemHealth = items.at(i).getHealth().getHealth();
+
+			// Add the health to the player
+			playerHealth.changeHealth(itemHealth);
+
+			// Remove the item from the player
+			playerInventory.removeItem(i);
+			cout << "The " << itemName << " has been used." << endl;
+		}
+	}
+
+	// Set the player's inventory to the updated player's inventory
+	// and set the player's health to the updated player's health
+	tempPlayer.setInventory(playerInventory);
+	tempPlayer.setName(room->getPlayer().getName());
+	tempPlayer.setPlayerHealth(playerHealth);
+	room->setPlayer(tempPlayer);
 }
