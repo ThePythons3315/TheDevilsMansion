@@ -1,4 +1,4 @@
-// Version 2.04
+// Version 2.05
 
 #include <iostream>
 #include <string>
@@ -52,7 +52,7 @@ int main() {
 	// Create all string variables of text that will be used as dialog throughout the game.
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	string version = "Welcome to the Devil's Mansion V2.04\n";
+	string version = "Welcome to the Devil's Mansion V2.05\n";
 	string endSentence = "\nThanks for playing The Devil's Mansion!!";
 	string askCharacterName = "Hello there, please enter the name you would like your character to have: ";
 	string askUserToMove = "Please enter `center` to go through the door: ";
@@ -77,6 +77,8 @@ int main() {
 
 	Health playerHealth(90, 100);
 	Health blueberryHealth(10, 10);
+	Health devilHealth(0, 0);
+	Health skeletonHealth(100, 100);
 	//Health squashHealth(5, 5);
 
 
@@ -107,10 +109,10 @@ int main() {
 		"To pick up an item, type the name of the item.\n"
 		"To show your inventory enter `inventory`.\n\n"
 		"That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
-		"...The devil zoomed away\n");
+		"...The devil zoomed away\n", devilHealth);
 	Monster skeleton("Skeleton", "The skeleton is a 10 foot tall, skinny, white thing of bones.\n",
 		"Hello there peasent, I am the skeleton.\n"
-		"Welcome to my room. I am going to take you down no matter what.\n");
+		"Welcome to my room. I am going to take you down no matter what.\n", skeletonHealth);
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////

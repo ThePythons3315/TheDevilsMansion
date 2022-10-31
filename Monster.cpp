@@ -7,11 +7,13 @@ Monster::Monster() {
 	name = "";
 	monsterDescription = "";
 	dialogOpening = "";
+	health;
 }
-Monster::Monster(string nameInput, string descrip, string openDialog) {
+Monster::Monster(string nameInput, string descrip, string openDialog, Health hp) {
 	name = nameInput;
 	monsterDescription = descrip;
 	dialogOpening = openDialog;
+	health = hp;
 }
 
 // Mutator Functions -- Functions that will be allowed to change private variables
@@ -24,6 +26,9 @@ void Monster::setMonsterDescription(string descrip) {
 void Monster::setDialogOpening(string dialog) {
 	dialogOpening = dialog;
 }
+void Monster::setHealth(Health hp) {
+	health = hp;
+}
 
 // Accessor Functions -- Functions that will return values of private functions
 string Monster::getName() {
@@ -34,4 +39,13 @@ string Monster::getMonsterDescription() {
 }
 string Monster::getDialogOpening() {
 	return dialogOpening;
+}
+Health Monster::getHealth() {
+	return health;
+}
+
+void Monster::displayMonster() {
+	cout << "In front of you is a " << name << endl;
+	cout << "The " << name << "'s ";
+	health.displayHealth();
 }

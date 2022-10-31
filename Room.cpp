@@ -98,11 +98,11 @@ void Room::getRoomInformation() {
 	cout << endl;
 	cout << "Room inventory:\n";
 	inventory.displayInventory();
-	cout << endl;
+	cout << "The player's ";
 	player.getPlayerHealth().displayHealth();
 	cout << endl;
 	if (monster.getName() != "") {
-		cout << "There is a monster standing in the room.\nIt looks like a " << monster.getName() << endl << endl;
+		monster.displayMonster();
 	}
 	else {
 		cout << "It does not look like there is a monster in this room.\nContinue to be weary though\n\n";
