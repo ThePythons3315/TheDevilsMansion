@@ -6,6 +6,8 @@ using namespace std;
 Room::Room() {
 	name = "";
 	roomDescription = "";
+	inventory;
+	monster;
 	roomID = 0;
 	leftRoom = nullptr;
 	centerRoom = nullptr;
@@ -16,6 +18,8 @@ Room::Room(string name_input, string desc, int id) {
 	name = name_input;
 	roomDescription = desc;
 	roomID = id;
+	inventory;
+	monster;
 	leftRoom = nullptr;
 	centerRoom = nullptr;
 	rightRoom = nullptr;
@@ -34,6 +38,9 @@ void Room::setPlayer(Player character) {
 }
 void Room::setInventory(Inventory invent) {
 	inventory = invent;
+}
+void Room::setMonster(Monster _monster) {
+	monster = _monster;
 }
 void Room::setRoomID(int id) {
 	roomID = id;
@@ -66,6 +73,9 @@ Player Room::getPlayer() {
 Inventory Room::getInventory() {
 	return inventory;
 }
+Monster Room::getMonster() {
+	return monster;
+}
 int Room::getRoomID() {
 	return roomID;
 }
@@ -85,9 +95,18 @@ Room* Room::getBackRoom() {
 // Function that will display both room description and the inventory of the room
 void Room::getRoomInformation() {
 	cout << getRoomDescription() << endl;
+	cout << endl;
 	cout << "Room inventory:\n";
 	inventory.displayInventory();
+	cout << endl;
 	player.getPlayerHealth().displayHealth();
+	cout << endl;
+	if (monster.getName() != "") {
+		cout << "There is a monster standing in the room.\nIt looks like a " << monster.getName() << endl << endl;
+	}
+	else {
+		cout << "It does not look like there is a monster in this room.\nContinue to be weary though\n\n";
+	}
 }
 
 void Room::moveRoom(string direction) {

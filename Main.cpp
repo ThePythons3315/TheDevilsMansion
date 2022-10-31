@@ -89,6 +89,31 @@ int main() {
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////
+	// Create monster objects that will be used to battle the player throughout the game
+	///////////////////////////////////////////////////////////////////////////////////////////
+
+	// Create the Devil who will be the main villain of the game. He will also be the one
+	// to give the player info on how to play the game.
+	Monster devil("Devil", "The devil is a tall, crimson red, and overwhelmingly handsome man.\n",
+		"Welcome to my mansion!!\n"
+		"I am the Devil and you have died in real life.\n"
+		"This has resulted in you being sent down to my mansion to play a little game.\n"
+		"I have minions all over my mansion from skeletons to lava hounds.\n"
+		"You will have to face all of my minions in battle to make it through the mansion.\n"
+		"If you successfully make it out, you will have won your life back.\n\n"
+		"Since this is a video game and everything is fake, I guess i'll tell you the controls.\n"
+		"To move straight forward a room enter `center` and to move backwards a room enter `back`.\n"
+		"To move left a room enter `left` and to move right a room enter `right`.\n"
+		"To pick up an item, type the name of the item.\n"
+		"To show your inventory enter `inventory`.\n\n"
+		"That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
+		"...The devil zoomed away\n");
+	Monster skeleton("Skeleton", "The skeleton is a 10 foot tall, skinny, white thing of bones.\n",
+		"Hello there peasent, I am the skeleton.\n"
+		"Welcome to my room. I am going to take you down no matter what.\n");
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create room objects that will be used to move through by the player throughout the game
 	///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -105,28 +130,36 @@ int main() {
 										"The starting room is a large open dark room with spider webs everywhere.\n"
 										"Someone should really dust in here.\n"
 										"Standing before you is the devil.\n", 1);
-	Room testRoom1("TEST ROOM 1", "TEST ROOM 1 - DESCRIPTION", 2);
+	Room skeletonRoom("Skeleton Room", "Skeleton Room - DESCRIPTION", 2);
 	Room testRoom2("TEST ROOM 2", "TEST ROOM 2 - DESCRIPTION", 3);
 	Room testRoom3("TEST ROOM 3", "TEST ROOM 3 - DESCRIPTION", 4);
 	Room testRoom4("TEST ROOM 4", "TEST ROOM 4 - DESCRIPTION", 5);
 	
+	// ToDo: Make a function to do these in one line
+	// 
 	// Starting Steps - associated rooms
 	startingSteps.setCenterRoom(startingRoom);
 
 	// Starting Room - associated rooms
 	startingRoom.setBackRoom(startingSteps);
-	startingRoom.setCenterRoom(testRoom1);
+	startingRoom.setCenterRoom(skeletonRoom);
 
 	// Test Room 1 - associated rooms
-	testRoom1.setBackRoom(startingRoom);
-	testRoom1.setLeftRoom(testRoom2);
-	testRoom1.setCenterRoom(testRoom3);
-	testRoom1.setRightRoom(testRoom4);
+	skeletonRoom.setBackRoom(startingRoom);
+	skeletonRoom.setLeftRoom(testRoom2);
+	skeletonRoom.setCenterRoom(testRoom3);
+	skeletonRoom.setRightRoom(testRoom4);
 
 	// Other Rooms - associated rooms
-	testRoom2.setRightRoom(testRoom1);
-	testRoom3.setBackRoom(testRoom1);
-	testRoom4.setLeftRoom(testRoom1);
+	testRoom2.setRightRoom(skeletonRoom);
+	testRoom3.setBackRoom(skeletonRoom);
+	testRoom4.setLeftRoom(skeletonRoom);
+
+	///////////////////////////////////////////////////////////////////////////////////////////
+	// Add monster objects to respective rooms
+	///////////////////////////////////////////////////////////////////////////////////////////
+
+	skeletonRoom.setMonster(skeleton);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Add item objects to room inventories, add room inventories to actual room objects
@@ -134,28 +167,6 @@ int main() {
 	//roomInventory1.addItem(squash); - Tester
 	roomInventory1.addItem(blueberry);
 	startingRoom.setInventory(roomInventory1);
-
-
-	///////////////////////////////////////////////////////////////////////////////////////////
-	// Create monster objects that will be used to battle the player throughout the game
-	///////////////////////////////////////////////////////////////////////////////////////////
-
-	// Create the Devil who will be the main villain of the game. He will also be the one
-	// to give the player info on how to play the game.
-	Monster devil("Devil", "The devil is a tall, crimson red, and overwhelmingly handsome man.\n", "");
-	devil.setDialogOpening("Welcome to my mansion!!\n"
-						   "I am the Devil and you have died in real life.\n"
-						   "This has resulted in you being sent down to my mansion to play a little game.\n"
-						   "I have minions all over my mansion from skeletons to lava hounds.\n"
-						   "You will have to face all of my minions in battle to make it through the mansion.\n"
-						   "If you successfully make it out, you will have won your life back.\n\n"
-						   "Since this is a video game and everything is fake, I guess i'll tell you the controls.\n"
-						   "To move straight forward a room enter `center` and to move backwards a room enter `back`.\n"
-						   "To move left a room enter `left` and to move right a room enter `right`.\n"
-						   "To pick up an item, type the name of the item.\n"
-						   "To show your inventory enter `inventory`.\n\n"
-						   "That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
-						   "...The devil zoomed away\n");
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////

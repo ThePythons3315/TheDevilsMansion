@@ -6,6 +6,7 @@
 #include <string>
 #include "Player.h"
 #include "Inventory.h"
+#include "Monster.h"
 using namespace std;
 
 class Room {
@@ -14,6 +15,7 @@ private:
 	string roomDescription;
 	Player player;
 	Inventory inventory;
+	Monster monster;
 	int roomID;
 	Room* leftRoom; // pointer to a room object
 	Room* centerRoom; // pointer to a room object
@@ -29,6 +31,7 @@ public:
 	void setRoomDescription(string);
 	void setPlayer(Player);
 	void setInventory(Inventory);
+	void setMonster(Monster);
 	void setRoomID(int);
 	void setLeftRoom(Room&); // Take the address of the room object
 	void setCenterRoom(Room&); // Take the address of the room object
@@ -41,6 +44,7 @@ public:
 	string getRoomDescription();
 	Player getPlayer();
 	Inventory getInventory();
+	Monster getMonster();
 	int getRoomID();
 	Room* getLeftRoom();
 	Room* getCenterRoom();
@@ -53,5 +57,6 @@ public:
 	void moveRoom(string);
 
 	bool validatePossibleRoom(string);
+
 };
 #endif // !ROOM_H
