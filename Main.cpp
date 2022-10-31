@@ -306,7 +306,9 @@ int main() {
 		}
 		// Lets the player eat the blueberry and regain health
 		else if (input == "eat blueberry") {
+			// ToDo: Add function to check if blueberry is in the player's inventory
 			addItemHealthToPlayer(roomPointer, "blueberry");
+			roomPointer->getPlayer().getPlayerHealth().displayHealth();
 		}
 		// Lets the player see how much health they currently have
 		else if (input == "health") {
