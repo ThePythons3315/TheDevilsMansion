@@ -6,9 +6,9 @@ using namespace std;
 Player::Player() {
 	name = "";
 	inventory;
-	health = 100;
+	health;
 };
-Player::Player(string n, Inventory invent, int playerHealth) {
+Player::Player(string n, Inventory invent, Health playerHealth) {
 	name = n;
 	inventory = invent;
 	health = playerHealth;
@@ -21,7 +21,7 @@ void Player::setName(string n) {
 void Player::setInventory(Inventory invent) {
 	inventory = invent;
 }
-void Player::setPlayerHealth(int playerHealth) {
+void Player::setPlayerHealth(Health playerHealth) {
 	health = playerHealth;
 }
 
@@ -32,6 +32,6 @@ string Player::getName() {
 Inventory Player::getInventory() {
 	return inventory;
 }
-int Player::getPlayerHealth() {
+Health Player::getPlayerHealth() {
 	return health;
 }

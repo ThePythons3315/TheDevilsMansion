@@ -5,9 +5,9 @@ using namespace std;
 // Constructors
 Item::Item() {
 	name = "";
-	health = 0;
+	health;
 }
-Item::Item(string nameInput, int itemHealth) {
+Item::Item(string nameInput, Health itemHealth) {
 	name = nameInput;
 	health = itemHealth;
 }
@@ -16,7 +16,7 @@ Item::Item(string nameInput, int itemHealth) {
 void Item::setName(string nameInput) {
 	name = nameInput;
 }
-void Item::setHealth(int itemHealth) {
+void Item::setHealth(Health itemHealth) {
 	health = itemHealth;
 }
 
@@ -24,6 +24,6 @@ void Item::setHealth(int itemHealth) {
 string Item::getName() {
 	return name;
 }
-int Item::getHealth() {
+Health Item::getHealth() {
 	return health;
 }

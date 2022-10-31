@@ -1,4 +1,4 @@
-// Version 2.02
+// Version 2.03
 
 #include <iostream>
 #include <string>
@@ -23,7 +23,7 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Various string variables that will be used throughout the game
-	string version = "Welcome to the Devil's Mansion V2.02\n";
+	string version = "Welcome to the Devil's Mansion V2.03\n";
 	string endSentence = "\nThanks for playing The Devil's Mansion!!";
 	string askCharacterName = "Hello there, please enter the name you would like your character to have: ";
 	string askUserToMove = "Please enter `center` to go through the door: ";
@@ -45,11 +45,7 @@ int main() {
 	// Vector of keywords that will be valid inputs when playing the game.
 	// Eventually this will be broken up into different vectors with each vector
 	// holding specific types of key words. Ex. movement vector, items in use vector, etc.
-	vector <string> keyWords = { "q", "quit", "left", "center", "right", "back", "inventory","drop blueberry", "blueberry"};
-
-	// Vector of created rooms that are currently not in use. A room object that will
-	// hold the current room the player is in. 
-	//vector<Room> rooms;
+	vector <string> keyWords = { "q", "quit", "left", "center", "right", "back", "inventory", "drop blueberry", "blueberry"};
 
 	// Pointer variable that will point to the current room the player is in
 	Room *roomPointer = nullptr; 
@@ -58,12 +54,23 @@ int main() {
 	// to be used.
 	UserInterface ui;
 
-	//Creates player inventory and first room inventory object's using default parameters
+	///////////////////////////////////////////////////////////////////////////////////////////
+	// Create inventory objects that will be used in various players, monsters, rooms, etc.
+	///////////////////////////////////////////////////////////////////////////////////////////
+
 	Inventory playerInventory;
 	Inventory roomInventory1;
 
+	///////////////////////////////////////////////////////////////////////////////////////////
+	// Create health objects that will be used in various players, monsters, items, etc.
+	///////////////////////////////////////////////////////////////////////////////////////////
+
+	Health playerHealth(90, 100);
+	Health blueberryHealth(10, 10);
+
+
 	// Create a blueberry object.
-	Item blueberry("blueberry", 50);
+	Item blueberry("blueberry", blueberryHealth);
 
 	// Create the starting steps. This will be the first area the player is dropped in
 	// at the start of the game.
@@ -141,7 +148,7 @@ int main() {
 	} while (input == "");
 	
 	// Create the main player object and set the starting steps as their current room
-	Player player(input, playerInventory, 50);
+	Player player(input, playerInventory, playerHealth);
 	startingSteps.setPlayer(player);
 	roomPointer = &startingSteps;
 

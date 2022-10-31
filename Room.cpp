@@ -40,22 +40,16 @@ void Room::setRoomID(int id) {
 }
 void Room::setLeftRoom(Room& left) {
 	leftRoom = &left;
-}// Take the address of the room object
+}
 void Room::setCenterRoom(Room& center) {
 	centerRoom = &center;
-}// Take the address of the room object
+}
 void Room::setRightRoom(Room& right) {
 	rightRoom = &right;
-}// Take the address of the room object
+}
 void Room::setBackRoom(Room& back) {
 	backRoom = &back;
-}// Take the address of the room object
-/*void Room::setAssociatedRooms(Room& left, Room& center, Room& right, Room& back) {
-	leftRoom = &left;
-	centerRoom = &center;
-	rightRoom = &right;
-	backRoom = &back;
-}*/
+}
 
 
 
@@ -93,7 +87,7 @@ void Room::getRoomInformation() {
 	cout << getRoomDescription() << endl;
 	cout << "Room inventory:\n";
 	inventory.displayInventory();
-	cout << player.getName() << "'s health: " << player.getPlayerHealth() << endl;
+	cout << getPlayer().getName() << "'s health: " << getPlayer().getPlayerHealth().getHealth() << endl;
 }
 
 void Room::moveRoom(string direction) {

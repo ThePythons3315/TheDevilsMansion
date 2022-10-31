@@ -1,26 +1,30 @@
 #pragma once
-#ifndef ITEM_H
-#define ITEM_H
+#ifndef HEALTH_H
+#define HEALTH_H
 
 #include <iostream>
 #include <string>
-#include "Health.h"
 using namespace std;
 
-class Item {
+
+class Health
+{
 private:
-	string name;
-	Health health;
+	int health;
+	int maxHealth;
 public:
-	// Constructors
-	Item();
-	Item(string, Health);
+	//constructors
+	Health();
+	Health(int, int);
 
 	// Mutator Functions -- Functions that will be allowed to change private variables
-	void setName(string);
-	void setHealth(Health);
+	void setHealth(int);
+	void setMaxHealth(int);
+
 	// Accessor Functions -- Functions that will return values of private functions
-	string getName();
-	Health getHealth();
+	int getHealth();
+	int getMaxHealth();
 };
-#endif // !ITEM_H
+
+
+#endif // !HEALTH_H
