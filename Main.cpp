@@ -19,20 +19,10 @@ bool checkIfItemIsInRoom(Room*& room, string itemName);
 
 int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
-	// Create all the variables and objects that will be needed throughout the game
+	// Section of code that creates various variables and objects that will be used 
+	// throughout the game. These variables are for running the game, and will not be used
+	// as attributes in creating other objects
 	///////////////////////////////////////////////////////////////////////////////////////////
-
-	// Various string variables that will be used throughout the game
-	string version = "Welcome to the Devil's Mansion V2.03\n";
-	string endSentence = "\nThanks for playing The Devil's Mansion!!";
-	string askCharacterName = "Hello there, please enter the name you would like your character to have: ";
-	string askUserToMove = "Please enter `center` to go through the door: ";
-	string blueberryOnFloor = "Please enter `blueberry` to pick up the blueberry: ";
-	string checkInventory = "Please now type `inventory` to see what you have in your inventory: ";
-	string endOfIntro = "\nYou are now aware of how to move and how to pick up items.\n"
-						"Please continue with the game on your own...\n";
-	string incorrectRoom = "\nThat was not a valid room.\nThe player will stay in the current room.\n";
-	string startingDescription = ""; //Will be given a value after player has entered their name
 
 	// Loop variable that starts off as true. While the variable is true the mainloop will
 	// run the game and continuoulsy ask for user input.
@@ -45,14 +35,31 @@ int main() {
 	// Vector of keywords that will be valid inputs when playing the game.
 	// Eventually this will be broken up into different vectors with each vector
 	// holding specific types of key words. Ex. movement vector, items in use vector, etc.
-	vector <string> keyWords = { "q", "quit", "left", "center", "right", "back", "inventory", "drop blueberry", "blueberry"};
+	vector <string> keyWords = { "q", "quit", "left", "center", "right", "back", "inventory", "drop blueberry", "blueberry" };
 
 	// Pointer variable that will point to the current room the player is in
-	Room *roomPointer = nullptr; 
+	Room* roomPointer = nullptr;
 
 	// Create a game instance which will allow for user input and console output
 	// to be used.
 	UserInterface ui;
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////
+	// Create all string variables of text that will be used as dialog throughout the game.
+	///////////////////////////////////////////////////////////////////////////////////////////
+
+	string version = "Welcome to the Devil's Mansion V2.03\n";
+	string endSentence = "\nThanks for playing The Devil's Mansion!!";
+	string askCharacterName = "Hello there, please enter the name you would like your character to have: ";
+	string askUserToMove = "Please enter `center` to go through the door: ";
+	string blueberryOnFloor = "Please enter `blueberry` to pick up the blueberry: ";
+	string checkInventory = "Please now type `inventory` to see what you have in your inventory: ";
+	string endOfIntro = "\nYou are now aware of how to move and how to pick up items.\n"
+						"Please continue with the game on your own...\n";
+	string incorrectRoom = "\nThat was not a valid room.\nThe player will stay in the current room.\n";
+	string startingDescription = ""; //Will be given a value after player has entered their name
+
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create inventory objects that will be used in various players, monsters, rooms, etc.
@@ -69,8 +76,16 @@ int main() {
 	Health blueberryHealth(10, 10);
 
 
-	// Create a blueberry object.
+	///////////////////////////////////////////////////////////////////////////////////////////
+	// Create item objects that will be used in various player inventories, room inventories
+	// and monster inventories
+	///////////////////////////////////////////////////////////////////////////////////////////
 	Item blueberry("blueberry", blueberryHealth);
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////
+	// Create room objects that will be used to move through by the player throughout the game
+	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Create the starting steps. This will be the first area the player is dropped in
 	// at the start of the game.
@@ -114,6 +129,10 @@ int main() {
 	startingRoom.setInventory(roomInventory1);
 
 
+	///////////////////////////////////////////////////////////////////////////////////////////
+	// Create monster objects that will be used to battle the player throughout the game
+	///////////////////////////////////////////////////////////////////////////////////////////
+
 	// Create the Devil who will be the main villain of the game. He will also be the one
 	// to give the player info on how to play the game.
 	Monster devil("Devil", "The devil is a tall, crimson red, and overwhelmingly handsome man.\n", "");
@@ -130,8 +149,6 @@ int main() {
 						   "To show your inventory enter `inventory`.\n\n"
 						   "That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
 						   "...The devil zoomed away\n");
-
-	
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -152,6 +169,10 @@ int main() {
 	startingSteps.setPlayer(player);
 	roomPointer = &startingSteps;
 
+	// TODO: Remove
+	//cout << "PLayer's current health: " << roomPointer->getPlayer().getPlayerHealth().getHealth() << endl;
+	//cout << "PLayer's current  MAX health: " << roomPointer->getPlayer().getPlayerHealth().getMaxHealth() << endl;
+
 	// Print the starting descriptions of the game to the screen. 
 	startingDescription = "\nHello there " + player.getName() + ".\n"
 						  "You have just died and been sent down to The Devils Mansion.\n"
@@ -169,6 +190,14 @@ int main() {
 	ui.printString(roomPointer->getRoomDescription());
 	ui.printString(devil.getMonsterDescription());
 	ui.printString(devil.getDialogOpening());
+	
+	// TODO: Remove
+	roomPointer->getRoomInformation();
+
+	// TODO: Remove
+	//cout << "PLayer's current health: " << roomPointer->getPlayer().getPlayerHealth().getHealth() << endl;
+	//cout << "PLayer's current  MAX health: " << roomPointer->getPlayer().getPlayerHealth().getMaxHealth() << endl;
+
 
 
 	// Reset the room so the devil is not displayed after the first entrance
@@ -327,6 +356,7 @@ void itemFromRoomToPlayer(Room*& room, string itemName) {
 	// Set the player's inventory to the updated player's inventory
 	tempPlayer.setInventory(playerInventory);
 	tempPlayer.setName(room->getPlayer().getName());
+	tempPlayer.setPlayerHealth(room->getPlayer().getPlayerHealth());
 	room->setPlayer(tempPlayer);
 
 	// Display the inventories of the room and the player
@@ -373,6 +403,7 @@ void itemFromPlayerToRoom(Room*& room, string itemName)
 	// Set the player's inventory to the updated player's inventory
 	tempPlayer.setInventory(playerInventory);
 	tempPlayer.setName(room->getPlayer().getName());
+	tempPlayer.setPlayerHealth(room->getPlayer().getPlayerHealth());
 	room->setPlayer(tempPlayer);
 
 	// Display the inventories of the room and the player
@@ -388,7 +419,6 @@ void itemFromPlayerToRoom(Room*& room, string itemName)
 bool checkIfItemIsInRoom(Room*& room, string itemName)
 {
 	//Variables
-	Player tempPlayer;
 	Inventory roomInventory;
 	vector<Item> items;
 	int size;
