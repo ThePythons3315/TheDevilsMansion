@@ -87,7 +87,7 @@ void Room::getRoomInformation() {
 	cout << getRoomDescription() << endl;
 	cout << "Room inventory:\n";
 	inventory.displayInventory();
-	cout << "The Player's health is currently: " << player.getPlayerHealth().getHealth() << endl;
+	player.getPlayerHealth().displayHealth();
 }
 
 void Room::moveRoom(string direction) {

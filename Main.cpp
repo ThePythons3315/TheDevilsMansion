@@ -37,7 +37,7 @@ int main() {
 	// Eventually this will be broken up into different vectors with each vector
 	// holding specific types of key words. Ex. movement vector, items in use vector, etc.
 	vector <string> keyWords = { "q", "quit", "left", "center", "right", "back", "inventory", "drop blueberry", "blueberry",
-								 "eat blueberry"};
+								 "eat blueberry", "health"};
 	// "squash", "eat squash", "drop squash" - Tester items strings
 
 	// Pointer variable that will point to the current room the player is in
@@ -287,12 +287,17 @@ int main() {
 				cout << "Check the other rooms or your inventory it may be in there.\n";
 			}
 		}
-		// Lets the user drop the blueberry
+		// Lets the player drop the blueberry
 		else if (input == "drop blueberry") {
 			itemFromPlayerToRoom(roomPointer, "blueberry");
 		}
+		// Lets the player eat the blueberry and regain health
 		else if (input == "eat blueberry") {
 			addItemHealthToPlayer(roomPointer, "blueberry");
+		}
+		// Lets the player see how much health they currently have
+		else if (input == "health") {
+			roomPointer->getPlayer().getPlayerHealth().displayHealth();
 		}
 		// Lets the user pick up the squash
 		/*else if (input == "squash") {

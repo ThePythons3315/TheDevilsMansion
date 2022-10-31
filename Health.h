@@ -25,6 +25,8 @@ public:
 	// Accessor Functions -- Functions that will return values of private functions
 	int getHealth();
 	int getMaxHealth();
+
+	void displayHealth();
 };
 
 
