@@ -1,4 +1,4 @@
-// Version 2.05
+// Version 2.06
 
 #include <iostream>
 #include <string>
@@ -9,6 +9,7 @@
 #include "Monster.h"
 #include "Inventory.h"
 #include "Item.h"
+#include "Battle.h"
 using namespace std;
 
 // Definitions of functions -- initialized below
@@ -37,7 +38,7 @@ int main() {
 	// Eventually this will be broken up into different vectors with each vector
 	// holding specific types of key words. Ex. movement vector, items in use vector, etc.
 	vector <string> keyWords = { "q", "quit", "left", "center", "right", "back", "inventory", "drop blueberry", "blueberry",
-								 "eat blueberry", "health"};
+								 "eat blueberry", "health", "battle"};
 	// "squash", "eat squash", "drop squash" - Tester items strings
 
 	// Pointer variable that will point to the current room the player is in
@@ -47,12 +48,11 @@ int main() {
 	// to be used.
 	UserInterface ui;
 
-
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create all string variables of text that will be used as dialog throughout the game.
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	string version = "Welcome to the Devil's Mansion V2.05\n";
+	string version = "Welcome to the Devil's Mansion V2.06\n";
 	string endSentence = "\nThanks for playing The Devil's Mansion!!";
 	string askCharacterName = "Hello there, please enter the name you would like your character to have: ";
 	string askUserToMove = "Please enter `center` to go through the door: ";
@@ -312,20 +312,15 @@ int main() {
 		else if (input == "health") {
 			roomPointer->getPlayer().getPlayerHealth().displayHealth();
 		}
-		// Lets the user pick up the squash
-		/*else if (input == "squash") {
-			if (checkIfItemIsInRoom(roomPointer, "squash") == true) {
-				itemFromRoomToPlayer(roomPointer, "squash");
+		else if (input == "battle") {
+			if (roomPointer->getMonster().getName() == "Skeleton") {
+				Battle battle(roomPointer->getPlayer(), roomPointer->getMonster());
+				battle.displayOpeningLine();
 			}
 			else {
-				cout << "The item you have entered is not in this room.\n";
-				cout << "Check the other rooms or your inventory it may be in there.\n";
+				cout << "There is no current monster to battle.\n";
 			}
-		}*/
-		/*else if (input == "eat squash") {
-			addItemHealthToPlayer(roomPointer, "squash");
-		}*/
-		// Tester
+		}
 	}
 
 	// Thank the user for playing the game
