@@ -4,27 +4,27 @@
 
 #include <iostream>
 #include <string>
-#include "Attack.h"
 using namespace std;
 
 class Weapon {
 private:
 	string name;
-	Attack attack1;
-	Attack attack2;
+	string attackName;
+	int attackDamage;
 public:
 	// Constructors
 	Weapon();
-	Weapon(string, Attack, Attack);
+	Weapon(string, string, int);
 
 	// Mutator Functions -- Functions that will be allowed to change private variables
 	void setName(string);
-	void setAttack1(Attack);
-	void setAttack2(Attack);
+	void setAttackName(string);
+	void setAttackDamage(int);
 
 	// Accessor Functions -- Functions that will return values of private functions
 	string getName();
-	Attack getAttack1();
-	Attack getAttack2();
+	string getAttackName();
+	int getAttackDamage();
+	
 };
 #endif // !WEAPON_H

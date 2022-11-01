@@ -6,6 +6,7 @@
 #include <string>
 #include "Player.h"
 #include "Monster.h"
+#include "UserInterface.h"
 using namespace std;
 
 
@@ -28,6 +29,11 @@ public:
 	Monster getMonster();
 
 	void displayOpeningLine();
+
+	void runBattle();
+	// Validate that the input from the user is a correct command.
+// Correct commands will be in the keyWords vector.
+	bool validateInput(vector<string>& vect, string sentence);
 };
 
 
