@@ -38,7 +38,7 @@ public:
 	// Correct commands will be in the keyWords vector.
 	bool validateInput(vector<string>& vect, string sentence);
 
-	void attackMonster(int);
+	bool hitOrMiss(int hitChance);
 };
 
 

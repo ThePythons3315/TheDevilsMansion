@@ -1,4 +1,6 @@
 #include "Battle.h"
+#include <random>
+#include <math.h>
 using namespace std;
 
 //constructors
@@ -63,22 +65,40 @@ void Battle::runBattle() {
 		}
 		else if (input == "attack1") {
 			cout << "Player has used: " << player.getWeapon1().getAttackName() << endl;
-			damage = player.getWeapon1().getAttackDamage();
-			newHealth = monster.getHealth().getHealth() + damage;
-			tempHealth.setHealth(newHealth);
-			tempHealth.setMaxHealth(monster.getHealth().getMaxHealth());
-			monster.setHealth(tempHealth);
-			cout << "Monster New Health: " << monster.getHealth().getHealth() << endl;
+
+			// Attack hits, make monster take damage
+			if (hitOrMiss(player.getWeapon1().getHitChance()) == true) {
+				damage = player.getWeapon1().getAttackDamage();
+				newHealth = monster.getHealth().getHealth() + damage;
+				tempHealth.setHealth(newHealth);
+				tempHealth.setMaxHealth(monster.getHealth().getMaxHealth());
+				monster.setHealth(tempHealth);
+				cout << "\nThe attack hit!!\n";
+				cout << "Monster New Health: " << monster.getHealth().getHealth() << endl;
+			}
+			// Attack misses, do nothing to the monster. Display that the attack missed.
+			else {
+				cout << "\nThe attack missed!! The " << monster.getName() << " took no damage." << endl << endl;
+			}
 			
 		}
 		else if (input == "attack2") {
 			cout << "Player has used: " << player.getWeapon2().getAttackName() << endl;
-			damage = player.getWeapon2().getAttackDamage();
-			newHealth = monster.getHealth().getHealth() + damage;
-			tempHealth.setHealth(newHealth);
-			tempHealth.setMaxHealth(monster.getHealth().getMaxHealth());
-			monster.setHealth(tempHealth);
-			cout << "Monster New Health: " << monster.getHealth().getHealth() << endl;
+
+			// Attack hits, make monster take damage
+			if (hitOrMiss(player.getWeapon2().getHitChance()) == true) {
+				damage = player.getWeapon2().getAttackDamage();
+				newHealth = monster.getHealth().getHealth() + damage;
+				tempHealth.setHealth(newHealth);
+				tempHealth.setMaxHealth(monster.getHealth().getMaxHealth());
+				monster.setHealth(tempHealth);
+				cout << "\nThe attack hit!!\n";
+				cout << "Monster New Health: " << monster.getHealth().getHealth() << endl << endl;
+			}
+			// Attack misses, do nothing to the monster. Display that the attack missed.
+			else {
+				cout << "\nThe attack missed!! The " << monster.getName() << " took no damage." << endl;
+			}
 		}
 	}
 }
@@ -92,4 +112,25 @@ bool Battle:: validateInput(vector<string>& vect, string sentence) {
 		}
 	}
 	return false;
+}
+
+bool Battle::hitOrMiss(int hitChance) {
+	// Used for generating a random number
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_real_distribution<double> dist(1.0, 100.0);
+
+	// Variable to hold the randomly generated number
+	int number = 0;
+	number = dist(mt);
+
+	// Check if the random number is less than the hitChance
+	// If it is, then the attack will hit and the monster will be affected.
+	// If the number is higher than hitChance then the monster will be
+	// left unaffected by the hit
+	if (number <= hitChance) {
+		return true;
+	}
+	return false;
+
 }
