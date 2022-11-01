@@ -4,33 +4,33 @@ using namespace std;
 // Constructors
 Weapon::Weapon() {
 	name = "";
-	attack1;
-	attack2;
+	attackName = "";
+	attackDamage = 0;
 }
-Weapon::Weapon(string _name, Attack _attack1, Attack _attack2) {
+Weapon::Weapon(string _name, string _attackName, int _attackDamage) {
 	name = _name;
-	attack1 = _attack1;
-	attack2 = _attack2;
+	attackName = _attackName;
+	attackDamage = _attackDamage;
 }
 
 // Mutator Functions -- Functions that will be allowed to change private variables
 void Weapon::setName(string _name) {
 	name = _name;
 }
-void Weapon::setAttack1(Attack _attack1) {
-	attack1 = _attack1;
+void Weapon::setAttackName(string _attackName) {
+	attackName = _attackName;
 }
-void Weapon::setAttack2(Attack _attack2) {
-	attack2 = _attack2;
+void Weapon::setAttackDamage(int _attackDamage) {
+	attackDamage = _attackDamage;
 }
 
 // Accessor Functions -- Functions that will return values of private functions
 string Weapon::getName() {
 	return name;
 }
-Attack Weapon::getAttack1() {
-	return attack1;
+string Weapon::getAttackName() {
+	return attackName;
 }
-Attack Weapon::getAttack2() {
-	return attack2;
+int Weapon::getAttackDamage() {
+	return attackDamage;
 }
