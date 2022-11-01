@@ -19,6 +19,7 @@ void itemFromRoomToPlayer(Room*& room, string itemName);
 void itemFromPlayerToRoom(Room*& room, string itemName);
 bool checkIfItemIsInRoom(Room*& room, string itemName);
 void addItemHealthToPlayer(Room*& room, string itemName);
+void helpFunction();
 
 int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -39,7 +40,7 @@ int main() {
 	// Eventually this will be broken up into different vectors with each vector
 	// holding specific types of key words. Ex. movement vector, items in use vector, etc.
 	vector <string> keyWords = { "q", "quit", "left", "center", "right", "back", "inventory", "drop blueberry", "blueberry",
-								 "eat blueberry", "health", "battle"};
+								 "eat blueberry", "health", "battle", "help"};
 	// "squash", "eat squash", "drop squash" - Tester items strings
 
 	// Pointer variable that will point to the current room the player is in
@@ -60,6 +61,7 @@ int main() {
 	string blueberryOnFloor = "Please enter `blueberry` to pick up the blueberry: ";
 	string checkInventory = "Please now type `inventory` to see what you have in your inventory: ";
 	string endOfIntro = "\nYou are now aware of how to move and how to pick up items.\n"
+						"If you forget the commands or need any help on attacking/using items enter 'help' at any time.\n"
 						"Please continue with the game on your own...\n";
 	string incorrectRoom = "\nThat was not a valid room.\nThe player will stay in the current room.\n";
 	string startingDescription = ""; //Will be given a value after player has entered their name
@@ -329,6 +331,9 @@ int main() {
 				cout << "There is no current monster to battle.\n";
 			}
 		}
+		else if (input == "help") {
+			helpFunction();
+		}
 	}
 
 	// Thank the user for playing the game
@@ -520,4 +525,18 @@ void addItemHealthToPlayer(Room*& room, string itemName) {
 	tempPlayer.setWeapon1(room->getPlayer().getWeapon1());
 	tempPlayer.setWeapon2(room->getPlayer().getWeapon2());
 	room->setPlayer(tempPlayer);
+}
+
+void helpFunction()
+{
+	cout << "\nIt seems you need help, here is a list of all the controls:\n"
+		<< "battle - will put you into battle if there is a monster present in the room\n"
+		<< "drop 'item name' - drops the item entered from your inventory\n"
+		<< "health - shows you your current health points\n"
+		<< "inventory - opens your inventory to see what items accessible for use\n"
+		<< "'item name' - lets you pickup the item entered and put it into your inventory\n"
+		<< "kick/punch - lets you have a chance of hitting the monster\n"
+		<< "left - enters the room to the left\n" << "center - enters the room in the center\n"
+		<< "right - enters the room to the right\n" << "back - puts you back to the previous room you entered\n"
+		<< "q/quit - quits the game\n\n";
 }
