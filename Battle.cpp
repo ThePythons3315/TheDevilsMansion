@@ -37,6 +37,13 @@ void Battle::runBattle() {
 	UserInterface ui;
 	bool battleLoop = true;
 	string input = "";
+	Health tempHealth;
+
+	int damage = 0;
+	int newHealth = 0;
+
+	// ToDo: Take this out at some point
+	player.printPlayerInfo();
 
 	// Display the battle opening line of the player versus the monster
 	displayOpeningLine();
@@ -53,6 +60,25 @@ void Battle::runBattle() {
 		if (input == "q" || input == "quit") {
 			cout << "You are ending battle." << endl;
 			break;
+		}
+		else if (input == "attack1") {
+			cout << "Player has used: " << player.getWeapon1().getAttackName() << endl;
+			damage = player.getWeapon1().getAttackDamage();
+			newHealth = monster.getHealth().getHealth() + damage;
+			tempHealth.setHealth(newHealth);
+			tempHealth.setMaxHealth(monster.getHealth().getMaxHealth());
+			monster.setHealth(tempHealth);
+			cout << "Monster New Health: " << monster.getHealth().getHealth() << endl;
+			
+		}
+		else if (input == "attack2") {
+			cout << "Player has used: " << player.getWeapon2().getAttackName() << endl;
+			damage = player.getWeapon2().getAttackDamage();
+			newHealth = monster.getHealth().getHealth() + damage;
+			tempHealth.setHealth(newHealth);
+			tempHealth.setMaxHealth(monster.getHealth().getMaxHealth());
+			monster.setHealth(tempHealth);
+			cout << "Monster New Health: " << monster.getHealth().getHealth() << endl;
 		}
 	}
 }

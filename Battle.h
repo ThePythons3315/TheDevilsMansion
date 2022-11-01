@@ -28,12 +28,17 @@ public:
 	Player getPlayer();
 	Monster getMonster();
 
+	// Function to display that the player is now in battle against a monster
 	void displayOpeningLine();
 
+	// Main battle function that will loop until battle is finished
 	void runBattle();
+
 	// Validate that the input from the user is a correct command.
-// Correct commands will be in the keyWords vector.
+	// Correct commands will be in the keyWords vector.
 	bool validateInput(vector<string>& vect, string sentence);
+
+	void attackMonster(int);
 };
 
 

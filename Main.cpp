@@ -10,6 +10,7 @@
 #include "Inventory.h"
 #include "Item.h"
 #include "Battle.h"
+#include "Weapon.h"
 using namespace std;
 
 // Definitions of functions -- initialized below
@@ -114,6 +115,11 @@ int main() {
 		"Hello there peasent, I am the skeleton.\n"
 		"Welcome to my room. I am going to take you down no matter what.\n", skeletonHealth);
 
+	///////////////////////////////////////////////////////////////////////////////////////////
+	// Create weapon objects that will be used by the player and by monsters throughout the game
+	///////////////////////////////////////////////////////////////////////////////////////////
+	Weapon punch("Punch", "Punch", -20);
+	Weapon kick("Kick", "Kick", -25);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create room objects that will be used to move through by the player throughout the game
@@ -136,7 +142,7 @@ int main() {
 	Room testRoom2("TEST ROOM 2", "TEST ROOM 2 - DESCRIPTION", 3);
 	Room testRoom3("TEST ROOM 3", "TEST ROOM 3 - DESCRIPTION", 4);
 	Room testRoom4("TEST ROOM 4", "TEST ROOM 4 - DESCRIPTION", 5);
-	
+
 	// ToDo: Make a function to do these in one line
 	// 
 	// Starting Steps - associated rooms
@@ -185,7 +191,7 @@ int main() {
 	} while (input == "");
 	
 	// Create the main player object and set the starting steps as their current room
-	Player player(input, playerInventory, playerHealth);
+	Player player(input, playerInventory, playerHealth, punch, kick);
 	startingSteps.setPlayer(player);
 	roomPointer = &startingSteps;
 
@@ -383,6 +389,8 @@ void itemFromRoomToPlayer(Room*& room, string itemName) {
 	tempPlayer.setInventory(playerInventory);
 	tempPlayer.setName(room->getPlayer().getName());
 	tempPlayer.setPlayerHealth(room->getPlayer().getPlayerHealth());
+	tempPlayer.setWeapon1(room->getPlayer().getWeapon1());
+	tempPlayer.setWeapon2(room->getPlayer().getWeapon2());
 	room->setPlayer(tempPlayer);
 
 	// Display the inventories of the room and the player
@@ -430,6 +438,8 @@ void itemFromPlayerToRoom(Room*& room, string itemName)
 	tempPlayer.setInventory(playerInventory);
 	tempPlayer.setName(room->getPlayer().getName());
 	tempPlayer.setPlayerHealth(room->getPlayer().getPlayerHealth());
+	tempPlayer.setWeapon1(room->getPlayer().getWeapon1());
+	tempPlayer.setWeapon2(room->getPlayer().getWeapon2());
 	room->setPlayer(tempPlayer);
 
 	// Display the inventories of the room and the player
@@ -507,5 +517,7 @@ void addItemHealthToPlayer(Room*& room, string itemName) {
 	tempPlayer.setInventory(playerInventory);
 	tempPlayer.setName(room->getPlayer().getName());
 	tempPlayer.setPlayerHealth(playerHealth);
+	tempPlayer.setWeapon1(room->getPlayer().getWeapon1());
+	tempPlayer.setWeapon2(room->getPlayer().getWeapon2());
 	room->setPlayer(tempPlayer);
 }
