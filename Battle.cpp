@@ -64,7 +64,7 @@ void Battle::runBattle() {
 			break;
 		}
 		else if (input == "attack1") {
-			cout << "Player has used: " << player.getWeapon1().getAttackName() << endl;
+			cout << "\nPlayer has used: " << player.getWeapon1().getAttackName() << endl;
 
 			// Attack hits, make monster take damage
 			if (hitOrMiss(player.getWeapon1().getHitChance()) == true) {
@@ -73,27 +73,35 @@ void Battle::runBattle() {
 				tempHealth.setHealth(newHealth);
 				tempHealth.setMaxHealth(monster.getHealth().getMaxHealth());
 				monster.setHealth(tempHealth);
-				cout << "\nThe attack hit!!\n";
+				cout << "The attack hit!!\n";
 				cout << "Monster New Health: " << monster.getHealth().getHealth() << endl;
 			}
 			// Attack misses, do nothing to the monster. Display that the attack missed.
 			else {
-				cout << "\nThe attack missed!! The " << monster.getName() << " took no damage." << endl << endl;
+				cout << "The attack missed!! The " << monster.getName() << " took no damage." << endl;
 			}
 
-			// Monster Attack Stuff
-			cout << "Monster has used: " << monster.getWeapon().getAttackName() << endl;
-			damage = monster.getWeapon().getAttackDamage();
-			newHealth = player.getPlayerHealth().getHealth() + damage;
-			tempHealth.setHealth(newHealth);
-			tempHealth.setMaxHealth(player.getPlayerHealth().getMaxHealth());
-			player.setPlayerHealth(tempHealth);
-			cout << "\nThe attack hit!!\n";
-			cout << "Player New Health: " << player.getPlayerHealth().getHealth() << endl;
+			// Monster attacks back and has random chance to hit the player
+			if (hitOrMiss(monster.getWeapon().getHitChance()) == true) {
+				// Monster Attack Stuff
+				cout << "\nMonster has used: " << monster.getWeapon().getAttackName() << endl;
+				damage = monster.getWeapon().getAttackDamage();
+				newHealth = player.getPlayerHealth().getHealth() + damage;
+				tempHealth.setHealth(newHealth);
+				tempHealth.setMaxHealth(player.getPlayerHealth().getMaxHealth());
+				player.setPlayerHealth(tempHealth);
+				cout << "The attack hit!!\n";
+				cout << "Player New Health: " << player.getPlayerHealth().getHealth() << endl << endl;
+			}
+			// Attack misses, do nothing to the player. Display that the attack missed.
+			else {
+				cout << "\nMonster has used: " << monster.getWeapon().getAttackName() << endl;
+				cout << "The attack missed!! " << player.getName() << " took no damage." << endl << endl;
+			}
 			
 		}
 		else if (input == "attack2") {
-			cout << "Player has used: " << player.getWeapon2().getAttackName() << endl;
+			cout << "\nPlayer has used: " << player.getWeapon2().getAttackName() << endl;
 
 			// Attack hits, make monster take damage
 			if (hitOrMiss(player.getWeapon2().getHitChance()) == true) {
@@ -102,23 +110,31 @@ void Battle::runBattle() {
 				tempHealth.setHealth(newHealth);
 				tempHealth.setMaxHealth(monster.getHealth().getMaxHealth());
 				monster.setHealth(tempHealth);
-				cout << "\nThe attack hit!!\n";
-				cout << "Monster New Health: " << monster.getHealth().getHealth() << endl << endl;
+				cout << "The attack hit!!\n";
+				cout << "Monster New Health: " << monster.getHealth().getHealth() << endl;
 			}
 			// Attack misses, do nothing to the monster. Display that the attack missed.
 			else {
-				cout << "\nThe attack missed!! The " << monster.getName() << " took no damage." << endl;
+				cout << "The attack missed!! The " << monster.getName() << " took no damage." << endl;
 			}
 
-			// Monster Attack Stuff
-			cout << "Monster has used: " << monster.getWeapon().getAttackName() << endl;
-			damage = monster.getWeapon().getAttackDamage();
-			newHealth = player.getPlayerHealth().getHealth() + damage;
-			tempHealth.setHealth(newHealth);
-			tempHealth.setMaxHealth(player.getPlayerHealth().getMaxHealth());
-			player.setPlayerHealth(tempHealth);
-			cout << "\nThe attack hit!!\n";
-			cout << "Player New Health: " << player.getPlayerHealth().getHealth() << endl;
+			// Monster attacks back and has random chance to hit the player
+			if (hitOrMiss(monster.getWeapon().getHitChance()) == true) {
+				// Monster Attack Stuff
+				cout << "\nMonster has used: " << monster.getWeapon().getAttackName() << endl;
+				damage = monster.getWeapon().getAttackDamage();
+				newHealth = player.getPlayerHealth().getHealth() + damage;
+				tempHealth.setHealth(newHealth);
+				tempHealth.setMaxHealth(player.getPlayerHealth().getMaxHealth());
+				player.setPlayerHealth(tempHealth);
+				cout << "The attack hit!!\n";
+				cout << "Player New Health: " << player.getPlayerHealth().getHealth() << endl << endl;
+			}
+			// Attack misses, do nothing to the player. Display that the attack missed.
+			else {
+				cout << "\nMonster has used: " << monster.getWeapon().getAttackName() << endl;
+				cout << "The attack missed!! " << player.getName() << " took no damage." << endl << endl;
+			}
 		}
 	}
 }
