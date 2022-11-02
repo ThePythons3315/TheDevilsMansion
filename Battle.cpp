@@ -81,6 +81,14 @@ void Battle::runBattle() {
 				cout << "The attack missed!! The " << monster.getName() << " took no damage." << endl;
 			}
 
+			//Determines if the monster is defeated and if it was then the battle ends 
+			//and displays a victory message to the player
+			if (monsterDefeated() == true) {
+				cout << "Well done " << player.getName() << " you have defeated the "
+					<< monster.getName() << "!! You can now continue exploring the Devils Mansion.\n\n";
+				break;
+			}
+
 			// Monster attacks back and has random chance to hit the player
 			if (hitOrMiss(monster.getWeapon().getHitChance()) == true) {
 				// Monster Attack Stuff
@@ -99,6 +107,13 @@ void Battle::runBattle() {
 				cout << "The attack missed!! " << player.getName() << " took no damage." << endl << endl;
 			}
 			
+			//Determines if the player is defeated and if they are the battle ends 
+			//and displays a death message to the player
+			if (playerDefeated() == true) {
+				cout << "You have died ... once again, it seems you are not very good at this thing called life.\n"
+					<< "So I am sending you to the depths of hell for all of eternity.\n\n";
+				break;
+			}
 		}
 		else if (input == "attack2") {
 			cout << "\nPlayer has used: " << player.getWeapon2().getAttackName() << endl;
@@ -118,6 +133,13 @@ void Battle::runBattle() {
 				cout << "The attack missed!! The " << monster.getName() << " took no damage." << endl;
 			}
 
+			//Determines if the monster is defeated and if it was then the battle ends 
+			//and displays a victory message to the player
+			if (monsterDefeated() == true) {
+				cout << "Well done " << player.getName() << " you have defeated the "
+					<< monster.getName() << "!! You can now continue exploring the Devils Mansion.\n\n";
+				break;
+			}
 			// Monster attacks back and has random chance to hit the player
 			if (hitOrMiss(monster.getWeapon().getHitChance()) == true) {
 				// Monster Attack Stuff
@@ -134,13 +156,17 @@ void Battle::runBattle() {
 			else {
 				cout << "\nMonster has used: " << monster.getWeapon().getAttackName() << endl;
 				cout << "The attack missed!! " << player.getName() << " took no damage." << endl << endl;
+			}			
+			
+			//Determines if the player is defeated and if they are the battle ends 
+			//and displays a death message to the player
+			if (playerDefeated() == true) {
+				cout << "You have died ... once again, it seems you are not very good at this thing called life.\n"
+					<<"So I am sending you to the depths of hell for all of eternity.\n\n";
+				break;
 			}
 		}
-		if (monsterDefeated() == true) {
-			cout << "Well done " << player.getName() << " you have defeated the "
-				<< monster.getName() << "!! You can now continue exploring the Devils Mansion.\n";
-			break;
-		}
+
 	}
 }
 
@@ -178,6 +204,13 @@ bool Battle::hitOrMiss(int hitChance) {
 
 bool Battle::monsterDefeated() {
 	if (monster.getHealth().getHealth() > 1)
+		return false;
+	else
+		return true;
+}
+
+bool Battle::playerDefeated() {
+	if (player.getPlayerHealth().getHealth() > 1)
 		return false;
 	else
 		return true;

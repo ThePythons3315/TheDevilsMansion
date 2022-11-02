@@ -40,9 +40,10 @@ public:
 
 	bool hitOrMiss(int hitChance);
 	
-	//Checks to ensure the monsters health is above 0 to decide whether
+	//Checks to ensure the monsters or health is above 0 to decide whether
 	//to end the battle or continue letting the player battle the monster.
 	bool monsterDefeated();
+	bool playerDefeated();
 };
 
 
