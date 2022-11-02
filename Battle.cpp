@@ -80,6 +80,16 @@ void Battle::runBattle() {
 			else {
 				cout << "\nThe attack missed!! The " << monster.getName() << " took no damage." << endl << endl;
 			}
+
+			// Monster Attack Stuff
+			cout << "Monster has used: " << monster.getWeapon().getAttackName() << endl;
+			damage = monster.getWeapon().getAttackDamage();
+			newHealth = player.getPlayerHealth().getHealth() + damage;
+			tempHealth.setHealth(newHealth);
+			tempHealth.setMaxHealth(player.getPlayerHealth().getMaxHealth());
+			player.setPlayerHealth(tempHealth);
+			cout << "\nThe attack hit!!\n";
+			cout << "Player New Health: " << player.getPlayerHealth().getHealth() << endl;
 			
 		}
 		else if (input == "attack2") {
@@ -99,6 +109,16 @@ void Battle::runBattle() {
 			else {
 				cout << "\nThe attack missed!! The " << monster.getName() << " took no damage." << endl;
 			}
+
+			// Monster Attack Stuff
+			cout << "Monster has used: " << monster.getWeapon().getAttackName() << endl;
+			damage = monster.getWeapon().getAttackDamage();
+			newHealth = player.getPlayerHealth().getHealth() + damage;
+			tempHealth.setHealth(newHealth);
+			tempHealth.setMaxHealth(player.getPlayerHealth().getMaxHealth());
+			player.setPlayerHealth(tempHealth);
+			cout << "\nThe attack hit!!\n";
+			cout << "Player New Health: " << player.getPlayerHealth().getHealth() << endl;
 		}
 	}
 }
