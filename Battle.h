@@ -39,6 +39,10 @@ public:
 	bool validateInput(vector<string>& vect, string sentence);
 
 	bool hitOrMiss(int hitChance);
+	
+	//Checks to ensure the monsters health is above 0 to decide whether
+	//to end the battle or continue letting the player battle the monster.
+	bool monsterDefeated();
 };
 
 

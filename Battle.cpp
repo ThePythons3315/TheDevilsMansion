@@ -136,6 +136,11 @@ void Battle::runBattle() {
 				cout << "The attack missed!! " << player.getName() << " took no damage." << endl << endl;
 			}
 		}
+		if (monsterDefeated() == true) {
+			cout << "Well done " << player.getName() << " you have defeated the "
+				<< monster.getName() << "!! You can now continue exploring the Devils Mansion.\n";
+			break;
+		}
 	}
 }
 
@@ -169,4 +174,11 @@ bool Battle::hitOrMiss(int hitChance) {
 	}
 	return false;
 
+}
+
+bool Battle::monsterDefeated() {
+	if (monster.getHealth().getHealth() > 1)
+		return false;
+	else
+		return true;
 }
