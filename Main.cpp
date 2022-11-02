@@ -1,4 +1,4 @@
-// Version 2.08
+// Version 2.09
 
 #include <iostream>
 #include <string>
@@ -54,7 +54,7 @@ int main() {
 	// Create all string variables of text that will be used as dialog throughout the game.
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	string version = "Welcome to the Devil's Mansion V2.08\n";
+	string version = "Welcome to the Devil's Mansion V2.09\n";
 	string endSentence = "\nThanks for playing The Devil's Mansion!!";
 	string askCharacterName = "Hello there, please enter the name you would like your character to have: ";
 	string askUserToMove = "Please enter `center` to go through the door: ";
@@ -84,6 +84,13 @@ int main() {
 	Health skeletonHealth(100, 100);
 	//Health squashHealth(5, 5);
 
+	///////////////////////////////////////////////////////////////////////////////////////////
+	// Create weapon objects that will be used by the player and by monsters throughout the game
+	///////////////////////////////////////////////////////////////////////////////////////////
+	Weapon punch("Punch", "Punch", -20, 95);
+	Weapon kick("Kick", "Kick", -25, 90);
+	Weapon bow("Bow", "Bow Shot", -20, 90);
+	Weapon placeHolderWeapon("Temp", "Temp", 0, 0);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create item objects that will be used in various player inventories, room inventories
@@ -112,16 +119,10 @@ int main() {
 		"To pick up an item, type the name of the item.\n"
 		"To show your inventory enter `inventory`.\n\n"
 		"That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
-		"...The devil zoomed away\n", devilHealth);
+		"...The devil zoomed away\n", devilHealth, placeHolderWeapon);
 	Monster skeleton("Skeleton", "The skeleton is a 10 foot tall, skinny, white thing of bones.\n",
 		"Hello there peasent, I am the skeleton.\n"
-		"Welcome to my room. I am going to take you down no matter what.\n", skeletonHealth);
-
-	///////////////////////////////////////////////////////////////////////////////////////////
-	// Create weapon objects that will be used by the player and by monsters throughout the game
-	///////////////////////////////////////////////////////////////////////////////////////////
-	Weapon punch("Punch", "Punch", -20, 50);
-	Weapon kick("Kick", "Kick", -25, 80);
+		"Welcome to my room. I am going to take you down no matter what.\n", skeletonHealth, bow);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create room objects that will be used to move through by the player throughout the game
