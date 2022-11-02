@@ -11,12 +11,14 @@
 #include "Item.h"
 #include "Battle.h"
 #include "Weapon.h"
+#include "Attacks.h"
 using namespace std;
 
 // Definitions of functions -- initialized below
 bool validateInput(vector<string>& vect, string sentence);
 void itemFromRoomToPlayer(Room*& room, string itemName);
 void itemFromPlayerToRoom(Room*& room, string itemName);
+void attackFromMonstertoRoom(Room*& room, string itemName);
 bool checkIfItemIsInRoom(Room*& room, string itemName);
 void addItemHealthToPlayer(Room*& room, string itemName);
 void helpFunction();
@@ -75,6 +77,15 @@ int main() {
 	Inventory roomInventory1;
 
 	///////////////////////////////////////////////////////////////////////////////////////////
+	// Create Attacks objects that will be used in various players, monsters, rooms, etc.
+	///////////////////////////////////////////////////////////////////////////////////////////
+	
+	Attacks playerAttack;
+	Attacks roomAttacks;
+	Attacks skeletonAttacks;
+	Attacks devilAttacks;
+
+	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create health objects that will be used in various players, monsters, items, etc.
 	///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -87,10 +98,17 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create weapon objects that will be used by the player and by monsters throughout the game
 	///////////////////////////////////////////////////////////////////////////////////////////
-	Weapon punch("Punch", "Punch", -20, 95);
-	Weapon kick("Kick", "Kick", -25, 90);
-	Weapon bow("Bow", "Bow Shot", -20, 90);
+	Weapon punch("punch", "punch", -20, 95);
+	Weapon kick("kick", "kick", -25, 90);
+	Weapon bow("bow", "bow Shot", -20, 90);
 	Weapon placeHolderWeapon("Temp", "Temp", 0, 0);
+	
+	///////////////////////////////////////////////////////////////////////////////////////////
+	// Add weapon objects to monster attacks, add monster attacks to actual monster objects
+	///////////////////////////////////////////////////////////////////////////////////////////
+	
+	devilAttacks.addAttack(placeHolderWeapon);
+	skeletonAttacks.addAttack(bow);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create item objects that will be used in various player inventories, room inventories
@@ -119,10 +137,10 @@ int main() {
 		"To pick up an item, type the name of the item.\n"
 		"To show your inventory enter `inventory`.\n\n"
 		"That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
-		"...The devil zoomed away\n", devilHealth, placeHolderWeapon);
+		"...The devil zoomed away\n", devilHealth, devilAttacks);
 	Monster skeleton("Skeleton", "The skeleton is a 10 foot tall, skinny, white thing of bones.\n",
 		"Hello there peasent, I am the skeleton.\n"
-		"Welcome to my room. I am going to take you down no matter what.\n", skeletonHealth, bow);
+		"Welcome to my room. I am going to take you down no matter what.\n", skeletonHealth, skeletonAttacks);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create room objects that will be used to move through by the player throughout the game
@@ -179,6 +197,12 @@ int main() {
 	roomInventory1.addItem(blueberry);
 	startingRoom.setInventory(roomInventory1);
 
+	///////////////////////////////////////////////////////////////////////////////////////////
+	// Add weapon objects to player attacks
+	///////////////////////////////////////////////////////////////////////////////////////////
+
+	playerAttack.addAttack(punch);
+	playerAttack.addAttack(kick);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Introduction for the game. Ask the user to enter their name. 
@@ -194,7 +218,7 @@ int main() {
 	} while (input == "");
 	
 	// Create the main player object and set the starting steps as their current room
-	Player player(input, playerInventory, playerHealth, punch, kick);
+	Player player(input, playerInventory, playerHealth,playerAttack);
 	startingSteps.setPlayer(player);
 	roomPointer = &startingSteps;
 
@@ -324,14 +348,17 @@ int main() {
 			roomPointer->getPlayer().getPlayerHealth().displayHealth();
 		}
 		else if (input == "battle") {
-			if (roomPointer->getMonster().getName() == "Skeleton") {
+			if (roomPointer->getMonster().getName() != "") {
 				Battle battle(roomPointer, roomPointer->getPlayer(), roomPointer->getMonster());
 				battle.runBattle();
 			}
 			else {
 				cout << "There is no current monster to battle.\n";
+			}				
+			if (roomPointer->getMonster().getHealth().getHealth() < 1) {
+				attackFromMonstertoRoom(roomPointer, roomPointer->getMonster().getAttacks().getMonsterWeapon().getName());
 			}
-			if (roomPointer->getPlayer().getPlayerHealth().getHealth() < 1){
+			else if (roomPointer->getPlayer().getPlayerHealth().getHealth() < 1){
 				break;
 			}
 		}
@@ -398,8 +425,7 @@ void itemFromRoomToPlayer(Room*& room, string itemName) {
 	tempPlayer.setInventory(playerInventory);
 	tempPlayer.setName(room->getPlayer().getName());
 	tempPlayer.setPlayerHealth(room->getPlayer().getPlayerHealth());
-	tempPlayer.setWeapon1(room->getPlayer().getWeapon1());
-	tempPlayer.setWeapon2(room->getPlayer().getWeapon2());
+	tempPlayer.setAttacks(room->getPlayer().getAttacks());
 	room->setPlayer(tempPlayer);
 
 	// Display the inventories of the room and the player
@@ -447,8 +473,7 @@ void itemFromPlayerToRoom(Room*& room, string itemName)
 	tempPlayer.setInventory(playerInventory);
 	tempPlayer.setName(room->getPlayer().getName());
 	tempPlayer.setPlayerHealth(room->getPlayer().getPlayerHealth());
-	tempPlayer.setWeapon1(room->getPlayer().getWeapon1());
-	tempPlayer.setWeapon2(room->getPlayer().getWeapon2());
+	tempPlayer.setAttacks(room->getPlayer().getAttacks());
 	room->setPlayer(tempPlayer);
 
 	// Display the inventories of the room and the player
@@ -457,6 +482,52 @@ void itemFromPlayerToRoom(Room*& room, string itemName)
 	room->getInventory().displayInventory();
 	cout << "Player Inventory is now: " << endl;
 	room->getPlayer().getInventory().displayInventory();
+}
+
+void attackFromMonstertoRoom(Room*& room, string attackName)
+{
+	Monster tempMonster;
+	Attacks roomAttacks;
+	Attacks monsterAttacks;
+	vector<Weapon> attacks;
+	int size;
+
+	// Set all of the variables to their corresponding values from the
+	// room. Just doing this to make it the code simpler to look at
+	roomAttacks = room->getAttacks();
+	monsterAttacks = room->getMonster().getAttacks();
+	size = monsterAttacks.getSize();
+	attacks = monsterAttacks.getAttacks();
+
+	// Add the item to the player and remove it from the room
+	for (int i = 0; i < size; i++) {
+		if (attacks.at(i).getName() == attackName) {
+			// Add the item to the room's inventory
+			roomAttacks.addAttack(attacks.at(i));
+
+			// Remove the item from the player
+			monsterAttacks.removeItem(i);
+		}
+	}
+
+	// Set the room's inventory to the updated room inventory
+	room->setAttacks(roomAttacks);
+
+	// Set the player's inventory to the updated player's inventory
+	tempMonster.setAttacks(monsterAttacks);
+	tempMonster.setName(room->getMonster().getName());
+	tempMonster.setHealth(room->getMonster().getHealth());
+	tempMonster.setAttacks(room->getMonster().getAttacks());
+	room->setMonster(tempMonster);
+
+	// Display the inventories of the room and the player
+	cout << endl << tempMonster.getName() << " has just dropped " << attackName << endl;
+	cout << "Monster attacks\n";
+	room->getPlayer().getAttacks().displayattacks();
+	cout << endl;
+	cout << "Attacks in the room that you can pickup: " << endl;
+	room->getAttacks().displayattacks();
+	cout << endl;
 }
 
 // Checks if a specified item is already in a room. Returns true if 
@@ -526,8 +597,7 @@ void addItemHealthToPlayer(Room*& room, string itemName) {
 	tempPlayer.setInventory(playerInventory);
 	tempPlayer.setName(room->getPlayer().getName());
 	tempPlayer.setPlayerHealth(playerHealth);
-	tempPlayer.setWeapon1(room->getPlayer().getWeapon1());
-	tempPlayer.setWeapon2(room->getPlayer().getWeapon2());
+	tempPlayer.setAttacks(room->getPlayer().getAttacks());
 	room->setPlayer(tempPlayer);
 }
 

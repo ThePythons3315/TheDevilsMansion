@@ -6,34 +6,31 @@
 #include <string>
 #include "Inventory.h"
 #include "Health.h"
-#include "Weapon.h"
+#include "Attacks.h"
 using namespace std;
 
 class Player {
 private:
 	string name;
 	Inventory inventory;
+	Attacks attacks;
 	Health health;
-	Weapon weapon1;
-	Weapon weapon2;
 public:
 	// Constructors
 	Player();
-	Player(string, Inventory, Health, Weapon, Weapon);
+	Player(string, Inventory, Health, Attacks);
 
 	// Mutator Functions -- Functions that will be allowed to change private variables
 	void setName(string);
 	void setInventory(Inventory);
 	void setPlayerHealth(Health);
-	void setWeapon1(Weapon);
-	void setWeapon2(Weapon);
+	void setAttacks(Attacks);
 
 	// Accessor Functions -- Functions that will return values of private functions
 	string getName();
 	Inventory getInventory();
 	Health getPlayerHealth();
-	Weapon getWeapon1();
-	Weapon getWeapon2();
+	Attacks getAttacks();
 
 	// For testing purposes
 	void printPlayerInfo();

@@ -15,6 +15,7 @@ private:
 	string roomDescription;
 	Player player;
 	Inventory inventory;
+	Attacks attacks;
 	Monster monster;
 	int roomID;
 	Room* leftRoom; // pointer to a room object
@@ -31,6 +32,7 @@ public:
 	void setRoomDescription(string);
 	void setPlayer(Player);
 	void setInventory(Inventory);
+	void setAttacks(Attacks);
 	void setMonster(Monster);
 	void setRoomID(int);
 	void setLeftRoom(Room&); // Take the address of the room object
@@ -44,6 +46,7 @@ public:
 	string getRoomDescription();
 	Player getPlayer();
 	Inventory getInventory();
+	Attacks getAttacks();
 	Monster getMonster();
 	int getRoomID();
 	Room* getLeftRoom();

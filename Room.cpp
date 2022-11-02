@@ -39,6 +39,10 @@ void Room::setPlayer(Player character) {
 void Room::setInventory(Inventory invent) {
 	inventory = invent;
 }
+void Room::setAttacks(Attacks _attacks)
+{
+	attacks = _attacks;
+}
 void Room::setMonster(Monster _monster) {
 	monster = _monster;
 }
@@ -73,6 +77,10 @@ Player Room::getPlayer() {
 Inventory Room::getInventory() {
 	return inventory;
 }
+Attacks Room::getAttacks()
+{
+	return attacks;
+}
 Monster Room::getMonster() {
 	return monster;
 }
@@ -100,6 +108,9 @@ void Room::getRoomInformation() {
 	inventory.displayInventory();
 	cout << "The player's ";
 	player.getPlayerHealth().displayHealth();
+	cout << endl;
+	cout << "Attacks in the room that you can pickup\n";
+	attacks.displayattacks();
 	cout << endl;
 	if (monster.getHealth().getHealth() == -1) {
 		cout << "You have already killed the " << monster.getName() << " monster\n\n";

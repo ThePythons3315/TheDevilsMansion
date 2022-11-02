@@ -45,7 +45,7 @@ void Battle::displayOpeningLine() {
 }
 
 void Battle::runBattle() {
-	vector <string> keyWords = {"q", "quit", "attack1", "attack2"};
+	vector <string> keyWords = {"q", "quit", "punch", "kick"};
 
 	UserInterface ui;
 	bool battleLoop = true;
@@ -74,12 +74,12 @@ void Battle::runBattle() {
 			cout << "You are ending battle." << endl;
 			break;
 		}
-		else if (input == "attack1") {
-			cout << "\nPlayer has used: " << player.getWeapon1().getAttackName() << endl;
+		else if (input == "punch") {
+			cout << "\nPlayer has used: " << player.getAttacks().getWeapon(input).getAttackName() << endl;
 
 			// Attack hits, make monster take damage
-			if (hitOrMiss(player.getWeapon1().getHitChance()) == true) {
-				damage = player.getWeapon1().getAttackDamage();
+			if (hitOrMiss(player.getAttacks().getWeapon(input).getHitChance()) == true) {
+				damage = player.getAttacks().getWeapon(input).getAttackDamage();
 				newHealth = monster.getHealth().getHealth() + damage;
 				tempHealth.setHealth(newHealth);
 				tempHealth.setMaxHealth(monster.getHealth().getMaxHealth());
@@ -106,10 +106,10 @@ void Battle::runBattle() {
 			}
 
 			// Monster attacks back and has random chance to hit the player
-			if (hitOrMiss(monster.getWeapon().getHitChance()) == true) {
+			if (hitOrMiss(monster.getAttacks().getMonsterWeapon().getHitChance()) == true) {
 				// Monster Attack Stuff
-				cout << "\nMonster has used: " << monster.getWeapon().getAttackName() << endl;
-				damage = monster.getWeapon().getAttackDamage();
+				cout << "\nMonster has used: " << monster.getAttacks().getMonsterWeapon().getAttackName() << endl;
+				damage = monster.getAttacks().getMonsterWeapon().getAttackDamage();
 				newHealth = player.getPlayerHealth().getHealth() + damage;
 				tempHealth.setHealth(newHealth);
 				tempHealth.setMaxHealth(player.getPlayerHealth().getMaxHealth());
@@ -120,7 +120,7 @@ void Battle::runBattle() {
 			}
 			// Attack misses, do nothing to the player. Display that the attack missed.
 			else {
-				cout << "\nMonster has used: " << monster.getWeapon().getAttackName() << endl;
+				cout << "\nMonster has used: " << monster.getAttacks().getMonsterWeapon().getAttackName() << endl;
 				cout << "The attack missed!! " << player.getName() << " took no damage." << endl << endl;
 			}
 			
@@ -132,12 +132,12 @@ void Battle::runBattle() {
 				break;
 			}
 		}
-		else if (input == "attack2") {
-			cout << "\nPlayer has used: " << player.getWeapon2().getAttackName() << endl;
+		else if (input == "kick") {
+			cout << "\nPlayer has used: " << player.getAttacks().getWeapon(input).getAttackName() << endl;
 
 			// Attack hits, make monster take damage
-			if (hitOrMiss(player.getWeapon2().getHitChance()) == true) {
-				damage = player.getWeapon2().getAttackDamage();
+			if (hitOrMiss(player.getAttacks().getWeapon(input).getHitChance()) == true) {
+				damage = player.getAttacks().getWeapon(input).getAttackDamage();
 				newHealth = monster.getHealth().getHealth() + damage;
 				tempHealth.setHealth(newHealth);
 				tempHealth.setMaxHealth(monster.getHealth().getMaxHealth());
@@ -162,10 +162,10 @@ void Battle::runBattle() {
 				break;
 			}
 			// Monster attacks back and has random chance to hit the player
-			if (hitOrMiss(monster.getWeapon().getHitChance()) == true) {
+			if (hitOrMiss(monster.getAttacks().getMonsterWeapon().getHitChance()) == true) {
 				// Monster Attack Stuff
-				cout << "\nMonster has used: " << monster.getWeapon().getAttackName() << endl;
-				damage = monster.getWeapon().getAttackDamage();
+				cout << "\nMonster has used: " << monster.getAttacks().getMonsterWeapon().getAttackName() << endl;
+				damage = monster.getAttacks().getMonsterWeapon().getAttackDamage();
 				newHealth = player.getPlayerHealth().getHealth() + damage;
 				tempHealth.setHealth(newHealth);
 				tempHealth.setMaxHealth(player.getPlayerHealth().getMaxHealth());
@@ -176,7 +176,7 @@ void Battle::runBattle() {
 			}
 			// Attack misses, do nothing to the player. Display that the attack missed.
 			else {
-				cout << "\nMonster has used: " << monster.getWeapon().getAttackName() << endl;
+				cout << "\nMonster has used: " << monster.getAttacks().getMonsterWeapon().getAttackName() << endl;
 				cout << "The attack missed!! " << player.getName() << " took no damage." << endl << endl;
 			}			
 			
