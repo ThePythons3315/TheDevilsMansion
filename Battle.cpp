@@ -8,10 +8,13 @@ Battle::Battle() {
 	player;
 	monster;
 }
-Battle::Battle(Player _player, Monster _monster) {
+Battle::Battle(Room*& room, Player _player, Monster _monster) {
+	roomPointer = room;
 	player = _player;
 	monster = _monster;
 }
+
+
 
 // Mutator Functions -- Functions that will be allowed to change private variables
 void Battle::setPlayer(Player _player) {
@@ -20,6 +23,9 @@ void Battle::setPlayer(Player _player) {
 void Battle::setMonster(Monster _monster) {
 	monster = _monster;
 }
+void Battle::setRoom(Room*& room){
+	roomPointer = room;
+}
 
 // Accessor Functions -- Functions that will return values of private functions
 Player Battle::getPlayer() {
@@ -27,6 +33,11 @@ Player Battle::getPlayer() {
 }
 Monster Battle::getMonster() {
 	return monster;
+}
+
+Room Battle::getRoom()
+{
+	return *roomPointer;
 }
 
 void Battle::displayOpeningLine() {
@@ -73,8 +84,10 @@ void Battle::runBattle() {
 				tempHealth.setHealth(newHealth);
 				tempHealth.setMaxHealth(monster.getHealth().getMaxHealth());
 				monster.setHealth(tempHealth);
+				roomPointer->setMonster(monster);
 				cout << "The attack hit!!\n";
 				cout << "Monster New Health: " << monster.getHealth().getHealth() << endl;
+
 			}
 			// Attack misses, do nothing to the monster. Display that the attack missed.
 			else {
@@ -86,6 +99,9 @@ void Battle::runBattle() {
 			if (monsterDefeated() == true) {
 				cout << "Well done " << player.getName() << " you have defeated the "
 					<< monster.getName() << "!! You can now continue exploring the Devils Mansion.\n\n";
+				tempHealth.setHealth(-1);
+				monster.setHealth(tempHealth);
+				roomPointer->setMonster(monster);
 				break;
 			}
 
@@ -98,6 +114,7 @@ void Battle::runBattle() {
 				tempHealth.setHealth(newHealth);
 				tempHealth.setMaxHealth(player.getPlayerHealth().getMaxHealth());
 				player.setPlayerHealth(tempHealth);
+				roomPointer->setPlayer(player);
 				cout << "The attack hit!!\n";
 				cout << "Player New Health: " << player.getPlayerHealth().getHealth() << endl << endl;
 			}
@@ -125,6 +142,7 @@ void Battle::runBattle() {
 				tempHealth.setHealth(newHealth);
 				tempHealth.setMaxHealth(monster.getHealth().getMaxHealth());
 				monster.setHealth(tempHealth);
+				roomPointer->setMonster(monster);
 				cout << "The attack hit!!\n";
 				cout << "Monster New Health: " << monster.getHealth().getHealth() << endl;
 			}
@@ -138,6 +156,9 @@ void Battle::runBattle() {
 			if (monsterDefeated() == true) {
 				cout << "Well done " << player.getName() << " you have defeated the "
 					<< monster.getName() << "!! You can now continue exploring the Devils Mansion.\n\n";
+				tempHealth.setHealth(-1);
+				monster.setHealth(tempHealth);
+				roomPointer->setMonster(monster);
 				break;
 			}
 			// Monster attacks back and has random chance to hit the player
@@ -149,6 +170,7 @@ void Battle::runBattle() {
 				tempHealth.setHealth(newHealth);
 				tempHealth.setMaxHealth(player.getPlayerHealth().getMaxHealth());
 				player.setPlayerHealth(tempHealth);
+				roomPointer->setPlayer(player);
 				cout << "The attack hit!!\n";
 				cout << "Player New Health: " << player.getPlayerHealth().getHealth() << endl << endl;
 			}

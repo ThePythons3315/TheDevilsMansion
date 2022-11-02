@@ -101,7 +101,10 @@ void Room::getRoomInformation() {
 	cout << "The player's ";
 	player.getPlayerHealth().displayHealth();
 	cout << endl;
-	if (monster.getName() != "") {
+	if (monster.getHealth().getHealth() == -1) {
+		cout << "You have already killed the " << monster.getName() << " monster\n\n";
+	}
+	else if (monster.getName() != "") {
 		monster.displayMonster();
 	}
 	else {

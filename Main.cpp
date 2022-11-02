@@ -325,11 +325,14 @@ int main() {
 		}
 		else if (input == "battle") {
 			if (roomPointer->getMonster().getName() == "Skeleton") {
-				Battle battle(roomPointer->getPlayer(), roomPointer->getMonster());
+				Battle battle(roomPointer, roomPointer->getPlayer(), roomPointer->getMonster());
 				battle.runBattle();
 			}
 			else {
 				cout << "There is no current monster to battle.\n";
+			}
+			if (roomPointer->getPlayer().getPlayerHealth().getHealth() < 1){
+				break;
 			}
 		}
 		else if (input == "help") {

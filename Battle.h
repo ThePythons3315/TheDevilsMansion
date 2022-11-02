@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include "Room.h"
 #include "Player.h"
 #include "Monster.h"
 #include "UserInterface.h"
@@ -13,18 +14,21 @@ using namespace std;
 class Battle
 {
 private:
+	Room* roomPointer = nullptr;
 	Player player;
 	Monster monster;
 public:
 	//constructors
 	Battle();
-	Battle(Player, Monster);
+	Battle(Room*&, Player, Monster);
 
 	// Mutator Functions -- Functions that will be allowed to change private variables
+	void setRoom(Room*&);
 	void setPlayer(Player);
 	void setMonster(Monster);
 
 	// Accessor Functions -- Functions that will return values of private functions
+	Room getRoom();
 	Player getPlayer();
 	Monster getMonster();
 
