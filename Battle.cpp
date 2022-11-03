@@ -14,8 +14,6 @@ Battle::Battle(Room*& room, Player _player, Monster _monster) {
 	monster = _monster;
 }
 
-
-
 // Mutator Functions -- Functions that will be allowed to change private variables
 void Battle::setPlayer(Player _player) {
 	player = _player;
@@ -55,8 +53,9 @@ void Battle::runBattle() {
 	int damage = 0;
 	int newHealth = 0;
 
-	// ToDo: Take this out at some point
-	//player.printPlayerInfo();
+	// ToDo: This is hardcoded. make a new function that asks what you would like to do
+	// and then displays the attacks the user can use
+	string prompt = "Current Usable Attacks Are:\n-punch\n-kick\n\n";
 
 	// Display the battle opening line of the player versus the monster
 	displayOpeningLine();
@@ -66,6 +65,7 @@ void Battle::runBattle() {
 		// Get input from the user continuously until a correct
 		// key word is entered
 		do {
+			cout << prompt;
 			input = ui.getStandardizedUserInput();
 		} while (validateInput(keyWords, input) == false);
 

@@ -95,7 +95,7 @@ int main() {
 	Health playerHealth(90, 100);
 	Health blueberryHealth(10, 10);
 	Health devilHealth(0, 0);
-	Health skeletonHealth(100, 100);
+	Health skeletonHealth(50, 50);
 	//Health squashHealth(5, 5);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -134,11 +134,8 @@ int main() {
 		"I have minions all over my mansion from skeletons to lava hounds.\n"
 		"You will have to face all of my minions in battle to make it through the mansion.\n"
 		"If you successfully make it out, you will have won your life back.\n\n"
-		"Since this is a video game and everything is fake, I guess i'll tell you the controls.\n"
-		"To move straight forward a room enter `center` and to move backwards a room enter `back`.\n"
-		"To move left a room enter `left` and to move right a room enter `right`.\n"
-		"To pick up an item, type the name of the item.\n"
-		"To show your inventory enter `inventory`.\n\n"
+		"Since this is a video game and everything is fake, I don't need to tell you the controls.\n"
+		"You can just type `help` to see them for yourself.\n\n"
 		"That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
 		"...The devil zoomed away\n", devilHealth, devilAttacks);
 	Monster skeleton("Skeleton", "The skeleton is a 10 foot tall, skinny, white thing of bones.\n",
@@ -164,9 +161,14 @@ int main() {
 										"Standing before you is the devil.\n", 1);
 	Room skeletonRoom("Room Of Unlucky Souls", "\nYou are now in the Room Of Unlucky Souls.\n"
 											   "The sounds of screams are coming from every inch of the room.\n", 2);
-	Room testRoom2("TEST ROOM 2", "\nTEST ROOM 2 - DESCRIPTION\n", 3);
-	Room testRoom3("TEST ROOM 3", "\nTEST ROOM 3 - DESCRIPTION\n", 4);
-	Room testRoom4("TEST ROOM 4", "\nTEST ROOM 4 - DESCRIPTION\n", 5);
+	Room hellHoundRoom("Room Of The Devil's Most Loyal Friend", "\nYou are now in the Room Of The Devil's Most Loyal Friend.\n"
+																"The room is filled with lava all around the perimeter.\n"
+																"Someone should really do something about that.\n", 3);
+	Room chimeraRoom("Room Of Pure Black", "\nYou are now in the Room of Pure Black.\n"
+										   "..... you can't see anything....\n", 4);
+	Room archDevilRoom("Room Of Demonic Magic", "\nYou are now in the Room Of Demonic Magic.\n"
+											"Demonic magic is creeping down your spine.\n"
+											"You think some kind of demon lives here???\n", 5);
 
 	// ToDo: Make a function to do these in one line
 	// Starting Steps - associated rooms
@@ -178,14 +180,14 @@ int main() {
 
 	// Test Room 1 - associated rooms
 	skeletonRoom.setBackRoom(startingRoom);
-	skeletonRoom.setLeftRoom(testRoom2);
-	skeletonRoom.setCenterRoom(testRoom3);
-	skeletonRoom.setRightRoom(testRoom4);
+	skeletonRoom.setLeftRoom(hellHoundRoom);
+	skeletonRoom.setCenterRoom(chimeraRoom);
+	skeletonRoom.setRightRoom(archDevilRoom);
 
 	// Other Rooms - associated rooms
-	testRoom2.setRightRoom(skeletonRoom);
-	testRoom3.setBackRoom(skeletonRoom);
-	testRoom4.setLeftRoom(skeletonRoom);
+	hellHoundRoom.setRightRoom(skeletonRoom);
+	chimeraRoom.setBackRoom(skeletonRoom);
+	archDevilRoom.setLeftRoom(skeletonRoom);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Add monster objects to respective rooms
