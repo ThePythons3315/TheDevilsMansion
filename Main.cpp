@@ -19,8 +19,9 @@ bool validateInput(vector<string>& vect, string sentence);
 void itemFromRoomToPlayer(Room*& room, string itemName);
 void itemFromPlayerToRoom(Room*& room, string itemName);
 void attackFromMonstertoRoom(Room*& room, string attackName);
-void attackFromMonstertoPlayer(Room*& room, string attackName);
+void attackFromRoomrtoPlayer(Room*& room, string attackName);
 bool checkIfItemIsInRoom(Room*& room, string itemName);
+bool checkIfAttackIsInRoom(Room*& room, string attackName);
 void addItemHealthToPlayer(Room*& room, string itemName);
 void helpFunction();
 
@@ -340,7 +341,13 @@ int main() {
 		}
 		//Lets the user unlock the bow attack
 		else if (input == "bow") {
-			attackFromMonstertoPlayer(roomPointer,"bow");
+			if (checkIfAttackIsInRoom(roomPointer, "bow") == true) {
+				attackFromRoomrtoPlayer(roomPointer, "bow");
+			}
+			else {
+				cout << "The attack you have entered is not in this room.\n";
+				cout << "Check the other rooms or your attack list,you may have unlocked it already.\n";
+			}
 		}
 		// Lets the player drop the blueberry
 		else if (input == "drop blueberry") {
@@ -357,14 +364,14 @@ int main() {
 			roomPointer->getPlayer().getPlayerHealth().displayHealth();
 		}
 		else if (input == "battle") {
-			if (roomPointer->getMonster().getName() != "") {
+			if (roomPointer->getMonster().getName() != "" && roomPointer->getMonster().getHealth().getHealth() > 0) {
 				Battle battle(roomPointer, roomPointer->getPlayer(), roomPointer->getMonster());
 				battle.runBattle();
 			}
 			else {
 				cout << "There is no current monster to battle.\n";
 			}				
-			if (roomPointer->getMonster().getHealth().getHealth() < 1) {
+			if (roomPointer->getMonster().getHealth().getHealth() < 1 && roomPointer->getAttacks().getSize() == 0) {
 				attackFromMonstertoRoom(roomPointer, "bow");
 			}
 			else if (roomPointer->getPlayer().getPlayerHealth().getHealth() < 1){
@@ -516,7 +523,6 @@ void attackFromMonstertoRoom(Room*& room, string attackName)
 
 			// Remove the item from the player
 			monsterAttacks.removeItem(i);
-			monsterAttacks.displayattacks();
 		}
 	}
 
@@ -527,63 +533,63 @@ void attackFromMonstertoRoom(Room*& room, string attackName)
 	tempMonster.setAttacks(monsterAttacks);
 	tempMonster.setName(room->getMonster().getName());
 	tempMonster.setHealth(room->getMonster().getHealth());
-	tempMonster.setAttacks(room->getMonster().getAttacks());
-	
-	room->getMonster().setAttacks(monsterAttacks);
+	tempMonster.setDialogOpening(room->getMonster().getDialogOpening());
+	tempMonster.setMonsterDescription(room->getMonster().getMonsterDescription());
+	room->setMonster(tempMonster);
 
 	// Display the inventories of the room and the player
 	cout << endl << room->getMonster().getName() << " has just dropped " << attackName << endl;
 	cout << "Monster attacks\n";
-	tempMonster.getAttacks().displayattacks();
+	room->getMonster().getAttacks().displayattacks();
 	cout << endl;
 	cout << "Attacks in the room that you can pickup: " << endl;
 	room->getAttacks().displayattacks();
 	cout << endl;
 }
 
-void attackFromMonstertoPlayer(Room*& room, string attackName)
+void attackFromRoomrtoPlayer(Room*& room, string attackName)
 {
-	Monster tempMonster;
+	// Variables
+	Player tempPlayer;
+	Attacks roomAttacks;
 	Attacks playerAttacks;
-	Attacks monsterAttacks;
 	vector<Weapon> attacks;
 	int size;
 
 	// Set all of the variables to their corresponding values from the
 	// room. Just doing this to make it the code simpler to look at
+	roomAttacks = room->getAttacks();
 	playerAttacks = room->getPlayer().getAttacks();
-	monsterAttacks = room->getMonster().getAttacks();
-	size = monsterAttacks.getSize();
-	attacks = monsterAttacks.getAttacks();
+	size = roomAttacks.getSize();
+	attacks = roomAttacks.getAttacks();
 
 	// Add the item to the player and remove it from the room
 	for (int i = 0; i < size; i++) {
 		if (attacks.at(i).getName() == attackName) {
-			// Add the item to the room's inventory
+			// Add the item to the player's inventory
 			playerAttacks.addAttack(attacks.at(i));
 
-			// Remove the item from the player
-			monsterAttacks.removeItem(i);
+			// Remove the item from the room
+			roomAttacks.removeItem(i);
 		}
 	}
 
-	// Set the room's inventory to the updated room inventory
-	room->getPlayer().setAttacks(playerAttacks);
+	// Set the room's attacks to the updated room attacks
+	room->setAttacks(roomAttacks);
 
-	// Set the player's inventory to the updated player's inventory
-	tempMonster.setAttacks(monsterAttacks);
-	tempMonster.setName(room->getMonster().getName());
-	tempMonster.setHealth(room->getMonster().getHealth());
-	tempMonster.setAttacks(room->getMonster().getAttacks());
-	room->setMonster(tempMonster);
+	// Set the player's attacks to the updated player's attacks
+	tempPlayer.setAttacks(playerAttacks);
+	tempPlayer.setName(room->getPlayer().getName());
+	tempPlayer.setPlayerHealth(room->getPlayer().getPlayerHealth());
+	tempPlayer.setInventory(room->getPlayer().getInventory());
+	room->setPlayer(tempPlayer);
 
-	// Display the inventories of the room and the player
-	cout << "Monster attacks\n";
-	room->getMonster().getAttacks().displayattacks();
-	cout << endl;
-	cout << "Attacks you have unlocked: " << endl;
+	// Display the attack lists of the room and the player
+	cout << "\nYou have just picked up a " << attackName;
+	cout << "\nRoom attacks " << endl;
+	room->getAttacks().displayattacks();
+	cout << "Player Inventory is now: " << endl;
 	room->getPlayer().getAttacks().displayattacks();
-	cout << endl;
 }
 
 // Checks if a specified item is already in a room. Returns true if 
@@ -606,6 +612,31 @@ bool checkIfItemIsInRoom(Room*& room, string itemName)
 	// item is in the room then it will return true and allow player to pick it up.
 	for (int i = 0; i < size; i++) {
 		if (items.at(i).getName() == itemName) {
+			found = true;
+			break;
+		}
+	}
+	return found;
+}
+
+bool checkIfAttackIsInRoom(Room*& room, string attackName)
+{
+	//Variables
+	Attacks roomAttacks;
+	vector<Weapon> attacks;
+	int size;
+	bool found = false;
+
+	// Set all of the variables to their corresponding values from the
+	// room. Just doing this to make it the code simpler to look at
+	roomAttacks = room->getAttacks();
+	size = roomAttacks.getSize();
+	attacks = roomAttacks.getAttacks();
+
+	// Checks the inventory of the room to see if the item is in the room or not, if the
+	// item is in the room then it will return true and allow player to pick it up.
+	for (int i = 0; i < size; i++) {
+		if (attacks.at(i).getName() == attackName) {
 			found = true;
 			break;
 		}
