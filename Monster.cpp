@@ -56,5 +56,5 @@ void Monster::displayMonster() {
 	cout << "In front of you is a " << name << endl;
 	cout << "The " << name << "'s ";
 	health.displayHealth();
-	attacks.displayattacks();
+	//attacks.displayattacks();
 }

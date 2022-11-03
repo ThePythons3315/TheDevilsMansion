@@ -1,4 +1,4 @@
-// Version 2.09
+// Version 2.10
 
 #include <iostream>
 #include <string>
@@ -23,6 +23,7 @@ void attackFromRoomrtoPlayer(Room*& room, string attackName);
 bool checkIfItemIsInRoom(Room*& room, string itemName);
 bool checkIfAttackIsInRoom(Room*& room, string attackName);
 void addItemHealthToPlayer(Room*& room, string itemName);
+bool checkForItem(Room*& room, string itemName);
 void helpFunction();
 
 int main() {
@@ -58,13 +59,13 @@ int main() {
 	// Create all string variables of text that will be used as dialog throughout the game.
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	string version = "Welcome to the Devil's Mansion V2.09\n";
+	string version = "Welcome to the Devil's Mansion V2.10\n";
 	string endSentence = "\nThanks for playing The Devil's Mansion!!";
 	string askCharacterName = "Hello there, please enter the name you would like your character to have: ";
 	string askUserToMove = "Please enter `center` to go through the door: ";
 	string blueberryOnFloor = "Please enter `blueberry` to pick up the blueberry: ";
 	string checkInventory = "Please now type `inventory` to see what you have in your inventory: ";
-	string endOfIntro = "\nYou are now aware of how to move and how to pick up items.\n"
+	string endOfIntro = "You are now aware of how to move and how to pick up items.\n"
 						"If you forget the commands or need any help on attacking/using items enter 'help' at any time.\n"
 						"Please continue with the game on your own...\n";
 	string incorrectRoom = "\nThat was not a valid room.\nThe player will stay in the current room.\n";
@@ -150,24 +151,24 @@ int main() {
 
 	// Create the starting steps. This will be the first area the player is dropped in
 	// at the start of the game.
-	Room startingSteps("Starting Steps", "\nYou are currently at the starting steps.\n"
+	Room startingSteps("Starting Steps", "\nYou are currently at the Starting Steps.\n"
 										 "The starting steps lead up to a large and tall mansion in front of you.\n"
 										 "The mansion is dark, mysterious and gives you a chill you did not think possible.\n"
 									     "Before you is a door.\n", 0);
 	// Create the starting room. This is the 2nd location that the user can go to.
 	// This room will come after the starting steps and will house the devil.
 	// In this room the devil will explain the rules of the game to you.
-	Room startingRoom("Starting Room",  "\nYou are now in the starting room.\n"
+	Room startingRoom("Starting Room",  "\nYou are now in the Starting Room.\n"
 										"The starting room is a large open dark room with spider webs everywhere.\n"
 										"Someone should really dust in here.\n"
 										"Standing before you is the devil.\n", 1);
-	Room skeletonRoom("Skeleton Room", "Skeleton Room - DESCRIPTION", 2);
-	Room testRoom2("TEST ROOM 2", "TEST ROOM 2 - DESCRIPTION", 3);
-	Room testRoom3("TEST ROOM 3", "TEST ROOM 3 - DESCRIPTION", 4);
-	Room testRoom4("TEST ROOM 4", "TEST ROOM 4 - DESCRIPTION", 5);
+	Room skeletonRoom("Room Of Unlucky Souls", "\nYou are now in the Room Of Unlucky Souls.\n"
+											   "The sounds of screams are coming from every inch of the room.\n", 2);
+	Room testRoom2("TEST ROOM 2", "\nTEST ROOM 2 - DESCRIPTION\n", 3);
+	Room testRoom3("TEST ROOM 3", "\nTEST ROOM 3 - DESCRIPTION\n", 4);
+	Room testRoom4("TEST ROOM 4", "\nTEST ROOM 4 - DESCRIPTION\n", 5);
 
 	// ToDo: Make a function to do these in one line
-	// 
 	// Starting Steps - associated rooms
 	startingSteps.setCenterRoom(startingRoom);
 
@@ -323,7 +324,7 @@ int main() {
 		}
 		// Lets the user redisplay their inventory
 		else if (input == "inventory") {
-			roomPointer->getPlayer().getInventory().displayInventory();
+			roomPointer->getPlayer().getInventory().displayPlayerInventory();
 		}
 		//Lets the user see the attacks they've unlocked
 		else if (input == "attacks") {
@@ -335,29 +336,35 @@ int main() {
 				itemFromRoomToPlayer(roomPointer, "blueberry");
 			}
 			else {
-				cout << "The item you have entered is not in this room.\n";
-				cout << "Check the other rooms or your inventory it may be in there.\n";
+				cout << "\nThe item you have entered is not in this room.\n";
+				cout << "Check other rooms..... or your inventory.\n\n";
 			}
 		}
 		//Lets the user unlock the bow attack
-		else if (input == "bow") {
+		/*else if (input == "bow") {
 			if (checkIfAttackIsInRoom(roomPointer, "bow") == true) {
 				attackFromRoomrtoPlayer(roomPointer, "bow");
 			}
 			else {
 				cout << "The attack you have entered is not in this room.\n";
-				cout << "Check the other rooms or your attack list,you may have unlocked it already.\n";
+				cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
 			}
 		}
+		*/
 		// Lets the player drop the blueberry
 		else if (input == "drop blueberry") {
 			itemFromPlayerToRoom(roomPointer, "blueberry");
 		}
 		// Lets the player eat the blueberry and regain health
 		else if (input == "eat blueberry") {
-			// ToDo: Add function to check if blueberry is in the player's inventory
-			addItemHealthToPlayer(roomPointer, "blueberry");
-			roomPointer->getPlayer().getPlayerHealth().displayHealth();
+			if (checkForItem(roomPointer, "blueberry") == true) {
+				addItemHealthToPlayer(roomPointer, "blueberry");
+				roomPointer->getPlayer().getPlayerHealth().displayHealth();
+			}
+			else {
+				cout << "\nThat item is not in your inventory. It cannot be used.\n\n";
+			}
+			
 		}
 		// Lets the player see how much health they currently have
 		else if (input == "health") {
@@ -369,14 +376,16 @@ int main() {
 				battle.runBattle();
 			}
 			else {
-				cout << "There is no current monster to battle.\n";
+				cout << "\nThere is no current monster to battle.\n\n";
 			}				
-			if (roomPointer->getMonster().getHealth().getHealth() < 1 && roomPointer->getAttacks().getSize() == 0) {
+
+			/*if (roomPointer->getMonster().getHealth().getHealth() < 1 && roomPointer->getAttacks().getSize() == 0) {
 				attackFromMonstertoRoom(roomPointer, "bow");
 			}
 			else if (roomPointer->getPlayer().getPlayerHealth().getHealth() < 1){
 				break;
 			}
+			*/
 		}
 		else if (input == "help") {
 			helpFunction();
@@ -445,11 +454,9 @@ void itemFromRoomToPlayer(Room*& room, string itemName) {
 	room->setPlayer(tempPlayer);
 
 	// Display the inventories of the room and the player
-	cout << "\nYou have just picked up a " << itemName << "\nType 'drop ItemName' to drop that item " << endl;
-	cout << "\nRoom Inventory is now: " << endl;
-	room->getInventory().displayInventory();
-	cout << "Player Inventory is now: " << endl;
-	room->getPlayer().getInventory().displayInventory();
+	cout << "\nYou have just picked up a " << itemName << endl;
+	room->getInventory().displayRoomInventory();
+	room->getPlayer().getInventory().displayPlayerInventory();
 }
 
 // Moves a specified item from the playher's inventory to the rooms's
@@ -494,10 +501,8 @@ void itemFromPlayerToRoom(Room*& room, string itemName)
 
 	// Display the inventories of the room and the player
 	cout << "\nYou have just dropped " << itemName << endl;
-	cout << "\nRoom Inventory is now: " << endl;
-	room->getInventory().displayInventory();
-	cout << "Player Inventory is now: " << endl;
-	room->getPlayer().getInventory().displayInventory();
+	room->getInventory().displayRoomInventory();
+	room->getPlayer().getInventory().displayPlayerInventory();
 }
 
 void attackFromMonstertoRoom(Room*& room, string attackName)
@@ -619,6 +624,31 @@ bool checkIfItemIsInRoom(Room*& room, string itemName)
 	return found;
 }
 
+// Check for an item in the player's inventory
+bool checkForItem(Room*& room, string itemName) {
+	//Variables
+	Inventory playerInventory;
+	vector<Item> items;
+	int size;
+	bool found = false;
+
+	// Set all of the variables to their corresponding values from the
+	// room. Just doing this to make it the code simpler to look at
+	playerInventory = room->getPlayer().getInventory();
+	size = playerInventory.getSize();
+	items = playerInventory.getInventory();
+
+	// Checks the inventory of the player to see if the item is in the player's inventory or not, if the
+	// item is in the player's inventory then it will return true and allow player to pick it up.
+	for (int i = 0; i < size; i++) {
+		if (items.at(i).getName() == itemName) {
+			found = true;
+			break;
+		}
+	}
+	return found;
+}
+
 bool checkIfAttackIsInRoom(Room*& room, string attackName)
 {
 	//Variables
@@ -675,7 +705,7 @@ void addItemHealthToPlayer(Room*& room, string itemName) {
 
 			// Remove the item from the player
 			playerInventory.removeItem(i);
-			cout << "The " << itemName << " has been used." << endl;
+			cout << "\nThe " << itemName << " has been used." << endl;
 		}
 	}
 

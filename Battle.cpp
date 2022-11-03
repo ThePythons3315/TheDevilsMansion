@@ -41,7 +41,7 @@ Room Battle::getRoom()
 }
 
 void Battle::displayOpeningLine() {
-	cout << player.getName() << " is now going into battle with " << monster.getName() << endl;
+	cout << endl << player.getName() << " is now going into battle with " << monster.getName() << endl << endl;
 }
 
 void Battle::runBattle() {
@@ -56,7 +56,7 @@ void Battle::runBattle() {
 	int newHealth = 0;
 
 	// ToDo: Take this out at some point
-	player.printPlayerInfo();
+	//player.printPlayerInfo();
 
 	// Display the battle opening line of the player versus the monster
 	displayOpeningLine();
@@ -86,8 +86,12 @@ void Battle::runBattle() {
 				monster.setHealth(tempHealth);
 				roomPointer->setMonster(monster);
 				cout << "The attack hit!!\n";
-				cout << "Monster New Health: " << monster.getHealth().getHealth() << endl;
-
+				if (monster.getHealth().getHealth() < 1) {
+					cout << "Monster New Health: 0" << endl;
+				}
+				else {
+					cout << "Monster New Health: " << monster.getHealth().getHealth() << endl;
+				}
 			}
 			// Attack misses, do nothing to the monster. Display that the attack missed.
 			else {
@@ -116,7 +120,12 @@ void Battle::runBattle() {
 				player.setPlayerHealth(tempHealth);
 				roomPointer->setPlayer(player);
 				cout << "The attack hit!!\n";
-				cout << "Player New Health: " << player.getPlayerHealth().getHealth() << endl << endl;
+				if (player.getPlayerHealth().getHealth() < 1) {
+					cout << "Player New Health: 0" << endl;
+				}
+				else {
+					cout << "Player New Health: " << player.getPlayerHealth().getHealth() << endl << endl;
+				}
 			}
 			// Attack misses, do nothing to the player. Display that the attack missed.
 			else {
@@ -144,7 +153,12 @@ void Battle::runBattle() {
 				monster.setHealth(tempHealth);
 				roomPointer->setMonster(monster);
 				cout << "The attack hit!!\n";
-				cout << "Monster New Health: " << monster.getHealth().getHealth() << endl;
+				if (monster.getHealth().getHealth() < 1) {
+					cout << "Monster New Health: 0" << endl;
+				}
+				else {
+					cout << "Monster New Health: " << monster.getHealth().getHealth() << endl;
+				}
 			}
 			// Attack misses, do nothing to the monster. Display that the attack missed.
 			else {
@@ -172,7 +186,12 @@ void Battle::runBattle() {
 				player.setPlayerHealth(tempHealth);
 				roomPointer->setPlayer(player);
 				cout << "The attack hit!!\n";
-				cout << "Player New Health: " << player.getPlayerHealth().getHealth() << endl << endl;
+				if (player.getPlayerHealth().getHealth() < 1) {
+					cout << "Player New Health: 0" << endl;
+				}
+				else {
+					cout << "Player New Health: " << player.getPlayerHealth().getHealth() << endl << endl;
+				}
 			}
 			// Attack misses, do nothing to the player. Display that the attack missed.
 			else {

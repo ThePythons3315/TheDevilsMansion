@@ -104,16 +104,18 @@ Room* Room::getBackRoom() {
 
 // Function that will display both room description and the inventory of the room
 void Room::getRoomInformation() {
+	// Description of room - what the room actually looks like
 	cout << getRoomDescription() << endl;
-	cout << endl;
-	cout << "Room inventory:\n";
-	inventory.displayInventory();
-	cout << "The player's ";
-	player.getPlayerHealth().displayHealth();
-	cout << endl;
-	cout << "Attacks in the room that you can pickup\n";
-	attacks.displayattacks();
-	cout << endl;
+
+	// Display the items in the room
+	inventory.displayRoomInventory();
+
+	// Display the player's health
+	//cout << "The player's ";
+	//player.getPlayerHealth().displayHealth();
+	//cout << "Attacks in the room that you can pickup\n";
+	//attacks.displayattacks();
+	//cout << endl;
 	if (monster.getHealth().getHealth() == -1) {
 		cout << "You have already killed the " << monster.getName() << " monster\n\n";
 	}
@@ -137,22 +139,22 @@ void Room::moveRoom(string direction) {
 	// the current room.
 	if (direction == "center") {
 		centerRoom->setPlayer(player);
-		cout << "The player has been moved to the " << centerRoom->getName() << endl;
+		//cout << "The player has been moved to the " << centerRoom->getName() << endl;
 		player = defaultPlayer;
 	}
 	else if (direction == "left") {
 		leftRoom->setPlayer(player);
-		cout << "The player has been moved to the " << leftRoom->getName() << endl;
+		//cout << "The player has been moved to the " << leftRoom->getName() << endl;
 		player = defaultPlayer;
 	}
 	else if (direction == "right") {
 		rightRoom->setPlayer(player);
-		cout << "The player has been moved to the " << rightRoom->getName() << endl;
+		//cout << "The player has been moved to the " << rightRoom->getName() << endl;
 		player = defaultPlayer;
 	}
 	else if (direction == "back") {
 		backRoom->setPlayer(player);
-		cout << "The player has been moved to the " << backRoom->getName() << endl;
+		//cout << "The player has been moved to the " << backRoom->getName() << endl;
 		player = defaultPlayer;
 	}
 }

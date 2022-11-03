@@ -21,7 +21,8 @@ public:
 	void addItem(Item);
 
 	//Function to display all the items in the player inventory
-	void displayInventory();
+	void displayRoomInventory();
+	void displayPlayerInventory();
 
 	// Get the number of items being stored in the inventory
 	int getSize();

@@ -12,19 +12,36 @@ void Inventory::addItem(Item item) {
 	inventory.push_back(item);
 }
 
-//Function to display all the items in the player inventory
-void Inventory::displayInventory()
+//Function to display all the items in the room inventory
+void Inventory::displayRoomInventory()
 {
+	cout << "Items in the room include: " << endl;
 	if (inventory.size() == 0) {
-		cout << "There are no items." << endl;
+		cout << "-" << endl;
 	}
 	else {
-		cout << "Inventory includes: " << endl;
 		for (int i = 0; i < inventory.size(); i++) {
 			cout << "-" << inventory.at(i).getName() << endl;
 		}
 	}
+	cout << endl;
 }
+
+//Function to display all the items in the player inventory
+void Inventory::displayPlayerInventory()
+{
+	cout << "Player inventory includes: " << endl;
+	if (inventory.size() == 0) {
+		cout << "-" << endl;
+	}
+	else {
+		for (int i = 0; i < inventory.size(); i++) {
+			cout << "-" << inventory.at(i).getName() << endl;
+		}
+	}
+	cout << endl;
+}
+
 
 int Inventory::getSize() {
 	return inventory.size();

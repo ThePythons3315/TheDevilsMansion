@@ -47,8 +47,8 @@ Attacks Player::getAttacks() {
 
 void Player::printPlayerInfo() {
 	cout << "Player Name: " << name << endl;
-	cout << "Player Items: " << endl;
-	inventory.displayInventory();
+	//cout << "Player Items: " << endl;
+	inventory.displayPlayerInventory();
 	cout << "Player Health: " << health.getHealth() << endl;
 	attacks.displayattacks();
 }
