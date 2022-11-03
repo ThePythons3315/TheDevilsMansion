@@ -8,6 +8,7 @@ Room::Room() {
 	roomDescription = "";
 	inventory;
 	monster;
+	attacks;
 	roomID = 0;
 	leftRoom = nullptr;
 	centerRoom = nullptr;
@@ -20,6 +21,7 @@ Room::Room(string name_input, string desc, int id) {
 	roomID = id;
 	inventory;
 	monster;
+	attacks;
 	leftRoom = nullptr;
 	centerRoom = nullptr;
 	rightRoom = nullptr;

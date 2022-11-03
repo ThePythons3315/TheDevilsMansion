@@ -18,7 +18,8 @@ using namespace std;
 bool validateInput(vector<string>& vect, string sentence);
 void itemFromRoomToPlayer(Room*& room, string itemName);
 void itemFromPlayerToRoom(Room*& room, string itemName);
-void attackFromMonstertoRoom(Room*& room, string itemName);
+void attackFromMonstertoRoom(Room*& room, string attackName);
+void attackFromMonstertoPlayer(Room*& room, string attackName);
 bool checkIfItemIsInRoom(Room*& room, string itemName);
 void addItemHealthToPlayer(Room*& room, string itemName);
 void helpFunction();
@@ -42,7 +43,7 @@ int main() {
 	// Eventually this will be broken up into different vectors with each vector
 	// holding specific types of key words. Ex. movement vector, items in use vector, etc.
 	vector <string> keyWords = { "q", "quit", "left", "center", "right", "back", "inventory", "drop blueberry", "blueberry",
-								 "eat blueberry", "health", "battle", "help"};
+								 "eat blueberry", "bow", "health", "battle", "attacks", "help"};
 	// "squash", "eat squash", "drop squash" - Tester items strings
 
 	// Pointer variable that will point to the current room the player is in
@@ -323,6 +324,10 @@ int main() {
 		else if (input == "inventory") {
 			roomPointer->getPlayer().getInventory().displayInventory();
 		}
+		//Lets the user see the attacks they've unlocked
+		else if (input == "attacks") {
+			roomPointer->getPlayer().getAttacks().displayattacks();
+		}
 		// Lets the user pick up the blueberry
 		else if (input == "blueberry"){
 			if (checkIfItemIsInRoom(roomPointer, "blueberry") == true) {
@@ -332,6 +337,10 @@ int main() {
 				cout << "The item you have entered is not in this room.\n";
 				cout << "Check the other rooms or your inventory it may be in there.\n";
 			}
+		}
+		//Lets the user unlock the bow attack
+		else if (input == "bow") {
+			attackFromMonstertoPlayer(roomPointer,"bow");
 		}
 		// Lets the player drop the blueberry
 		else if (input == "drop blueberry") {
@@ -356,7 +365,7 @@ int main() {
 				cout << "There is no current monster to battle.\n";
 			}				
 			if (roomPointer->getMonster().getHealth().getHealth() < 1) {
-				attackFromMonstertoRoom(roomPointer, roomPointer->getMonster().getAttacks().getMonsterWeapon().getName());
+				attackFromMonstertoRoom(roomPointer, "bow");
 			}
 			else if (roomPointer->getPlayer().getPlayerHealth().getHealth() < 1){
 				break;
@@ -507,6 +516,7 @@ void attackFromMonstertoRoom(Room*& room, string attackName)
 
 			// Remove the item from the player
 			monsterAttacks.removeItem(i);
+			monsterAttacks.displayattacks();
 		}
 	}
 
@@ -518,15 +528,61 @@ void attackFromMonstertoRoom(Room*& room, string attackName)
 	tempMonster.setName(room->getMonster().getName());
 	tempMonster.setHealth(room->getMonster().getHealth());
 	tempMonster.setAttacks(room->getMonster().getAttacks());
-	room->setMonster(tempMonster);
+	
+	room->getMonster().setAttacks(monsterAttacks);
 
 	// Display the inventories of the room and the player
-	cout << endl << tempMonster.getName() << " has just dropped " << attackName << endl;
+	cout << endl << room->getMonster().getName() << " has just dropped " << attackName << endl;
 	cout << "Monster attacks\n";
-	room->getPlayer().getAttacks().displayattacks();
+	tempMonster.getAttacks().displayattacks();
 	cout << endl;
 	cout << "Attacks in the room that you can pickup: " << endl;
 	room->getAttacks().displayattacks();
+	cout << endl;
+}
+
+void attackFromMonstertoPlayer(Room*& room, string attackName)
+{
+	Monster tempMonster;
+	Attacks playerAttacks;
+	Attacks monsterAttacks;
+	vector<Weapon> attacks;
+	int size;
+
+	// Set all of the variables to their corresponding values from the
+	// room. Just doing this to make it the code simpler to look at
+	playerAttacks = room->getPlayer().getAttacks();
+	monsterAttacks = room->getMonster().getAttacks();
+	size = monsterAttacks.getSize();
+	attacks = monsterAttacks.getAttacks();
+
+	// Add the item to the player and remove it from the room
+	for (int i = 0; i < size; i++) {
+		if (attacks.at(i).getName() == attackName) {
+			// Add the item to the room's inventory
+			playerAttacks.addAttack(attacks.at(i));
+
+			// Remove the item from the player
+			monsterAttacks.removeItem(i);
+		}
+	}
+
+	// Set the room's inventory to the updated room inventory
+	room->getPlayer().setAttacks(playerAttacks);
+
+	// Set the player's inventory to the updated player's inventory
+	tempMonster.setAttacks(monsterAttacks);
+	tempMonster.setName(room->getMonster().getName());
+	tempMonster.setHealth(room->getMonster().getHealth());
+	tempMonster.setAttacks(room->getMonster().getAttacks());
+	room->setMonster(tempMonster);
+
+	// Display the inventories of the room and the player
+	cout << "Monster attacks\n";
+	room->getMonster().getAttacks().displayattacks();
+	cout << endl;
+	cout << "Attacks you have unlocked: " << endl;
+	room->getPlayer().getAttacks().displayattacks();
 	cout << endl;
 }
 
@@ -604,6 +660,7 @@ void addItemHealthToPlayer(Room*& room, string itemName) {
 void helpFunction()
 {
 	cout << "\nIt seems you need help, here is a list of all the controls:\n"
+		<< "Attacks - displays all attacks you have unlocked\n"
 		<< "battle - will put you into battle if there is a monster present in the room\n"
 		<< "drop 'item name' - drops the item entered from your inventory\n"
 		<< "health - shows you your current health points\n"

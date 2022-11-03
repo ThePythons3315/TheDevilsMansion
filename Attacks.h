@@ -9,7 +9,8 @@
 using namespace std;
 
 
-class Attacks {
+class Attacks 
+{
 private:
 	vector<Weapon> attacks;
 public:
