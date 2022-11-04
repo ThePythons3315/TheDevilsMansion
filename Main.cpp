@@ -343,7 +343,7 @@ int main() {
 			}
 		}
 		//Lets the user unlock the bow attack
-		/*else if (input == "bow") {
+		else if (input == "bow") {
 			if (checkIfAttackIsInRoom(roomPointer, "bow") == true) {
 				attackFromRoomrtoPlayer(roomPointer, "bow");
 			}
@@ -352,7 +352,7 @@ int main() {
 				cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
 			}
 		}
-		*/
+		
 		// Lets the player drop the blueberry
 		else if (input == "drop blueberry") {
 			itemFromPlayerToRoom(roomPointer, "blueberry");
@@ -380,14 +380,12 @@ int main() {
 			else {
 				cout << "\nThere is no current monster to battle.\n\n";
 			}				
-
-			/*if (roomPointer->getMonster().getHealth().getHealth() < 1 && roomPointer->getAttacks().getSize() == 0) {
+			if (roomPointer->getMonster().getHealth().getHealth() < 1 && roomPointer->getAttacks().getSize() == 0) {
 				attackFromMonstertoRoom(roomPointer, "bow");
 			}
 			else if (roomPointer->getPlayer().getPlayerHealth().getHealth() < 1){
 				break;
 			}
-			*/
 		}
 		else if (input == "help") {
 			helpFunction();
@@ -595,7 +593,7 @@ void attackFromRoomrtoPlayer(Room*& room, string attackName)
 	cout << "\nYou have just picked up a " << attackName;
 	cout << "\nRoom attacks " << endl;
 	room->getAttacks().displayattacks();
-	cout << "Player Inventory is now: " << endl;
+	cout << "Player attacks is now: " << endl;
 	room->getPlayer().getAttacks().displayattacks();
 }
 

@@ -110,12 +110,17 @@ void Room::getRoomInformation() {
 	// Display the items in the room
 	inventory.displayRoomInventory();
 
+	// Display the attacks available for the user to pick up
+	if (attacks.getSize() != 0) {
+		cout << "Attacks in the room that you can pickup\n";
+		attacks.displayattacks();
+		cout << endl;
+	}
+
 	// Display the player's health
 	//cout << "The player's ";
 	//player.getPlayerHealth().displayHealth();
-	//cout << "Attacks in the room that you can pickup\n";
-	//attacks.displayattacks();
-	//cout << endl;
+
 	if (monster.getHealth().getHealth() == -1) {
 		cout << "You have already killed the " << monster.getName() << " monster\n\n";
 	}
