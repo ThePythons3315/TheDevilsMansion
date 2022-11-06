@@ -55,7 +55,7 @@ void Battle::runBattle() {
 
 	// ToDo: This is hardcoded. make a new function that asks what you would like to do
 	// and then displays the attacks the user can use
-	string prompt = "Current Usable Attacks Are:\n-punch\n-kick\n\n";
+	string prompt = "Current Usable Attacks\n";
 
 	// Display the battle opening line of the player versus the monster
 	displayOpeningLine();
@@ -65,7 +65,9 @@ void Battle::runBattle() {
 		// Get input from the user continuously until a correct
 		// key word is entered
 		do {
-			cout << prompt;
+			cout << prompt; 
+			roomPointer->getPlayer().getAttacks().displayattacks();
+			cout << endl;
 			input = ui.getStandardizedUserInput();
 		} while (validateInput(keyWords, input) == false);
 

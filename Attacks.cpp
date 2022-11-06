@@ -32,7 +32,7 @@ Weapon Attacks::getWeapon(string _weapon){
 		}
 	}
 	if (found == false)
-		cout << "The attack you have entered has not been unlicked yet or does not exist\n";
+		cout << "The attack you have entered has not been unlocked yet or does not exist\n";
 	return weapon;
 }
 

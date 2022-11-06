@@ -20,10 +20,12 @@ void itemFromRoomToPlayer(Room*& room, string itemName);
 void itemFromPlayerToRoom(Room*& room, string itemName);
 void attackFromMonstertoRoom(Room*& room, string attackName);
 void attackFromRoomrtoPlayer(Room*& room, string attackName);
+void attackFromPlayertoRoom(Room*& room, string attackName);
 bool checkIfItemIsInRoom(Room*& room, string itemName);
 bool checkIfAttackIsInRoom(Room*& room, string attackName);
 void addItemHealthToPlayer(Room*& room, string itemName);
 bool checkForItem(Room*& room, string itemName);
+bool checkForAttack(Room*& room, string itemName);
 void helpFunction();
 
 int main() {
@@ -45,7 +47,7 @@ int main() {
 	// Eventually this will be broken up into different vectors with each vector
 	// holding specific types of key words. Ex. movement vector, items in use vector, etc.
 	vector <string> keyWords = { "q", "quit", "left", "center", "right", "back", "inventory", "drop blueberry", "blueberry",
-								 "eat blueberry", "bow", "health", "battle", "attacks", "help"};
+								 "eat blueberry", "bow", "kick", "punch", "drop bow", "drop punch", "drop kick", "health", "battle", "attacks", "help"};
 	// "squash", "eat squash", "drop squash" - Tester items strings
 
 	// Pointer variable that will point to the current room the player is in
@@ -345,14 +347,79 @@ int main() {
 		//Lets the user unlock the bow attack
 		else if (input == "bow") {
 			if (checkIfAttackIsInRoom(roomPointer, "bow") == true) {
-				attackFromRoomrtoPlayer(roomPointer, "bow");
+				if (roomPointer->getPlayer().getAttacks().getSize() != 4) {
+					attackFromRoomrtoPlayer(roomPointer, "bow");
+				}
+				else
+				{
+					cout << "You have the max amount of attacks that can be used at one time.\n";
+				}
 			}
 			else {
 				cout << "The attack you have entered is not in this room.\n";
 				cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
 			}
 		}
-		
+		//Lets the user unlock the kick attack
+		else if (input == "kick") {
+			if (checkIfAttackIsInRoom(roomPointer, "kick") == true) {
+				if (roomPointer->getPlayer().getAttacks().getSize() != 4)
+				{
+					attackFromRoomrtoPlayer(roomPointer, "kick");
+				}
+				else
+				{
+					cout << "You have the max amount of attacks that can be used at one time.\n";
+				}
+			}
+			else {
+				cout << "The attack you have entered is not in this room.\n";
+				cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
+			}
+		}
+		//Lets the user unlock the punch attack
+		else if (input == "punch") {
+			if (checkIfAttackIsInRoom(roomPointer, "punch") == true) {
+				if (roomPointer->getPlayer().getAttacks().getSize() != 4) {
+					attackFromRoomrtoPlayer(roomPointer, "punch");
+				}
+				else
+				{
+					cout << "You have the max amount of attacks that can be used at one time.\n";
+				}
+			}
+			else {
+				cout << "The attack you have entered is not in this room.\n";
+				cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
+			}
+		}
+		//Lets the player drop the bow attack
+		else if (input == "drop bow") {
+			if (checkForAttack(roomPointer, "bow") == true) {
+				attackFromPlayertoRoom(roomPointer, "bow");
+			}
+			else {
+				cout << "You do not currently have the attack that you wish to drop.\n";
+			}
+		}
+		//Lets the player drop the kick attack
+		else if (input == "drop kick") {
+			if (checkForAttack(roomPointer, "kick") == true) {
+				attackFromPlayertoRoom(roomPointer, "kick");
+			}
+			else {
+				cout << "You do not currently have the attack that you wish to drop.\n";
+			}
+		}
+		//Lets the player drop the punch attack
+		else if (input == "drop punch") {
+			if (checkForAttack(roomPointer, "punch") == true) {
+				attackFromPlayertoRoom(roomPointer, "punch");
+			}
+			else {
+				cout << "You do not currently have the attack that you wish to drop.\n";
+			}
+		}
 		// Lets the player drop the blueberry
 		else if (input == "drop blueberry") {
 			itemFromPlayerToRoom(roomPointer, "blueberry");
@@ -597,6 +664,52 @@ void attackFromRoomrtoPlayer(Room*& room, string attackName)
 	room->getPlayer().getAttacks().displayattacks();
 }
 
+void attackFromPlayertoRoom(Room*& room, string attackName)
+{
+	Player tempPlayer;
+	Attacks roomAttacks;
+	Attacks playerAttacks;
+	vector<Weapon> attacks;
+	int size;
+
+	// Set all of the variables to their corresponding values from the
+	// room. Just doing this to make it the code simpler to look at
+	roomAttacks = room->getAttacks();
+	playerAttacks = room->getPlayer().getAttacks();
+	size = playerAttacks.getSize();
+	attacks = playerAttacks.getAttacks();
+
+	// Add the item to the player and remove it from the room
+	for (int i = 0; i < size; i++) {
+		if (attacks.at(i).getName() == attackName) {
+			// Add the item to the room's inventory
+			roomAttacks.addAttack(attacks.at(i));
+
+			// Remove the item from the player
+			playerAttacks.removeItem(i);
+		}
+	}
+
+	// Set the room's inventory to the updated room inventory
+	room->setAttacks(roomAttacks);
+
+	// Set the player's inventory to the updated player's inventory
+	tempPlayer.setAttacks(playerAttacks);
+	tempPlayer.setName(room->getPlayer().getName());
+	tempPlayer.setPlayerHealth(room->getPlayer().getPlayerHealth());
+	tempPlayer.setInventory(room->getInventory());
+	room->setPlayer(tempPlayer);
+
+	// Display the attacks of the room and the player
+	cout << endl << room->getPlayer().getName() << " has just dropped " << attackName << endl;
+	cout << "Attacks in the room that you can pickup: " << endl;
+	room->getAttacks().displayattacks();
+	cout << endl;
+	cout << "Player attacks\n";
+	room->getPlayer().getAttacks().displayattacks();
+	cout << endl;
+}
+
 // Checks if a specified item is already in a room. Returns true if 
 // the item is already in the room and false if it is not.
 bool checkIfItemIsInRoom(Room*& room, string itemName)
@@ -642,6 +755,31 @@ bool checkForItem(Room*& room, string itemName) {
 	// item is in the player's inventory then it will return true and allow player to pick it up.
 	for (int i = 0; i < size; i++) {
 		if (items.at(i).getName() == itemName) {
+			found = true;
+			break;
+		}
+	}
+	return found;
+}
+
+bool checkForAttack(Room*& room, string itemName)
+{
+	//Variables
+	Attacks playerAttacks;
+	vector<Weapon> attacks;
+	int size;
+	bool found = false;
+
+	// Set all of the variables to their corresponding values from the
+	// room. Just doing this to make it the code simpler to look at
+	playerAttacks = room->getPlayer().getAttacks();
+	size = playerAttacks.getSize();
+	attacks = playerAttacks.getAttacks();
+
+	// Checks the inventory of the player to see if the item is in the player's inventory or not, if the
+	// item is in the player's inventory then it will return true and allow player to pick it up.
+	for (int i = 0; i < size; i++) {
+		if (attacks.at(i).getName() == itemName) {
 			found = true;
 			break;
 		}
@@ -721,8 +859,10 @@ void addItemHealthToPlayer(Room*& room, string itemName) {
 void helpFunction()
 {
 	cout << "\nIt seems you need help, here is a list of all the controls:\n"
-		<< "Attacks - displays all attacks you have unlocked\n"
+		<< "attacks - displays all attacks you have unlocked\n"
+		<< "'attack name' - lets you unlock a attacks adds it to your attack list\n (be aware you are limited to having 4 attacks unlocked)\n"
 		<< "battle - will put you into battle if there is a monster present in the room\n"
+		<< "drop 'attack name' - drops the attack entered from your attack list\n"
 		<< "drop 'item name' - drops the item entered from your inventory\n"
 		<< "health - shows you your current health points\n"
 		<< "inventory - opens your inventory to see what items accessible for use\n"
