@@ -23,7 +23,9 @@ void attackFromRoomrtoPlayer(Room*& room, string attackName);
 void attackFromPlayertoRoom(Room*& room, string attackName);
 bool checkIfItemIsInRoom(Room*& room, string itemName);
 bool checkIfAttackIsInRoom(Room*& room, string attackName);
+bool checkIfRoomIsLocked(Room*& room, string direction);
 void addItemHealthToPlayer(Room*& room, string itemName);
+void unlockDoor(Room*& room, string itemName);
 bool checkForItem(Room*& room, string itemName);
 bool checkForAttack(Room*& room, string itemName);
 void helpFunction();
@@ -47,7 +49,7 @@ int main() {
 	// Eventually this will be broken up into different vectors with each vector
 	// holding specific types of key words. Ex. movement vector, items in use vector, etc.
 	vector <string> keyWords = { "q", "quit", "left", "center", "right", "back", "inventory", "drop blueberry", "blueberry",
-								 "eat blueberry", "bow", "kick", "punch", "drop bow", "drop punch", "drop kick", "health", "battle", "attacks", "help"};
+								 "eat blueberry","devils key","drop devils key","use devils key", "bow", "kick", "punch", "drop bow", "drop punch", "drop kick", "health", "battle", "attacks", "help"};
 	// "squash", "eat squash", "drop squash" - Tester items strings
 
 	// Pointer variable that will point to the current room the player is in
@@ -61,7 +63,7 @@ int main() {
 	// Create all string variables of text that will be used as dialog throughout the game.
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	string version = "Welcome to the Devil's Mansion V2.10\n";
+	string version = "Welcome to the Devil's Mansion V2.11\n";
 	string endSentence = "\nThanks for playing The Devil's Mansion!!";
 	string askCharacterName = "Hello there, please enter the name you would like your character to have: ";
 	string askUserToMove = "Please enter `center` to go through the door: ";
@@ -80,6 +82,7 @@ int main() {
 
 	Inventory playerInventory;
 	Inventory roomInventory1;
+	Inventory roomInventory5;
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create Attacks objects that will be used in various players, monsters, rooms, etc.
@@ -97,6 +100,7 @@ int main() {
 	Health playerHealth(90, 100);
 	Health blueberryHealth(10, 10);
 	Health devilHealth(0, 0);
+	Health devilsKeyHealth(0, 0);
 	Health skeletonHealth(50, 50);
 	//Health squashHealth(5, 5);
 
@@ -120,6 +124,7 @@ int main() {
 	// and monster inventories
 	///////////////////////////////////////////////////////////////////////////////////////////
 	Item blueberry("blueberry", blueberryHealth);
+	Item devilsKey("devils key", devilsKeyHealth);
 	//Item squash("squash", squashHealth); - Tester
 
 
@@ -153,25 +158,26 @@ int main() {
 	Room startingSteps("Starting Steps", "\nYou are currently at the Starting Steps.\n"
 										 "The starting steps lead up to a large and tall mansion in front of you.\n"
 										 "The mansion is dark, mysterious and gives you a chill you did not think possible.\n"
-									     "Before you is a door.\n", 0);
+									     "Before you is a door.\n", 0, false);
 	// Create the starting room. This is the 2nd location that the user can go to.
 	// This room will come after the starting steps and will house the devil.
 	// In this room the devil will explain the rules of the game to you.
 	Room startingRoom("Starting Room",  "\nYou are now in the Starting Room.\n"
 										"The starting room is a large open dark room with spider webs everywhere.\n"
 										"Someone should really dust in here.\n"
-										"Standing before you is the devil.\n", 1);
+										"Standing before you is the devil.\n", 1, false);
 	Room skeletonRoom("Room Of Unlucky Souls", "\nYou are now in the Room Of Unlucky Souls.\n"
-											   "The sounds of screams are coming from every inch of the room.\n", 2);
+											   "The sounds of screams are coming from every inch of the room.\n", 2, false);
 	Room hellHoundRoom("Room Of The Devil's Most Loyal Friend", "\nYou are now in the Room Of The Devil's Most Loyal Friend.\n"
 																"The room is filled with lava all around the perimeter.\n"
-																"Someone should really do something about that.\n", 3);
+																"Someone should really do something about that.\n", 3, false);
 	Room chimeraRoom("Room Of Pure Black", "\nYou are now in the Room of Pure Black.\n"
-										   "..... you can't see anything....\n", 4);
+										   "..... you can't see anything....\n", 4, false);
 	Room archDevilRoom("Room Of Demonic Magic", "\nYou are now in the Room Of Demonic Magic.\n"
 											"Demonic magic is creeping down your spine.\n"
-											"You think some kind of demon lives here???\n", 5);
-
+											"You think some kind of demon lives here???\n", 5, false);
+	Room testRoom6("Test Room 6", "You are now in the 6th test room, \nClearly you have managed to unlock the door\n"
+											"to access this room\n", 6, true);
 	// ToDo: Make a function to do these in one line
 	// Starting Steps - associated rooms
 	startingSteps.setCenterRoom(startingRoom);
@@ -188,7 +194,9 @@ int main() {
 
 	// Other Rooms - associated rooms
 	hellHoundRoom.setRightRoom(skeletonRoom);
+	chimeraRoom.setCenterRoom(testRoom6);
 	chimeraRoom.setBackRoom(skeletonRoom);
+	testRoom6.setBackRoom(chimeraRoom);
 	archDevilRoom.setLeftRoom(skeletonRoom);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -203,7 +211,8 @@ int main() {
 	//roomInventory1.addItem(squash); - Tester
 	roomInventory1.addItem(blueberry);
 	startingRoom.setInventory(roomInventory1);
-
+	roomInventory5.addItem(devilsKey);
+	archDevilRoom.setInventory(roomInventory5);
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Add weapon objects to player attacks
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -285,9 +294,15 @@ int main() {
 		// Lets the player move to the room to the left
 		else if (input == "left") {
 			if (roomPointer->validatePossibleRoom(input)) {
-				roomPointer->moveRoom("left");
-				roomPointer = roomPointer->getLeftRoom();
-				roomPointer->getRoomInformation();
+				if (checkIfRoomIsLocked(roomPointer, input) == false) {
+					roomPointer->moveRoom("left");
+					roomPointer = roomPointer->getLeftRoom();
+					roomPointer->getRoomInformation();
+				}
+				else {
+					cout << "It looks like the " << roomPointer->getLeftRoom()->getName()
+						<< " is locked.\n" << "You must have a key to unlock the door.\n\n";
+				}
 			}
 			else {
 				ui.printString(incorrectRoom);
@@ -296,9 +311,15 @@ int main() {
 		// Lets the player move to the room to the center
 		else if (input == "center") {
 			if (roomPointer->validatePossibleRoom(input)) {
-				roomPointer->moveRoom("center");
-				roomPointer = roomPointer->getCenterRoom();
-				roomPointer->getRoomInformation();
+				if (checkIfRoomIsLocked(roomPointer, input) == false) {
+					roomPointer->moveRoom("center");
+					roomPointer = roomPointer->getCenterRoom();
+					roomPointer->getRoomInformation();
+				}
+				else {
+					cout << "It looks like the " << roomPointer->getCenterRoom()->getName()
+						<< " is locked.\n" << "You must have a key to unlock the door.\n\n";
+				}
 			}
 			else {
 				ui.printString(incorrectRoom);
@@ -307,9 +328,15 @@ int main() {
 		// Lets the player move to the room to the right
 		else if (input == "right") {
 			if (roomPointer->validatePossibleRoom(input)) {
-				roomPointer->moveRoom("right");
-				roomPointer = roomPointer->getRightRoom();
-				roomPointer->getRoomInformation();
+				if (checkIfRoomIsLocked(roomPointer, input) == false) {
+					roomPointer->moveRoom("right");
+					roomPointer = roomPointer->getRightRoom();
+					roomPointer->getRoomInformation();
+				}
+				else {
+					cout << "It looks like the " << roomPointer->getRightRoom()->getName()
+						<< " is locked.\n" << "You must have a key to unlock the door.\n\n";
+				}
 			}
 			else {
 				ui.printString(incorrectRoom);
@@ -318,9 +345,15 @@ int main() {
 		// Lets the player move back a room
 		else if (input == "back") {
 			if (roomPointer->validatePossibleRoom(input)) {
-				roomPointer->moveRoom("back");
-				roomPointer = roomPointer->getBackRoom();
-				roomPointer->getRoomInformation();
+				if (checkIfRoomIsLocked(roomPointer, input) == false) {
+					roomPointer->moveRoom("back");
+					roomPointer = roomPointer->getBackRoom();
+					roomPointer->getRoomInformation();
+				}
+				else {
+					cout << "It looks like the " << roomPointer->getBackRoom()->getName()
+						<< " is locked.\n" << "You must have a key to unlock the door.\n\n";
+				}
 			}
 			else {
 				ui.printString(incorrectRoom);
@@ -338,6 +371,16 @@ int main() {
 		else if (input == "blueberry"){
 			if (checkIfItemIsInRoom(roomPointer, "blueberry") == true) {
 				itemFromRoomToPlayer(roomPointer, "blueberry");
+			}
+			else {
+				cout << "\nThe item you have entered is not in this room.\n";
+				cout << "Check other rooms..... or your inventory.\n\n";
+			}
+		}
+		// Lets the user pick up the devils key
+		else if (input == "devils key") {
+			if (checkIfItemIsInRoom(roomPointer, "devils key") == true) {
+				itemFromRoomToPlayer(roomPointer, "devils key");
 			}
 			else {
 				cout << "\nThe item you have entered is not in this room.\n";
@@ -424,6 +467,10 @@ int main() {
 		else if (input == "drop blueberry") {
 			itemFromPlayerToRoom(roomPointer, "blueberry");
 		}
+		// Lets the player drop the devils key
+		else if (input == "drop devils key") {
+		itemFromPlayerToRoom(roomPointer, "devils key");
+		}
 		// Lets the player eat the blueberry and regain health
 		else if (input == "eat blueberry") {
 			if (checkForItem(roomPointer, "blueberry") == true) {
@@ -434,6 +481,16 @@ int main() {
 				cout << "\nThat item is not in your inventory. It cannot be used.\n\n";
 			}
 			
+		}
+		// Lets the player eat the blueberry and regain health
+		else if (input == "use devils key") {
+		if (checkForItem(roomPointer, "devils key") == true) {
+			unlockDoor(roomPointer, "devils key");
+		}
+		else {
+			cout << "\nThat item is not in your inventory. It cannot be used.\n\n";
+		}
+
 		}
 		// Lets the player see how much health they currently have
 		else if (input == "health") {
@@ -812,6 +869,25 @@ bool checkIfAttackIsInRoom(Room*& room, string attackName)
 	return found;
 }
 
+bool checkIfRoomIsLocked(Room*& room, string direction)
+{
+	if (direction == "center" && room->getCenterRoom() != nullptr && room->getCenterRoom()->getLockStatus() != true) {
+		return false;
+	}
+	else if (direction == "left" && room->getLeftRoom() != nullptr && room->getLeftRoom()->getLockStatus() != true) {
+		return false;
+	}
+	else if (direction == "right" && room->getRightRoom() != nullptr && room->getRightRoom()->getLockStatus() != true) {
+		return false;
+	}
+	else if (direction == "back" && room->getBackRoom() != nullptr && room->getBackRoom()->getLockStatus() != true) {
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+
 void addItemHealthToPlayer(Room*& room, string itemName) {
 	// Variables
 	Player tempPlayer;
@@ -856,6 +932,58 @@ void addItemHealthToPlayer(Room*& room, string itemName) {
 	room->setPlayer(tempPlayer);
 }
 
+void unlockDoor(Room*& room, string itemName)
+{
+	// Variables
+	Inventory playerInventory;
+	vector<Item> items;
+	int size;
+	bool doorIsLocked = true;
+
+	// Set all of the variables to their corresponding values from the
+	playerInventory = room->getPlayer().getInventory();
+	size = playerInventory.getSize();
+	items = playerInventory.getInventory();
+
+
+	//Loop to look for the devils key in the players inventory.
+	//If the key is found in the players inventory and there is a locked room connected to the current
+	// room that the player is in, then the lock status of the locked room is updated and the room is then unlocked
+	//if there is no locked room then it will output at message stating that the key can't be used cause
+	//there is no room to be unlocked
+	for (int i = 0; i < size; i++) {
+		if (items.at(i).getName() == itemName) {
+			if (room->getCenterRoom() != nullptr && room->getCenterRoom()->getLockStatus() != false) {
+				doorIsLocked = false;
+				room->getCenterRoom()->setLockStatus(doorIsLocked);
+				cout << "\nYou have unlocked the door to the " << room->getCenterRoom()->getName() << " using the " << itemName << ".\n";
+				cout << "Please enter 'center' to go into the " << room->getCenterRoom()->getName() << ".\n\n";
+			}
+			else if (room->getLeftRoom() != nullptr && room->getLeftRoom()->getLockStatus() != false) {
+				doorIsLocked = false;
+				room->getLeftRoom()->setLockStatus(doorIsLocked);
+				cout << "\nYou have unlocked the door to the " << room->getLeftRoom()->getName() << " using the " << itemName << ".\n\n";
+				cout << "Please enter 'left' to go into the " << room->getLeftRoom()->getName() << ".\n\n";
+			}
+			else if (room->getRightRoom() != nullptr && room->getRightRoom()->getLockStatus() != false) {
+				doorIsLocked = false;
+				room->getRightRoom()->setLockStatus(doorIsLocked);
+				cout << "\nYou have unlocked the door to the " << room->getRightRoom()->getName() << " using the " << itemName << ".\n\n";
+				cout << "Please enter 'right' to go into the " << room->getRightRoom()->getName() << ".\n\n";
+			}
+			else if (room->getBackRoom() != nullptr && room->getBackRoom()->getLockStatus() != false) {
+				doorIsLocked = false;
+				room->getBackRoom()->setLockStatus(doorIsLocked);
+				cout << "\nYou have unlocked the door to the " << room->getBackRoom()->getName() << " using the " << itemName << ".\n\n";
+				cout << "Please enter 'back' to go into the " << room->getBackRoom()->getName() << ".\n\n";
+			}
+		}
+	}
+	if (doorIsLocked == true) {
+		cout << "There are currently no doors in the " << room->getName() << " that need to be unlocked.\n\n";
+	}
+}
+
 void helpFunction()
 {
 	cout << "\nIt seems you need help, here is a list of all the controls:\n"
@@ -870,5 +998,6 @@ void helpFunction()
 		<< "kick/punch - lets you have a chance of hitting the monster\n"
 		<< "left - enters the room to the left\n" << "center - enters the room in the center\n"
 		<< "right - enters the room to the right\n" << "back - puts you back to the previous room you entered\n"
+		<< "use devils key - lets you unlock locked doors\n"
 		<< "q/quit - quits the game\n\n";
 }

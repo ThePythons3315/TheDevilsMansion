@@ -18,6 +18,7 @@ private:
 	Attacks attacks;
 	Monster monster;
 	int roomID;
+	bool lock;
 	Room* leftRoom; // pointer to a room object
 	Room* centerRoom; // pointer to a room object
 	Room* rightRoom; // pointer to a room object
@@ -25,7 +26,7 @@ private:
 public:
 	// Constructors
 	Room();
-	Room(string, string, int);
+	Room(string, string, int, bool);
 
 	// Mutator Functions -- Functions that will be allowed to change private variables
 	void setName(string);
@@ -35,6 +36,7 @@ public:
 	void setAttacks(Attacks);
 	void setMonster(Monster);
 	void setRoomID(int);
+	void setLockStatus(bool);
 	void setLeftRoom(Room&); // Take the address of the room object
 	void setCenterRoom(Room&); // Take the address of the room object
 	void setRightRoom(Room&); // Take the address of the room object
@@ -49,6 +51,7 @@ public:
 	Attacks getAttacks();
 	Monster getMonster();
 	int getRoomID();
+	bool getLockStatus();
 	Room* getLeftRoom();
 	Room* getCenterRoom();
 	Room* getRightRoom();

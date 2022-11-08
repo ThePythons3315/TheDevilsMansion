@@ -10,15 +10,17 @@ Room::Room() {
 	monster;
 	attacks;
 	roomID = 0;
+	lock = false;
 	leftRoom = nullptr;
 	centerRoom = nullptr;
 	rightRoom = nullptr;
 	backRoom = nullptr;
 }
-Room::Room(string name_input, string desc, int id) {
+Room::Room(string name_input, string desc, int id, bool lockStat) {
 	name = name_input;
 	roomDescription = desc;
 	roomID = id;
+	lock = lockStat;
 	inventory;
 	monster;
 	attacks;
@@ -50,6 +52,10 @@ void Room::setMonster(Monster _monster) {
 }
 void Room::setRoomID(int id) {
 	roomID = id;
+}
+void Room::setLockStatus(bool lockStat)
+{
+	lock = lockStat;
 }
 void Room::setLeftRoom(Room& left) {
 	leftRoom = &left;
@@ -88,6 +94,10 @@ Monster Room::getMonster() {
 }
 int Room::getRoomID() {
 	return roomID;
+}
+bool Room::getLockStatus()
+{
+	return lock;
 }
 Room* Room::getLeftRoom() {
 	return leftRoom;
