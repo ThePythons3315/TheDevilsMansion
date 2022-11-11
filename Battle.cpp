@@ -45,7 +45,8 @@ void Battle::displayOpeningLine() {
 void Battle::runBattle() {
 	vector <string> keyWords = {"q", "quit", "punch", "kick"};
 
-	UserInterface ui;
+	GameUI console;
+	
 	bool battleLoop = true;
 	string input = "";
 	Health tempHealth;
@@ -68,7 +69,7 @@ void Battle::runBattle() {
 			cout << prompt; 
 			roomPointer->getPlayer().getAttacks().displayattacks();
 			cout << endl;
-			input = ui.getStandardizedUserInput();
+			input = console.getUserInput("What would you like to do: ");
 		} while (validateInput(keyWords, input) == false);
 
 		// If the user enter's `q`, then break the main loop and end the game.

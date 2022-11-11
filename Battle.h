@@ -7,9 +7,8 @@
 #include "Room.h"
 #include "Player.h"
 #include "Monster.h"
-#include "UserInterface.h"
+#include "GameUI.h"
 using namespace std;
-
 
 class Battle
 {

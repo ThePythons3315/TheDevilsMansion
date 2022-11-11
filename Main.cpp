@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include "Player.h"
-#include "UserInterface.h"
+#include "GameUI.h"
 #include "Room.h"
 #include "Monster.h"
 #include "Inventory.h"
@@ -49,15 +49,15 @@ int main() {
 	// Eventually this will be broken up into different vectors with each vector
 	// holding specific types of key words. Ex. movement vector, items in use vector, etc.
 	vector <string> keyWords = { "q", "quit", "left", "center", "right", "back", "inventory", "drop blueberry", "blueberry",
-								 "eat blueberry","devils key","drop devils key","use devils key", "bow", "kick", "punch", "drop bow", "drop punch", "drop kick", "health", "battle", "attacks", "help"};
-	// "squash", "eat squash", "drop squash" - Tester items strings
+								 "eat blueberry","devils key","drop devils key","use devils key", "bow", "kick", "punch", 
+								 "drop bow", "drop punch", "drop kick", "health", "battle", "attacks", "help"};
 
 	// Pointer variable that will point to the current room the player is in
 	Room* roomPointer = nullptr;
 
 	// Create a game instance which will allow for user input and console output
 	// to be used.
-	UserInterface ui;
+	GameUI console;
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create all string variables of text that will be used as dialog throughout the game.
@@ -74,6 +74,7 @@ int main() {
 						"Please continue with the game on your own...\n";
 	string incorrectRoom = "\nThat was not a valid room.\nThe player will stay in the current room.\n";
 	string startingDescription = ""; //Will be given a value after player has entered their name
+	string inputPrompt = "What would you like to do: ";
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -226,11 +227,11 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Print the current version of the game
-	ui.printString(version);
+	console.writeOutput(version);
 
 	// Get the name the user would like to play with
 	do {
-		input = ui.getUnstandardizedUserInput(askCharacterName);
+		input = console.getUserInput(askCharacterName);
 	} while (input == "");
 	
 	// Create the main player object and set the starting steps as their current room
@@ -242,39 +243,41 @@ int main() {
 	startingDescription = "\nHello there " + player.getName() + ".\n"
 						  "You have just died and been sent down to The Devils Mansion.\n"
 						  "Currently you are outside of the mansion and standing on the starting steps.";
-	ui.printString(startingDescription);
-	ui.printString(startingSteps.getRoomDescription());
+	console.writeOutput(startingDescription);
+	console.writeOutput(startingSteps.getRoomDescription());
 
 	// Once the user enters `center`, send them into the starting room and have the devil 
 	// give his little spiel about how the game works and runs.
 	do {
-		input = ui.getStandardizedUserInput(askUserToMove);
+		input = console.getUserInput(askUserToMove);
 	} while (input != "center");
 	roomPointer->moveRoom(input);
 	roomPointer = roomPointer->getCenterRoom();
-	ui.printString(roomPointer->getRoomDescription());
-	ui.printString(devil.getMonsterDescription());
-	ui.printString(devil.getDialogOpening());
+	console.writeOutput(roomPointer->getRoomDescription());
+	console.writeOutput(devil.getMonsterDescription());
+	console.writeOutput(devil.getDialogOpening());
 
 	// Reset the room so the devil is not displayed after the first entrance
 	roomPointer->setRoomDescription("\nYou are now in the starting room.\n"
 									"The starting room is a large open dark room with spider webs everywhere.\n");
 	
-	ui.printString("It seems as though the devil dropped something on the ground.\n"
-				   "It looks to be a blueberry.\n"
-		           "That would probably be something cool to pick up.\n");
+	console.writeOutput(
+		"It seems as though the devil dropped something on the ground.\n"
+		"It looks to be a blueberry.\n"
+		"That would probably be something cool to pick up.\n");
+
 
 	// Let the player see there is a blueberry on the ground.
 	do {
-		input = ui.getStandardizedUserInput(blueberryOnFloor);
+		input = console.getUserInput(blueberryOnFloor);
 	} while (input != "blueberry");
 
-	// ToDo: Move the blueberry from the room to the player
+	// Move the blueberry from the room to the player
 	itemFromRoomToPlayer(roomPointer, "blueberry");
 
 	// Show the end of the introduction statement, the player is on there own for 
 	// the most part from now on.
-	ui.printString(endOfIntro);
+	console.writeOutput(endOfIntro);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Start the main loop of the game. The main loop will continuously ask the user for input.
@@ -284,7 +287,7 @@ int main() {
 		// Get input from the user continuously until a correct
 		// key word is entered
 		do {
-			input = ui.getStandardizedUserInput();
+			input = console.getUserInput(inputPrompt);
 		} while (validateInput(keyWords, input) == false);
 
 		// If the user enter's `q`, then break the main loop and end the game.
@@ -305,7 +308,7 @@ int main() {
 				}
 			}
 			else {
-				ui.printString(incorrectRoom);
+				console.writeOutput(incorrectRoom);
 			}
 		}
 		// Lets the player move to the room to the center
@@ -322,7 +325,7 @@ int main() {
 				}
 			}
 			else {
-				ui.printString(incorrectRoom);
+				console.writeOutput(incorrectRoom);
 			}
 		}
 		// Lets the player move to the room to the right
@@ -339,7 +342,7 @@ int main() {
 				}
 			}
 			else {
-				ui.printString(incorrectRoom);
+				console.writeOutput(incorrectRoom);
 			}
 		}
 		// Lets the player move back a room
@@ -356,7 +359,7 @@ int main() {
 				}
 			}
 			else {
-				ui.printString(incorrectRoom);
+				console.writeOutput(incorrectRoom);
 			}
 		}
 		// Lets the user redisplay their inventory
@@ -517,7 +520,7 @@ int main() {
 	}
 
 	// Thank the user for playing the game
-	ui.printString(endSentence);
+	console.writeOutput(endSentence);
 }
 
 
