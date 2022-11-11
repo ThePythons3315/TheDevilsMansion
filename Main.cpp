@@ -1,4 +1,4 @@
-// Version 2.10
+// Version 3.01
 
 #include <iostream>
 #include <string>
@@ -63,7 +63,7 @@ int main() {
 	// Create all string variables of text that will be used as dialog throughout the game.
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	string version = "Welcome to the Devil's Mansion V2.11\n";
+	string version = "Welcome to the Devil's Mansion V3.01\n";
 	string endSentence = "\nThanks for playing The Devil's Mansion!!";
 	string askCharacterName = "Hello there, please enter the name you would like your character to have: ";
 	string askUserToMove = "Please enter `center` to go through the door: ";

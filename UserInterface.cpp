@@ -6,10 +6,7 @@ using namespace std;
 
 // Constructors for UserInterface Class
 UserInterface::UserInterface() {
-	/*startingDescription = "Hello there player.\n"
-						  "You have just died and been sent down to The Devils Mansion.\n"
-						  "Currently you are outside of the mansion and standing on the starting steps.\n";
-	*/
+
 }
 
 // Function to get input from the user. It will ask the user what they would like to do
