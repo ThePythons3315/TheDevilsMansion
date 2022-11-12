@@ -15,7 +15,7 @@ public:
 	// Possible second user entered commands
 	enum SecondaryCommandMenu
 	{ 
-		LEFT, CENTER, RIGHT, BACK, BLUEBERRY, SKELETON, ERROR2 
+		LEFT, CENTER, RIGHT, BACK, BLUEBERRY, SKELETON, BOW, PUNCH, KICK, DEVILSKEY, ERROR2
 	};
 
 	struct InputStruct

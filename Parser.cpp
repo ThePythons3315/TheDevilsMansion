@@ -92,6 +92,22 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = BLUEBERRY;
 			}
+			else if (command2 == "bow")
+			{
+				parsedInput->command2 = BOW;
+			}
+			else if (command2 == "punch")
+			{
+				parsedInput->command2 = PUNCH;
+			}
+			else if (command2 == "kick")
+			{
+				parsedInput->command2 = KICK;
+			}
+			else if (command2 == "devilskey")
+			{
+				parsedInput->command2 = DEVILSKEY;
+			}
 			else
 			{
 				parsedInput->command2 = ERROR2;
@@ -103,6 +119,10 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			if (command2 == "blueberry")
 			{
 				parsedInput->command2 = BLUEBERRY;
+			}
+			else if (command2 == "devilskey")
+			{
+				parsedInput->command2 = DEVILSKEY;
 			}
 			else
 			{
@@ -116,6 +136,22 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			if (command2 == "blueberry")
 			{
 				parsedInput->command2 = BLUEBERRY;
+			}
+			else if (command2 == "bow")
+			{
+				parsedInput->command2 = BOW;
+			}
+			else if (command2 == "punch")
+			{
+				parsedInput->command2 = PUNCH;
+			}
+			else if (command2 == "kick")
+			{
+				parsedInput->command2 = KICK;
+			}
+			else if (command2 == "devilskey")
+			{
+				parsedInput->command2 = DEVILSKEY;
 			}
 			else
 			{

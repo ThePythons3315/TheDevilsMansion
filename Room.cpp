@@ -154,22 +154,18 @@ void Room::moveRoom(string direction) {
 	// the current room.
 	if (direction == "center") {
 		centerRoom->setPlayer(player);
-		//cout << "The player has been moved to the " << centerRoom->getName() << endl;
 		player = defaultPlayer;
 	}
 	else if (direction == "left") {
 		leftRoom->setPlayer(player);
-		//cout << "The player has been moved to the " << leftRoom->getName() << endl;
 		player = defaultPlayer;
 	}
 	else if (direction == "right") {
 		rightRoom->setPlayer(player);
-		//cout << "The player has been moved to the " << rightRoom->getName() << endl;
 		player = defaultPlayer;
 	}
 	else if (direction == "back") {
 		backRoom->setPlayer(player);
-		//cout << "The player has been moved to the " << backRoom->getName() << endl;
 		player = defaultPlayer;
 	}
 }
