@@ -3,13 +3,15 @@
 using namespace std;
 
 // Constructors
-Player::Player() {
+Player::Player()
+{
 	name = "";
 	inventory;
 	health;
 	attacks;
 };
-Player::Player(string n, Inventory invent, Health playerHealth, Attacks _attacks) {
+Player::Player(string n, Inventory invent, Health playerHealth, Attacks _attacks)
+{
 	name = n;
 	inventory = invent;
 	health = playerHealth;
@@ -17,31 +19,38 @@ Player::Player(string n, Inventory invent, Health playerHealth, Attacks _attacks
 }
 
 // Mutator Functions -- Functions that will be allowed to change private variables
-void Player::setName(string n) {
-	name = n;
+void Player::setName(string _name)
+{
+	name = _name;
 }
-void Player::setInventory(Inventory invent) {
-	inventory = invent;
+void Player::setInventory(Inventory _inventory)
+{
+	inventory = _inventory;
 }
-void Player::setPlayerHealth(Health playerHealth) {
-	health = playerHealth;
+void Player::setPlayerHealth(Health _playerHealth)
+{
+	health = _playerHealth;
 }
-void Player::setAttacks(Attacks _attacks) {
+void Player::setAttacks(Attacks _attacks)
+{
 	attacks = _attacks;
 }
 
-
 // Accessor Functions -- Functions that will return values of private functions
-string Player::getName() {
+string Player::getName()
+{
 	return name;
 }
-Inventory Player::getInventory() {
+Inventory Player::getInventory()
+{
 	return inventory;
 }
-Health Player::getPlayerHealth() {
+Health Player::getPlayerHealth()
+{
 	return health;
 }
-Attacks Player::getAttacks() {
+Attacks Player::getAttacks()
+{
 	return attacks;
 }
 

@@ -34,5 +34,6 @@ public:
 
 	// For testing purposes
 	void printPlayerInfo();
+	
 };
 #endif // !PLAYER_H

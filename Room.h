@@ -17,16 +17,15 @@ private:
 	Inventory inventory;
 	Attacks attacks;
 	Monster monster;
-	int roomID;
-	bool lock;
 	Room* leftRoom; // pointer to a room object
 	Room* centerRoom; // pointer to a room object
 	Room* rightRoom; // pointer to a room object
 	Room* backRoom; // pointer to a room object
+	bool lock;
 public:
 	// Constructors
 	Room();
-	Room(string, string, int, bool);
+	Room(string, string, bool);
 
 	// Mutator Functions -- Functions that will be allowed to change private variables
 	void setName(string);
@@ -35,7 +34,6 @@ public:
 	void setInventory(Inventory);
 	void setAttacks(Attacks);
 	void setMonster(Monster);
-	void setRoomID(int);
 	void setLockStatus(bool);
 	void setLeftRoom(Room&); // Take the address of the room object
 	void setCenterRoom(Room&); // Take the address of the room object
@@ -50,7 +48,6 @@ public:
 	Inventory getInventory();
 	Attacks getAttacks();
 	Monster getMonster();
-	int getRoomID();
 	bool getLockStatus();
 	Room* getLeftRoom();
 	Room* getCenterRoom();

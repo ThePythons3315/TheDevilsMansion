@@ -24,10 +24,11 @@ void attackFromPlayertoRoom(Room*& room, string attackName);
 bool checkIfItemIsInRoom(Room*& room, string itemName);
 bool checkIfAttackIsInRoom(Room*& room, string attackName);
 bool checkIfRoomIsLocked(Room*& room, string direction);
-void addItemHealthToPlayer(Room*& room, string itemName);
 void unlockDoor(Room*& room, string itemName);
 bool checkForItem(Room*& room, string itemName);
 bool checkForAttack(Room*& room, string itemName);
+
+void addItemHealthToPlayer(Room*& room, string itemName);
 
 int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -86,7 +87,6 @@ int main() {
 	Health devilHealth(0, 0);
 	Health devilsKeyHealth(0, 0);
 	Health skeletonHealth(50, 50);
-	//Health squashHealth(5, 5);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create weapon objects that will be used by the player and by monsters throughout the game
@@ -109,8 +109,6 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 	Item blueberry("blueberry", blueberryHealth);
 	Item devilsKey("devils key", devilsKeyHealth);
-	//Item squash("squash", squashHealth); - Tester
-
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create monster objects that will be used to battle the player throughout the game
@@ -142,26 +140,26 @@ int main() {
 	Room startingSteps("Starting Steps", "\nYou are currently at the Starting Steps.\n"
 										 "The starting steps lead up to a large and tall mansion in front of you.\n"
 										 "The mansion is dark, mysterious and gives you a chill you did not think possible.\n"
-									     "Before you is a door.\n", 0, false);
+									     "Before you is a door.\n", false);
 	// Create the starting room. This is the 2nd location that the user can go to.
 	// This room will come after the starting steps and will house the devil.
 	// In this room the devil will explain the rules of the game to you.
 	Room startingRoom("Starting Room",  "\nYou are now in the Starting Room.\n"
 										"The starting room is a large open dark room with spider webs everywhere.\n"
 										"Someone should really dust in here.\n"
-										"Standing before you is the devil.\n", 1, false);
+										"Standing before you is the devil.\n", false);
 	Room skeletonRoom("Room Of Unlucky Souls", "\nYou are now in the Room Of Unlucky Souls.\n"
-											   "The sounds of screams are coming from every inch of the room.\n", 2, false);
+											   "The sounds of screams are coming from every inch of the room.\n", false);
 	Room hellHoundRoom("Room Of The Devil's Most Loyal Friend", "\nYou are now in the Room Of The Devil's Most Loyal Friend.\n"
 																"The room is filled with lava all around the perimeter.\n"
-																"Someone should really do something about that.\n", 3, false);
+																"Someone should really do something about that.\n", false);
 	Room chimeraRoom("Room Of Pure Black", "\nYou are now in the Room of Pure Black.\n"
-										   "..... you can't see anything....\n", 4, false);
+										   "..... you can't see anything....\n", false);
 	Room archDevilRoom("Room Of Demonic Magic", "\nYou are now in the Room Of Demonic Magic.\n"
 											"Demonic magic is creeping down your spine.\n"
-											"You think some kind of demon lives here???\n", 5, false);
+											"You think some kind of demon lives here???\n", false);
 	Room testRoom6("Test Room 6", "You are now in the 6th test room, \nClearly you have managed to unlock the door\n"
-											"to access this room\n", 6, true);
+											"to access this room\n", true);
 	// ToDo: Make a function to do these in one line
 	// Starting Steps - associated rooms
 	startingSteps.setCenterRoom(startingRoom);
