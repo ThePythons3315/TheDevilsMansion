@@ -18,7 +18,7 @@ using namespace std;
 bool validateInput(vector<string>& vect, string sentence);
 void itemFromRoomToPlayer(Room*& room, string itemName);
 void itemFromPlayerToRoom(Room*& room, string itemName);
-void attackFromMonstertoRoom(Room*& room, string attackName);
+void attackFromMonstertoRoom(Room*& room);
 void attackFromRoomrtoPlayer(Room*& room, string attackName);
 void attackFromPlayertoRoom(Room*& room, string attackName);
 bool checkIfItemIsInRoom(Room*& room, string itemName);
@@ -49,7 +49,8 @@ int main() {
 	// Eventually this will be broken up into different vectors with each vector
 	// holding specific types of key words. Ex. movement vector, items in use vector, etc.
 	vector <string> keyWords = { "q", "quit", "left", "center", "right", "back", "inventory", "drop blueberry", "blueberry",
-								 "eat blueberry","devils key","drop devils key","use devils key", "bow", "kick", "punch", "drop bow", "drop punch", "drop kick", "health", "battle", "attacks", "help"};
+								 "eat blueberry","devils key","drop devils key","use devils key", "bow","bite", "kick", "punch",
+								 "drop bow","drop bite", "drop punch", "drop kick", "health", "battle", "attacks", "help"};
 	// "squash", "eat squash", "drop squash" - Tester items strings
 
 	// Pointer variable that will point to the current room the player is in
@@ -83,6 +84,7 @@ int main() {
 	Inventory playerInventory;
 	Inventory roomInventory1;
 	Inventory roomInventory5;
+	Inventory hellhoundInventory;
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create Attacks objects that will be used in various players, monsters, rooms, etc.
@@ -91,6 +93,7 @@ int main() {
 	Attacks playerAttack;
 	Attacks roomAttacks;
 	Attacks skeletonAttacks;
+	Attacks hellhoundAttacks;
 	Attacks devilAttacks;
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -98,10 +101,12 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	Health playerHealth(90, 100);
-	Health blueberryHealth(10, 10);
+	Health blueberryHealth(50, 50);
+	Health fireFangHeakth(30, 30);
 	Health devilHealth(0, 0);
 	Health devilsKeyHealth(0, 0);
 	Health skeletonHealth(50, 50);
+	Health hellhoundHealth(70, 70);
 	//Health squashHealth(5, 5);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -110,6 +115,7 @@ int main() {
 	Weapon punch("punch", "punch", -20, 95);
 	Weapon kick("kick", "kick", -25, 90);
 	Weapon bow("bow", "bow Shot", -20, 90);
+	Weapon bite("bite", "bite", -25, 85);
 	Weapon placeHolderWeapon("Temp", "Temp", 0, 0);
 	
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -118,6 +124,7 @@ int main() {
 	
 	devilAttacks.addAttack(placeHolderWeapon);
 	skeletonAttacks.addAttack(bow);
+	hellhoundAttacks.addAttack(bite);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create item objects that will be used in various player inventories, room inventories
@@ -125,6 +132,7 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 	Item blueberry("blueberry", blueberryHealth);
 	Item devilsKey("devils key", devilsKeyHealth);
+	Item fireFang("fire fang", fireFangHeakth);
 	//Item squash("squash", squashHealth); - Tester
 
 
@@ -148,6 +156,9 @@ int main() {
 	Monster skeleton("Skeleton", "The skeleton is a 10 foot tall, skinny, white thing of bones.\n",
 		"Hello there peasent, I am the skeleton.\n"
 		"Welcome to my room. I am going to take you down no matter what.\n", skeletonHealth, skeletonAttacks);
+	Monster hellhound("Hellhound", "The devils most loyal beasts. They patrol his manor, sniffing out any intruder who dares to wander these cursed halls.\n",
+		"Hellow there you no life scum, I am the Hellhound.\n" "Welcome to my room. I am going to send you to the depths of hell no matter the cost.\n",
+		hellhoundHealth, hellhoundAttacks);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create room objects that will be used to move through by the player throughout the game
@@ -204,6 +215,7 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	skeletonRoom.setMonster(skeleton);
+	hellHoundRoom.setMonster(hellhound);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Add item objects to room inventories, add room inventories to actual room objects
@@ -213,6 +225,8 @@ int main() {
 	startingRoom.setInventory(roomInventory1);
 	roomInventory5.addItem(devilsKey);
 	archDevilRoom.setInventory(roomInventory5);
+	hellhoundInventory.addItem(fireFang);
+	hellhound.setInventory(hellhoundInventory);
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Add weapon objects to player attacks
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -403,6 +417,22 @@ int main() {
 				cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
 			}
 		}
+		//Lets the user unlock the bow attack
+		else if (input == "bite") {
+			if (checkIfAttackIsInRoom(roomPointer, "bite") == true) {
+				if (roomPointer->getPlayer().getAttacks().getSize() != 4) {
+					attackFromRoomrtoPlayer(roomPointer, "bite");
+				}
+				else
+				{
+					cout << "You have the max amount of attacks that can be used at one time.\n";
+				}
+			}
+			else {
+				cout << "The attack you have entered is not in this room.\n";
+				cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
+			}
+		}
 		//Lets the user unlock the kick attack
 		else if (input == "kick") {
 			if (checkIfAttackIsInRoom(roomPointer, "kick") == true) {
@@ -454,6 +484,25 @@ int main() {
 				cout << "You do not currently have the attack that you wish to drop.\n";
 			}
 		}
+		//Lets the player drop the bow attack
+		else if (input == "drop bite") {
+			if (checkForAttack(roomPointer, "bite") == true) {
+				attackFromPlayertoRoom(roomPointer, "bite");
+			}
+			else {
+				cout << "You do not currently have the attack that you wish to drop.\n";
+			}
+		}
+		//Lets the player drop the kick attack
+		else if (input == "drop kick") {
+			if (checkForAttack(roomPointer, "kick") == true) {
+				attackFromPlayertoRoom(roomPointer, "kick");
+			}
+			else {
+				cout << "You do not currently have the attack that you wish to drop.\n";
+			}
+		}
+
 		//Lets the player drop the punch attack
 		else if (input == "drop punch") {
 			if (checkForAttack(roomPointer, "punch") == true) {
@@ -505,7 +554,7 @@ int main() {
 				cout << "\nThere is no current monster to battle.\n\n";
 			}				
 			if (roomPointer->getMonster().getHealth().getHealth() < 1 && roomPointer->getAttacks().getSize() == 0) {
-				attackFromMonstertoRoom(roomPointer, "bow");
+				attackFromMonstertoRoom(roomPointer);
 			}
 			else if (roomPointer->getPlayer().getPlayerHealth().getHealth() < 1){
 				break;
@@ -629,10 +678,11 @@ void itemFromPlayerToRoom(Room*& room, string itemName)
 	room->getPlayer().getInventory().displayPlayerInventory();
 }
 
-void attackFromMonstertoRoom(Room*& room, string attackName)
+void attackFromMonstertoRoom(Room*& room)
 {
 	Monster tempMonster;
 	Attacks roomAttacks;
+	Attacks temp;
 	Attacks monsterAttacks;
 	vector<Weapon> attacks;
 	int size;
@@ -641,18 +691,16 @@ void attackFromMonstertoRoom(Room*& room, string attackName)
 	// room. Just doing this to make it the code simpler to look at
 	roomAttacks = room->getAttacks();
 	monsterAttacks = room->getMonster().getAttacks();
+	temp = monsterAttacks;
 	size = monsterAttacks.getSize();
 	attacks = monsterAttacks.getAttacks();
 
 	// Add the item to the player and remove it from the room
 	for (int i = 0; i < size; i++) {
-		if (attacks.at(i).getName() == attackName) {
-			// Add the item to the room's inventory
-			roomAttacks.addAttack(attacks.at(i));
-
-			// Remove the item from the player
-			monsterAttacks.removeItem(i);
-		}
+		// Add the item to the room's inventory
+		roomAttacks.addAttack(attacks.at(i));
+		// Remove the item from the player
+		monsterAttacks.removeItem(i);
 	}
 
 	// Set the room's inventory to the updated room inventory
@@ -667,7 +715,7 @@ void attackFromMonstertoRoom(Room*& room, string attackName)
 	room->setMonster(tempMonster);
 
 	// Display the inventories of the room and the player
-	cout << endl << room->getMonster().getName() << " has just dropped " << attackName << endl;
+	cout << endl << room->getMonster().getName() << " has just dropped " << temp.getMonsterWeapon().getName() << endl;
 	cout << "Monster attacks\n";
 	room->getMonster().getAttacks().displayattacks();
 	cout << endl;
@@ -693,11 +741,10 @@ void attackFromRoomrtoPlayer(Room*& room, string attackName)
 	attacks = roomAttacks.getAttacks();
 
 	// Add the item to the player and remove it from the room
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < size; i++) {	
 		if (attacks.at(i).getName() == attackName) {
 			// Add the item to the player's inventory
 			playerAttacks.addAttack(attacks.at(i));
-
 			// Remove the item from the room
 			roomAttacks.removeItem(i);
 		}
@@ -741,10 +788,10 @@ void attackFromPlayertoRoom(Room*& room, string attackName)
 		if (attacks.at(i).getName() == attackName) {
 			// Add the item to the room's inventory
 			roomAttacks.addAttack(attacks.at(i));
-
 			// Remove the item from the player
 			playerAttacks.removeItem(i);
 		}
+		// Add the item to the room's inventory
 	}
 
 	// Set the room's inventory to the updated room inventory

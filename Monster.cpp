@@ -9,6 +9,7 @@ Monster::Monster() {
 	dialogOpening = "";
 	health;
 	attacks;
+	monsterInventory;
 }
 Monster::Monster(string _name, string _monsterDescription, string _dialogOpening, Health _health, Attacks _attacks) {
 	name = _name;
@@ -16,6 +17,17 @@ Monster::Monster(string _name, string _monsterDescription, string _dialogOpening
 	dialogOpening = _dialogOpening;
 	health = _health;
 	attacks = _attacks;
+	monsterInventory;
+}
+
+Monster::Monster(string _name, string _monsterDescription, string _dialogOpening, Health _health, Attacks _attacks, Inventory inventory)
+{
+	name = _name;
+	monsterDescription = _monsterDescription;
+	dialogOpening = _dialogOpening;
+	health = _health;
+	attacks = _attacks;
+	monsterInventory = inventory;
 }
 
 // Mutator Functions -- Functions that will be allowed to change private variables
@@ -35,6 +47,11 @@ void Monster::setAttacks(Attacks _attacks) {
 	attacks = _attacks;
 }
 
+void Monster::setInventory(Inventory inventory)
+{
+	monsterInventory = inventory;
+}
+
 // Accessor Functions -- Functions that will return values of private functions
 string Monster::getName() {
 	return name;
@@ -50,6 +67,11 @@ Health Monster::getHealth() {
 }
 Attacks Monster::getAttacks() {
 	return attacks;
+}
+
+Inventory Monster::getInventory()
+{
+	return monsterInventory;
 }
 
 void Monster::displayMonster() {
