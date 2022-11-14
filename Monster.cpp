@@ -47,9 +47,8 @@ void Monster::setAttacks(Attacks _attacks) {
 	attacks = _attacks;
 }
 
-void Monster::setInventory(Inventory inventory)
-{
-	monsterInventory = inventory;
+void Monster::setInventory(Inventory invent) {
+	monsterInventory = invent;
 }
 
 // Accessor Functions -- Functions that will return values of private functions
@@ -69,8 +68,7 @@ Attacks Monster::getAttacks() {
 	return attacks;
 }
 
-Inventory Monster::getInventory()
-{
+Inventory Monster::getInventory() {
 	return monsterInventory;
 }
 

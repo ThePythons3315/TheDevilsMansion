@@ -18,6 +18,7 @@ using namespace std;
 bool validateInput(vector<string>& vect, string sentence);
 void itemFromRoomToPlayer(Room*& room, string itemName);
 void itemFromPlayerToRoom(Room*& room, string itemName);
+void dropMonsterInventoryToRoom(Room*& room);
 void attackFromMonstertoRoom(Room*& room);
 void attackFromRoomrtoPlayer(Room*& room, string attackName);
 void attackFromPlayertoRoom(Room*& room, string attackName);
@@ -134,7 +135,11 @@ int main() {
 	Item devilsKey("devils key", devilsKeyHealth);
 	Item fireFang("fire fang", fireFangHeakth);
 	//Item squash("squash", squashHealth); - Tester
-
+	// 
+	///////////////////////////////////////////////////////////////////////////////////////////
+	// Add item objects to monster inventories, add room inventories to actual room objects
+	///////////////////////////////////////////////////////////////////////////////////////////
+	hellhoundInventory.addItem(fireFang);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create monster objects that will be used to battle the player throughout the game
@@ -158,7 +163,9 @@ int main() {
 		"Welcome to my room. I am going to take you down no matter what.\n", skeletonHealth, skeletonAttacks);
 	Monster hellhound("Hellhound", "The devils most loyal beasts. They patrol his manor, sniffing out any intruder who dares to wander these cursed halls.\n",
 		"Hellow there you no life scum, I am the Hellhound.\n" "Welcome to my room. I am going to send you to the depths of hell no matter the cost.\n",
-		hellhoundHealth, hellhoundAttacks);
+		hellhoundHealth, hellhoundAttacks, hellhoundInventory);
+
+
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create room objects that will be used to move through by the player throughout the game
@@ -225,8 +232,7 @@ int main() {
 	startingRoom.setInventory(roomInventory1);
 	roomInventory5.addItem(devilsKey);
 	archDevilRoom.setInventory(roomInventory5);
-	hellhoundInventory.addItem(fireFang);
-	hellhound.setInventory(hellhoundInventory);
+
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Add weapon objects to player attacks
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -548,6 +554,7 @@ int main() {
 		else if (input == "battle") {
 			if (roomPointer->getMonster().getName() != "" && roomPointer->getMonster().getHealth().getHealth() > 0) {
 				Battle battle(roomPointer, roomPointer->getPlayer(), roomPointer->getMonster());
+				roomPointer->getMonster().getInventory().displayMonsterInventory();
 				battle.runBattle();
 			}
 			else {
@@ -555,6 +562,8 @@ int main() {
 			}				
 			if (roomPointer->getMonster().getHealth().getHealth() < 1 && roomPointer->getAttacks().getSize() == 0) {
 				attackFromMonstertoRoom(roomPointer);
+				//roomPointer->getMonster().getInventory().displayMonsterInventory();
+				dropMonsterInventoryToRoom(roomPointer);
 			}
 			else if (roomPointer->getPlayer().getPlayerHealth().getHealth() < 1){
 				break;
@@ -676,6 +685,51 @@ void itemFromPlayerToRoom(Room*& room, string itemName)
 	cout << "\nYou have just dropped " << itemName << endl;
 	room->getInventory().displayRoomInventory();
 	room->getPlayer().getInventory().displayPlayerInventory();
+}
+
+void dropMonsterInventoryToRoom(Room*& room)
+{
+	// Variables
+	Monster tempMonster;
+	Inventory roomInventory;
+	Inventory monsterInventory;
+	vector<Item> items;
+	int i = 0;
+
+	// Set all of the variables to their corresponding values from the
+	// room. Just doing this to make it the code simpler to look at
+	roomInventory = room->getInventory();
+	monsterInventory = room->getMonster().getInventory();
+	items = monsterInventory.getInventory();
+
+	// Add the item to the player and remove it from the room
+	while(room->getMonster().getInventory().getSize() != 0) {
+
+			// Add the item to the room's inventory
+			roomInventory.addItem(items.at(i));
+
+			// Remove the item from the player
+			monsterInventory.removeItem(i);
+			i++;
+	}
+
+	// Set the room's inventory to the updated room inventory
+	room->setInventory(roomInventory);
+
+	// Set the player's inventory to the updated player's inventory
+	tempMonster.setInventory(monsterInventory);
+	tempMonster.setAttacks(room->getMonster().getAttacks());
+	tempMonster.setName(room->getMonster().getName());
+	tempMonster.setHealth(room->getMonster().getHealth());
+	tempMonster.setDialogOpening(room->getMonster().getDialogOpening());
+	tempMonster.setMonsterDescription(room->getMonster().getMonsterDescription());
+	room->setMonster(tempMonster);
+
+
+	// Display the inventories of the room and the player
+	cout << "\nThe " << room->getMonster().getName() << " has just dropped it's entire inventory." << endl;
+	room->getInventory().displayRoomInventory();
+	room->getMonster().getInventory().displayMonsterInventory();
 }
 
 void attackFromMonstertoRoom(Room*& room)

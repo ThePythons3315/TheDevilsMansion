@@ -23,6 +23,7 @@ public:
 	//Function to display all the items in the player inventory
 	void displayRoomInventory();
 	void displayPlayerInventory();
+	void displayMonsterInventory();
 
 	// Get the number of items being stored in the inventory
 	int getSize();

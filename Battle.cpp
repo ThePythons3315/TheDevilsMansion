@@ -154,6 +154,7 @@ void Battle::runBattle() {
 				tempHealth.setMaxHealth(monster.getHealth().getMaxHealth());
 				monster.setHealth(tempHealth);
 				roomPointer->setMonster(monster);
+				roomPointer->getMonster().getInventory().displayMonsterInventory();
 				cout << "The attack hit!!\n";
 				if (monster.getHealth().getHealth() < 1) {
 					cout << "Monster New Health: 0" << endl;
