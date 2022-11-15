@@ -39,7 +39,8 @@ Room Battle::getRoom()
 }
 
 void Battle::displayOpeningLine() {
-	cout << endl << player.getName() << " is now going into battle with " << monster.getName() << endl << endl;
+	cout << player.getName() << " is now going into battle with " << monster.getName() << endl << endl;
+	// ToDo: The Player's name is not getting correctly printed to the screen when entering battle
 }
 
 void Battle::runBattle() {

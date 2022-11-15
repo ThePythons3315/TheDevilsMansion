@@ -16,6 +16,8 @@ std::string GameUI::getUserInput(std::string prompt)
     writeOutput(prompt);
     std::getline(std::cin, userInput);
 
+    std::cout << std::endl;
+
     return userInput;
 }
 

@@ -24,7 +24,7 @@ void Inventory::displayRoomInventory()
 			cout << "-" << inventory.at(i).getName() << endl;
 		}
 	}
-	cout << endl;
+	//std::cout << std::endl; // ToDo: Figure out a way to take this out to make the spacing work
 }
 
 //Function to display all the items in the player inventory
@@ -39,7 +39,7 @@ void Inventory::displayPlayerInventory()
 			cout << "-" << inventory.at(i).getName() << endl;
 		}
 	}
-	cout << endl;
+	//std::cout << std::endl; // ToDo: Figure out a way to take this out to make the spacing work
 }
 
 void Inventory::displayMonsterInventory()
