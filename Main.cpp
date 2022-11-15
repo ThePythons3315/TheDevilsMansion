@@ -1,10 +1,10 @@
-// Version 2.10
+// Version 3.01
 
 #include <iostream>
 #include <string>
 #include <vector>
 #include "Player.h"
-#include "UserInterface.h"
+#include "GameUI.h"
 #include "Room.h"
 #include "Monster.h"
 #include "Inventory.h"
@@ -12,10 +12,10 @@
 #include "Battle.h"
 #include "Weapon.h"
 #include "Attacks.h"
+#include "Parser.h"
 using namespace std;
 
 // Definitions of functions -- initialized below
-bool validateInput(vector<string>& vect, string sentence);
 void itemFromRoomToPlayer(Room*& room, string itemName);
 void itemFromPlayerToRoom(Room*& room, string itemName);
 void dropMonsterInventoryToRoom(Room*& room);
@@ -25,11 +25,11 @@ void attackFromPlayertoRoom(Room*& room, string attackName);
 bool checkIfItemIsInRoom(Room*& room, string itemName);
 bool checkIfAttackIsInRoom(Room*& room, string attackName);
 bool checkIfRoomIsLocked(Room*& room, string direction);
-void addItemHealthToPlayer(Room*& room, string itemName);
 void unlockDoor(Room*& room, string itemName);
 bool checkForItem(Room*& room, string itemName);
 bool checkForAttack(Room*& room, string itemName);
-void helpFunction();
+
+void addItemHealthToPlayer(Room*& room, string itemName);
 
 int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -38,6 +38,13 @@ int main() {
 	// as attributes in creating other objects
 	///////////////////////////////////////////////////////////////////////////////////////////
 
+	GameUI console;    // UI encapsulation - rather than directly writing to console - ToDo fix issues in parser class
+	Parser parser;      // command parser - pass it a string - parser knows command format & returns struct
+	Parser::InputStruct* parserOutput; // struct of commands that will tell the main loop what to do
+	Room* roomPointer = nullptr; // Pointer variable that will point to the current room the player is in
+	std::string userInputString;   // raw user input - retrived from UI & redirected to parser for processing
+
+/*
 	// Loop variable that starts off as true. While the variable is true the mainloop will
 	// run the game and continuoulsy ask for user input.
 	bool mainLoop = true;
@@ -60,12 +67,13 @@ int main() {
 	// Create a game instance which will allow for user input and console output
 	// to be used.
 	UserInterface ui;
+  */
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create all string variables of text that will be used as dialog throughout the game.
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	string version = "Welcome to the Devil's Mansion V2.11\n";
+	string version = "Welcome to the Devil's Mansion V3.01\n";
 	string endSentence = "\nThanks for playing The Devil's Mansion!!";
 	string askCharacterName = "Hello there, please enter the name you would like your character to have: ";
 	string askUserToMove = "Please enter `center` to go through the door: ";
@@ -76,7 +84,8 @@ int main() {
 						"Please continue with the game on your own...\n";
 	string incorrectRoom = "\nThat was not a valid room.\nThe player will stay in the current room.\n";
 	string startingDescription = ""; //Will be given a value after player has entered their name
-
+	string quitGame = "You have quit the game...\n";
+	string inputPrompt = "What would you like to do: ";
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create inventory objects that will be used in various players, monsters, rooms, etc.
@@ -134,8 +143,7 @@ int main() {
 	Item blueberry("blueberry", blueberryHealth);
 	Item devilsKey("devils key", devilsKeyHealth);
 	Item fireFang("fire fang", fireFangHeakth);
-	//Item squash("squash", squashHealth); - Tester
-	// 
+
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Add item objects to monster inventories, add room inventories to actual room objects
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -176,26 +184,26 @@ int main() {
 	Room startingSteps("Starting Steps", "\nYou are currently at the Starting Steps.\n"
 										 "The starting steps lead up to a large and tall mansion in front of you.\n"
 										 "The mansion is dark, mysterious and gives you a chill you did not think possible.\n"
-									     "Before you is a door.\n", 0, false);
+									     "Before you is a door.\n", false);
 	// Create the starting room. This is the 2nd location that the user can go to.
 	// This room will come after the starting steps and will house the devil.
 	// In this room the devil will explain the rules of the game to you.
 	Room startingRoom("Starting Room",  "\nYou are now in the Starting Room.\n"
 										"The starting room is a large open dark room with spider webs everywhere.\n"
 										"Someone should really dust in here.\n"
-										"Standing before you is the devil.\n", 1, false);
+										"Standing before you is the devil.\n", false);
 	Room skeletonRoom("Room Of Unlucky Souls", "\nYou are now in the Room Of Unlucky Souls.\n"
-											   "The sounds of screams are coming from every inch of the room.\n", 2, false);
+											   "The sounds of screams are coming from every inch of the room.\n", false);
 	Room hellHoundRoom("Room Of The Devil's Most Loyal Friend", "\nYou are now in the Room Of The Devil's Most Loyal Friend.\n"
 																"The room is filled with lava all around the perimeter.\n"
-																"Someone should really do something about that.\n", 3, false);
+																"Someone should really do something about that.\n", false);
 	Room chimeraRoom("Room Of Pure Black", "\nYou are now in the Room of Pure Black.\n"
-										   "..... you can't see anything....\n", 4, false);
+										   "..... you can't see anything....\n", false);
 	Room archDevilRoom("Room Of Demonic Magic", "\nYou are now in the Room Of Demonic Magic.\n"
 											"Demonic magic is creeping down your spine.\n"
-											"You think some kind of demon lives here???\n", 5, false);
+											"You think some kind of demon lives here???\n", false);
 	Room testRoom6("Test Room 6", "You are now in the 6th test room, \nClearly you have managed to unlock the door\n"
-											"to access this room\n", 6, true);
+											"to access this room\n", true);
 	// ToDo: Make a function to do these in one line
 	// Starting Steps - associated rooms
 	startingSteps.setCenterRoom(startingRoom);
@@ -246,15 +254,15 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Print the current version of the game
-	ui.printString(version);
+	console.writeOutput(version);
 
 	// Get the name the user would like to play with
 	do {
-		input = ui.getUnstandardizedUserInput(askCharacterName);
-	} while (input == "");
+		userInputString = console.getUserInput(askCharacterName);
+	} while (userInputString == "");
 	
 	// Create the main player object and set the starting steps as their current room
-	Player player(input, playerInventory, playerHealth,playerAttack);
+	Player player(userInputString, playerInventory, playerHealth,playerAttack);
 	startingSteps.setPlayer(player);
 	roomPointer = &startingSteps;
 
@@ -262,163 +270,327 @@ int main() {
 	startingDescription = "\nHello there " + player.getName() + ".\n"
 						  "You have just died and been sent down to The Devils Mansion.\n"
 						  "Currently you are outside of the mansion and standing on the starting steps.";
-	ui.printString(startingDescription);
-	ui.printString(startingSteps.getRoomDescription());
+	console.writeOutput(startingDescription);
+	console.writeOutput(startingSteps.getRoomDescription());
 
 	// Once the user enters `center`, send them into the starting room and have the devil 
 	// give his little spiel about how the game works and runs.
 	do {
-		input = ui.getStandardizedUserInput(askUserToMove);
-	} while (input != "center");
-	roomPointer->moveRoom(input);
+		userInputString = console.getUserInput(askUserToMove);
+	} while (userInputString != "center");
+	roomPointer->moveRoom(userInputString);
 	roomPointer = roomPointer->getCenterRoom();
-	ui.printString(roomPointer->getRoomDescription());
-	ui.printString(devil.getMonsterDescription());
-	ui.printString(devil.getDialogOpening());
+	console.writeOutput(roomPointer->getRoomDescription());
+	console.writeOutput(devil.getMonsterDescription());
+	console.writeOutput(devil.getDialogOpening());
 
 	// Reset the room so the devil is not displayed after the first entrance
 	roomPointer->setRoomDescription("\nYou are now in the starting room.\n"
 									"The starting room is a large open dark room with spider webs everywhere.\n");
 	
-	ui.printString("It seems as though the devil dropped something on the ground.\n"
-				   "It looks to be a blueberry.\n"
-		           "That would probably be something cool to pick up.\n");
+	console.writeOutput("It seems as though the devil dropped something on the ground.\n"
+						"It looks to be a blueberry.\n"
+						"That would probably be something cool to pick up.\n");
+
 
 	// Let the player see there is a blueberry on the ground.
 	do {
-		input = ui.getStandardizedUserInput(blueberryOnFloor);
-	} while (input != "blueberry");
+		userInputString = console.getUserInput(blueberryOnFloor);
+	} while (userInputString != "blueberry");
 
-	// ToDo: Move the blueberry from the room to the player
+	// Move the blueberry from the room to the player
 	itemFromRoomToPlayer(roomPointer, "blueberry");
 
 	// Show the end of the introduction statement, the player is on there own for 
 	// the most part from now on.
-	ui.printString(endOfIntro);
+	console.writeOutput(endOfIntro);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Start the main loop of the game. The main loop will continuously ask the user for input.
 	// The user input will be used to run the game and progress throughout the game.
 	///////////////////////////////////////////////////////////////////////////////////////////
-	while (mainLoop == true) {
-		// Get input from the user continuously until a correct
-		// key word is entered
-		do {
-			input = ui.getStandardizedUserInput();
-		} while (validateInput(keyWords, input) == false);
+	do
+	{
+		// Get input from the user and parse it into a suitable form
+		userInputString = console.getUserInput("\nWhat would you like to do: ");
+		parserOutput = parser.parseInput(userInputString);   // parserOutput is a pointer to memory created on the heap
 
-		// If the user enter's `q`, then break the main loop and end the game.
-		if (input == "q" || input == "quit") {
-			break;
-		}
-		// Lets the player move to the room to the left
-		else if (input == "left") {
-			if (roomPointer->validatePossibleRoom(input)) {
-				if (checkIfRoomIsLocked(roomPointer, input) == false) {
-					roomPointer->moveRoom("left");
-					roomPointer = roomPointer->getLeftRoom();
-					roomPointer->getRoomInformation();
-				}
-				else {
-					cout << "It looks like the " << roomPointer->getLeftRoom()->getName()
-						<< " is locked.\n" << "You must have a key to unlock the door.\n\n";
-				}
-			}
-			else {
-				ui.printString(incorrectRoom);
-			}
-		}
-		// Lets the player move to the room to the center
-		else if (input == "center") {
-			if (roomPointer->validatePossibleRoom(input)) {
-				if (checkIfRoomIsLocked(roomPointer, input) == false) {
-					roomPointer->moveRoom("center");
-					roomPointer = roomPointer->getCenterRoom();
-					roomPointer->getRoomInformation();
-				}
-				else {
-					cout << "It looks like the " << roomPointer->getCenterRoom()->getName()
-						<< " is locked.\n" << "You must have a key to unlock the door.\n\n";
-				}
-			}
-			else {
-				ui.printString(incorrectRoom);
-			}
-		}
-		// Lets the player move to the room to the right
-		else if (input == "right") {
-			if (roomPointer->validatePossibleRoom(input)) {
-				if (checkIfRoomIsLocked(roomPointer, input) == false) {
-					roomPointer->moveRoom("right");
-					roomPointer = roomPointer->getRightRoom();
-					roomPointer->getRoomInformation();
-				}
-				else {
-					cout << "It looks like the " << roomPointer->getRightRoom()->getName()
-						<< " is locked.\n" << "You must have a key to unlock the door.\n\n";
-				}
-			}
-			else {
-				ui.printString(incorrectRoom);
-			}
-		}
-		// Lets the player move back a room
-		else if (input == "back") {
-			if (roomPointer->validatePossibleRoom(input)) {
-				if (checkIfRoomIsLocked(roomPointer, input) == false) {
-					roomPointer->moveRoom("back");
-					roomPointer = roomPointer->getBackRoom();
-					roomPointer->getRoomInformation();
-				}
-				else {
-					cout << "It looks like the " << roomPointer->getBackRoom()->getName()
-						<< " is locked.\n" << "You must have a key to unlock the door.\n\n";
-				}
-			}
-			else {
-				ui.printString(incorrectRoom);
-			}
-		}
-		// Lets the user redisplay their inventory
-		else if (input == "inventory") {
+		switch (parserOutput->command1)
+		{
+		// 1 command Key Words
+		case Parser::INVENTORY:
+			// Lets the user redisplay their inventory
 			roomPointer->getPlayer().getInventory().displayPlayerInventory();
-		}
-		//Lets the user see the attacks they've unlocked
-		else if (input == "attacks") {
+			break;
+
+		case Parser::HEALTH:
+			// Lets the player see how much health they currently have
+			roomPointer->getPlayer().getPlayerHealth().displayHealth();
+			break;
+
+		case Parser::ATTACKS:
+			//Lets the user see the attacks they've unlocked
 			roomPointer->getPlayer().getAttacks().displayattacks();
-		}
-		// Lets the user pick up the blueberry
-		else if (input == "blueberry"){
-			if (checkIfItemIsInRoom(roomPointer, "blueberry") == true) {
-				itemFromRoomToPlayer(roomPointer, "blueberry");
-			}
-			else {
-				cout << "\nThe item you have entered is not in this room.\n";
-				cout << "Check other rooms..... or your inventory.\n\n";
-			}
-		}
-		// Lets the user pick up the devils key
-		else if (input == "devils key") {
-			if (checkIfItemIsInRoom(roomPointer, "devils key") == true) {
-				itemFromRoomToPlayer(roomPointer, "devils key");
-			}
-			else {
-				cout << "\nThe item you have entered is not in this room.\n";
-				cout << "Check other rooms..... or your inventory.\n\n";
-			}
-		}
-		//Lets the user unlock the bow attack
-		else if (input == "bow") {
-			if (checkIfAttackIsInRoom(roomPointer, "bow") == true) {
-				if (roomPointer->getPlayer().getAttacks().getSize() != 4) {
-					attackFromRoomrtoPlayer(roomPointer, "bow");
+			break;
+
+		case Parser::HELP:
+			parser.displayHelpText(console);
+			break;
+
+		case Parser::QUIT:
+			console.writeOutput(quitGame);
+			break;
+
+		case Parser::ERROR1:
+			parser.incorrectMainCommand(console);
+			break;
+
+		// 2 command Key Words
+		case Parser::MOVE:
+			// Move the player based off the direction entered
+			switch (parserOutput->command2)
+			{
+			case Parser::LEFT:
+				// ToDo: Refactor into a single function
+				// Add extra variable with the direction you are moving
+
+				// Lets the player move to the room to the left
+				if (roomPointer->validatePossibleRoom("left")) // ToDo: Get rid of hardcoded direction
+				{
+					if (checkIfRoomIsLocked(roomPointer, "left") == false)
+					{
+						roomPointer->moveRoom("left");
+						roomPointer = roomPointer->getLeftRoom();
+						roomPointer->getRoomInformation();
+					}
+					else
+					{
+						cout << "It looks like the " << roomPointer->getLeftRoom()->getName()
+							 << " is locked.\n" << "You must have a key to unlock the door.\n\n";
+					}
 				}
 				else
 				{
-					cout << "You have the max amount of attacks that can be used at one time.\n";
+					console.writeOutput(incorrectRoom);
 				}
+				break;
+
+			case Parser::CENTER:
+				// ToDo: Refactor into a single function
+				// Add extra variable with the direction you are moving
+
+				// Lets the player move to the room to the center
+				if (roomPointer->validatePossibleRoom("center")) // ToDo: Get rid of hardcoded direction
+				{
+					if (checkIfRoomIsLocked(roomPointer, "center") == false)
+					{
+						roomPointer->moveRoom("center");
+						roomPointer = roomPointer->getCenterRoom();
+						roomPointer->getRoomInformation();
+					}
+					else
+					{
+						cout << "It looks like the " << roomPointer->getCenterRoom()->getName()
+							 << " is locked.\n" << "You must have a key to unlock the door.\n\n";
+					}
+				}
+				else
+				{
+					console.writeOutput(incorrectRoom);
+				}
+				break;
+
+			case Parser::RIGHT:
+				// ToDo: Refactor into a single function
+				// Add extra variable with the direction you are moving
+
+				// Lets the player move to the room to the right
+				if (roomPointer->validatePossibleRoom("right")) // ToDo: Get rid of hardcoded direction
+				{
+					if (checkIfRoomIsLocked(roomPointer, "right") == false)
+					{
+						roomPointer->moveRoom("right");
+						roomPointer = roomPointer->getRightRoom();
+						roomPointer->getRoomInformation();
+					}
+					else
+					{
+						cout << "It looks like the " << roomPointer->getRightRoom()->getName()
+							 << " is locked.\n" << "You must have a key to unlock the door.\n\n";
+					}
+				}
+				else
+				{
+					console.writeOutput(incorrectRoom);
+				}
+				break;
+
+			case Parser::BACK:
+				// ToDo: Refactor into a single function
+				// Add extra variable with the direction you are moving
+
+				// Lets the player move back a room
+				if (roomPointer->validatePossibleRoom("back")) // ToDo: Get rid of hardcoded direction
+				{
+					if (checkIfRoomIsLocked(roomPointer, "back") == false)
+					{
+						roomPointer->moveRoom("back");
+						roomPointer = roomPointer->getBackRoom();
+						roomPointer->getRoomInformation();
+					}
+					else
+					{
+						cout << "It looks like the " << roomPointer->getBackRoom()->getName()
+							<< " is locked.\n" << "You must have a key to unlock the door.\n\n";
+					}
+				}
+				else
+				{
+					console.writeOutput(incorrectRoom);
+				}
+				break;
+
+			case Parser::ERROR2:
+				parser.incorrectDirectionCommand(console);
+				break;
 			}
-			else {
+			break;
+
+		case Parser::COLLECT:
+			switch (parserOutput->command2)
+			{
+			case Parser::BLUEBERRY:
+				// Lets the user pick up the blueberry
+				if (checkIfItemIsInRoom(roomPointer, "blueberry") == true) {
+					itemFromRoomToPlayer(roomPointer, "blueberry");
+				}
+				else {
+					cout << "\nThe item you have entered is not in this room.\n";
+					cout << "Check other rooms..... or your inventory.\n\n";
+				}
+				break;
+			case Parser::BOW:
+				// Lets the user unlock the bow attack
+				if (checkIfAttackIsInRoom(roomPointer, "bow") == true)
+				{
+					if (roomPointer->getPlayer().getAttacks().getSize() != 4)
+					{
+						attackFromRoomrtoPlayer(roomPointer, "bow");
+					}
+					else
+					{
+						cout << "You have the max amount of attacks that can be used at one time.\n";
+					}
+				}
+				else
+				{
+					cout << "The attack you have entered is not in this room.\n";
+					cout << "Check other rooms or your attack list, you may have unlocked it already.\n";
+				}
+				break;
+			case Parser::PUNCH:
+				//Lets the user unlock the punch attack
+				if (checkIfAttackIsInRoom(roomPointer, "punch") == true)
+				{
+					if (roomPointer->getPlayer().getAttacks().getSize() != 4)
+					{
+						attackFromRoomrtoPlayer(roomPointer, "punch");
+					}
+					else
+					{
+						cout << "You have the max amount of attacks that can be used at one time.\n";
+					}
+				}
+				else
+				{
+					cout << "The attack you have entered is not in this room.\n";
+					cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
+				}
+				break;
+			case Parser::KICK:
+				//Lets the user unlock the kick attack
+				if (checkIfAttackIsInRoom(roomPointer, "kick") == true)
+				{
+					if (roomPointer->getPlayer().getAttacks().getSize() != 4)
+					{
+						attackFromRoomrtoPlayer(roomPointer, "kick");
+					}
+					else
+					{
+						cout << "You have the max amount of attacks that can be used at one time.\n";
+					}
+				}
+				else
+				{
+					cout << "The attack you have entered is not in this room.\n";
+					cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
+				}
+				break;
+			case Parser::DEVILSKEY:
+				// Lets the user pick up the devils key
+				if (checkIfItemIsInRoom(roomPointer, "devils key") == true)
+				{
+					itemFromRoomToPlayer(roomPointer, "devils key");
+				}
+				else
+				{
+					cout << "\nThe item you have entered is not in this room.\n";
+					cout << "Check other rooms..... or your inventory.\n\n";
+				}
+				break;
+
+			case Parser::ERROR2:
+				// ToDo: Change this to display that a command for that item could
+				// not be found
+				parser.incorrectItemCommand(console);
+				break;
+			}
+			break;
+
+		case Parser::USE:
+			switch (parserOutput->command2)
+			{
+			case Parser::BLUEBERRY:
+				// Lets the player eat the blueberry and regain health
+				if (checkForItem(roomPointer, "blueberry") == true) {
+					addItemHealthToPlayer(roomPointer, "blueberry");
+					roomPointer->getPlayer().getPlayerHealth().displayHealth();
+				}
+				else {
+					cout << "\nThat item is not in your inventory. It cannot be used.\n\n";
+				}
+				break;
+			case Parser::DEVILSKEY:
+				// Lets the player eat the blueberry and regain health
+				if (checkForItem(roomPointer, "devils key") == true)
+				{
+					unlockDoor(roomPointer, "devils key");
+				}
+				else
+				{
+					cout << "\nThat item is not in your inventory. It cannot be used.\n\n";
+				}
+				break;
+
+			case Parser::ERROR2:
+				// ToDo: Change this to display that a command for that item could
+				// not be found
+				parser.incorrectItemCommand(console);
+				break;
+			}
+			break;
+      
+		case Parser::DROP:
+			switch (parserOutput->command2)
+			{
+			case Parser::BLUEBERRY:
+				// Lets the player drop the blueberry
+				itemFromPlayerToRoom(roomPointer, "blueberry");
+				break;
+			case Parser::BOW:
+				//Lets the player drop the bow attack
+				if (checkForAttack(roomPointer, "bow") == true)
+			/*else {
 				cout << "The attack you have entered is not in this room.\n";
 				cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
 			}
@@ -444,29 +616,78 @@ int main() {
 			if (checkIfAttackIsInRoom(roomPointer, "kick") == true) {
 				if (roomPointer->getPlayer().getAttacks().getSize() != 4)
 				{
-					attackFromRoomrtoPlayer(roomPointer, "kick");
+					attackFromPlayertoRoom(roomPointer, "bow");
 				}
 				else
 				{
-					cout << "You have the max amount of attacks that can be used at one time.\n";
+					cout << "You do not currently have the attack that you wish to drop.\n";
 				}
-			}
-			else {
-				cout << "The attack you have entered is not in this room.\n";
-				cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
-			}
-		}
-		//Lets the user unlock the punch attack
-		else if (input == "punch") {
-			if (checkIfAttackIsInRoom(roomPointer, "punch") == true) {
-				if (roomPointer->getPlayer().getAttacks().getSize() != 4) {
-					attackFromRoomrtoPlayer(roomPointer, "punch");
+				break;*/
+			case Parser::PUNCH:
+				//Lets the player drop the punch attack
+				if (checkForAttack(roomPointer, "punch") == true)
+				{
+					attackFromPlayertoRoom(roomPointer, "punch");
 				}
 				else
 				{
-					cout << "You have the max amount of attacks that can be used at one time.\n";
+					cout << "You do not currently have the attack that you wish to drop.\n";
 				}
+				break;
+			case Parser::KICK:
+				//Lets the player drop the kick attack
+				if (checkForAttack(roomPointer, "kick") == true)
+				{
+					attackFromPlayertoRoom(roomPointer, "kick");
+				}
+				else
+				{
+					cout << "You do not currently have the attack that you wish to drop.\n";
+				}
+				break;
+			case Parser::DEVILSKEY:
+				// Lets the player drop the devils key
+				itemFromPlayerToRoom(roomPointer, "devils key");
+				break;
+			case Parser::ERROR2:
+				// ToDo: Change this to display that a command for that item could
+				// not be found
+				parser.incorrectItemCommand(console);
+				break;
 			}
+			break;
+      
+		case Parser::BATTLE:
+			switch (parserOutput->command2)
+			{
+			case Parser::SKELETON:
+
+				if (roomPointer->getMonster().getName() != "" && roomPointer->getMonster().getHealth().getHealth() > 0)
+				{
+					Battle battle(roomPointer, roomPointer->getPlayer(), roomPointer->getMonster());
+					battle.runBattle();
+				}
+				else
+				{
+					cout << "\nThere is no current monster to battle.\n\n";
+				}
+
+				if (roomPointer->getMonster().getHealth().getHealth() < 1 && roomPointer->getAttacks().getSize() == 0)
+				{
+					attackFromMonstertoRoom(roomPointer, "bow");
+				}
+				else if (roomPointer->getPlayer().getPlayerHealth().getHealth() < 1)
+				{
+					break;
+				}
+				break;
+
+			case Parser::ERROR2:
+				// ToDo: Change this to display that a command for that monster could
+				// not be found
+				parser.incorrectMonsterCommand(console);
+
+/*
 			else {
 				cout << "The attack you have entered is not in this room.\n";
 				cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
@@ -566,35 +787,24 @@ int main() {
 				dropMonsterInventoryToRoom(roomPointer);
 			}
 			else if (roomPointer->getPlayer().getPlayerHealth().getHealth() < 1){
+
+*/
 				break;
 			}
-		}
-		else if (input == "help") {
-			helpFunction();
-		}
-	}
+			break;
+		default:
+			parser.incorrectMainCommand(console);
+			break;
+		};
+	} while (parserOutput->command1 != Parser::QUIT);
 
 	// Thank the user for playing the game
-	ui.printString(endSentence);
+	console.writeOutput(endSentence);
 }
-
-
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Functions that should probably be put in some other class, but I don't know where yet.
 ///////////////////////////////////////////////////////////////////////////////////////////
-
-// Validate that the input from the user is a correct command.
-// Correct commands will be in the keyWords vector.
-bool validateInput(vector<string>& vect, string sentence) {
-	for (int i = 0; i < vect.size(); i++) {
-		if (vect.at(i) == sentence) {
-			return true;
-		}
-	}
-	return false;
-}
 
 // Moves a specified item from the room's inventory to the player's
 // inventory. It adds the item to the player's inventory and removes it
@@ -636,7 +846,7 @@ void itemFromRoomToPlayer(Room*& room, string itemName) {
 	room->setPlayer(tempPlayer);
 
 	// Display the inventories of the room and the player
-	cout << "\nYou have just picked up a " << itemName << endl;
+	std::cout << "\nYou have just picked up a " << itemName << endl;
 	room->getInventory().displayRoomInventory();
 	room->getPlayer().getInventory().displayPlayerInventory();
 }
@@ -682,7 +892,7 @@ void itemFromPlayerToRoom(Room*& room, string itemName)
 	room->setPlayer(tempPlayer);
 
 	// Display the inventories of the room and the player
-	cout << "\nYou have just dropped " << itemName << endl;
+	std::cout << "\nYou have just dropped " << itemName << endl;
 	room->getInventory().displayRoomInventory();
 	room->getPlayer().getInventory().displayPlayerInventory();
 }
@@ -769,13 +979,17 @@ void attackFromMonstertoRoom(Room*& room)
 	room->setMonster(tempMonster);
 
 	// Display the inventories of the room and the player
-	cout << endl << room->getMonster().getName() << " has just dropped " << temp.getMonsterWeapon().getName() << endl;
-	cout << "Monster attacks\n";
+	std::cout << endl << room->getMonster().getName() << " has just dropped " << attackName << endl;
+	std::cout << "Monster attacks\n";
+
+	/*cout << endl << room->getMonster().getName() << " has just dropped " << temp.getMonsterWeapon().getName() << endl;
+	cout << "Monster attacks\n";*/
+
 	room->getMonster().getAttacks().displayattacks();
-	cout << endl;
-	cout << "Attacks in the room that you can pickup: " << endl;
+	std::cout << endl;
+	std::cout << "Attacks in the room that you can pickup: " << endl;
 	room->getAttacks().displayattacks();
-	cout << endl;
+	std::cout << endl;
 }
 
 void attackFromRoomrtoPlayer(Room*& room, string attackName)
@@ -815,10 +1029,10 @@ void attackFromRoomrtoPlayer(Room*& room, string attackName)
 	room->setPlayer(tempPlayer);
 
 	// Display the attack lists of the room and the player
-	cout << "\nYou have just picked up a " << attackName;
-	cout << "\nRoom attacks " << endl;
+	std::cout << "\nYou have just picked up a " << attackName;
+	std::cout << "\nRoom attacks " << endl;
 	room->getAttacks().displayattacks();
-	cout << "Player attacks is now: " << endl;
+	std::cout << "Player attacks is now: " << endl;
 	room->getPlayer().getAttacks().displayattacks();
 }
 
@@ -859,13 +1073,13 @@ void attackFromPlayertoRoom(Room*& room, string attackName)
 	room->setPlayer(tempPlayer);
 
 	// Display the attacks of the room and the player
-	cout << endl << room->getPlayer().getName() << " has just dropped " << attackName << endl;
-	cout << "Attacks in the room that you can pickup: " << endl;
+	std::cout << endl << room->getPlayer().getName() << " has just dropped " << attackName << endl;
+	std::cout << "Attacks in the room that you can pickup: " << endl;
 	room->getAttacks().displayattacks();
-	cout << endl;
-	cout << "Player attacks\n";
+	std::cout << endl;
+	std::cout << "Player attacks\n";
 	room->getPlayer().getAttacks().displayattacks();
-	cout << endl;
+	std::cout << endl;
 }
 
 // Checks if a specified item is already in a room. Returns true if 
@@ -1020,7 +1234,7 @@ void addItemHealthToPlayer(Room*& room, string itemName) {
 
 			// Remove the item from the player
 			playerInventory.removeItem(i);
-			cout << "\nThe " << itemName << " has been used." << endl;
+			std::cout << "\nThe " << itemName << " has been used." << endl;
 		}
 	}
 
@@ -1057,48 +1271,30 @@ void unlockDoor(Room*& room, string itemName)
 			if (room->getCenterRoom() != nullptr && room->getCenterRoom()->getLockStatus() != false) {
 				doorIsLocked = false;
 				room->getCenterRoom()->setLockStatus(doorIsLocked);
-				cout << "\nYou have unlocked the door to the " << room->getCenterRoom()->getName() << " using the " << itemName << ".\n";
-				cout << "Please enter 'center' to go into the " << room->getCenterRoom()->getName() << ".\n\n";
+				std::cout << "\nYou have unlocked the door to the " << room->getCenterRoom()->getName() << " using the " << itemName << ".\n";
+				std::cout << "Please enter 'center' to go into the " << room->getCenterRoom()->getName() << ".\n\n";
 			}
 			else if (room->getLeftRoom() != nullptr && room->getLeftRoom()->getLockStatus() != false) {
 				doorIsLocked = false;
 				room->getLeftRoom()->setLockStatus(doorIsLocked);
-				cout << "\nYou have unlocked the door to the " << room->getLeftRoom()->getName() << " using the " << itemName << ".\n\n";
-				cout << "Please enter 'left' to go into the " << room->getLeftRoom()->getName() << ".\n\n";
+				std::cout << "\nYou have unlocked the door to the " << room->getLeftRoom()->getName() << " using the " << itemName << ".\n\n";
+				std::cout << "Please enter 'left' to go into the " << room->getLeftRoom()->getName() << ".\n\n";
 			}
 			else if (room->getRightRoom() != nullptr && room->getRightRoom()->getLockStatus() != false) {
 				doorIsLocked = false;
 				room->getRightRoom()->setLockStatus(doorIsLocked);
-				cout << "\nYou have unlocked the door to the " << room->getRightRoom()->getName() << " using the " << itemName << ".\n\n";
-				cout << "Please enter 'right' to go into the " << room->getRightRoom()->getName() << ".\n\n";
+				std::cout << "\nYou have unlocked the door to the " << room->getRightRoom()->getName() << " using the " << itemName << ".\n\n";
+				std::cout << "Please enter 'right' to go into the " << room->getRightRoom()->getName() << ".\n\n";
 			}
 			else if (room->getBackRoom() != nullptr && room->getBackRoom()->getLockStatus() != false) {
 				doorIsLocked = false;
 				room->getBackRoom()->setLockStatus(doorIsLocked);
-				cout << "\nYou have unlocked the door to the " << room->getBackRoom()->getName() << " using the " << itemName << ".\n\n";
-				cout << "Please enter 'back' to go into the " << room->getBackRoom()->getName() << ".\n\n";
+				std::cout << "\nYou have unlocked the door to the " << room->getBackRoom()->getName() << " using the " << itemName << ".\n\n";
+				std::cout << "Please enter 'back' to go into the " << room->getBackRoom()->getName() << ".\n\n";
 			}
 		}
 	}
 	if (doorIsLocked == true) {
-		cout << "There are currently no doors in the " << room->getName() << " that need to be unlocked.\n\n";
+		std::cout << "There are currently no doors in the " << room->getName() << " that need to be unlocked.\n\n";
 	}
-}
-
-void helpFunction()
-{
-	cout << "\nIt seems you need help, here is a list of all the controls:\n"
-		<< "attacks - displays all attacks you have unlocked\n"
-		<< "'attack name' - lets you unlock a attacks adds it to your attack list\n (be aware you are limited to having 4 attacks unlocked)\n"
-		<< "battle - will put you into battle if there is a monster present in the room\n"
-		<< "drop 'attack name' - drops the attack entered from your attack list\n"
-		<< "drop 'item name' - drops the item entered from your inventory\n"
-		<< "health - shows you your current health points\n"
-		<< "inventory - opens your inventory to see what items accessible for use\n"
-		<< "'item name' - lets you pickup the item entered and put it into your inventory\n"
-		<< "kick/punch - lets you have a chance of hitting the monster\n"
-		<< "left - enters the room to the left\n" << "center - enters the room in the center\n"
-		<< "right - enters the room to the right\n" << "back - puts you back to the previous room you entered\n"
-		<< "use devils key - lets you unlock locked doors\n"
-		<< "q/quit - quits the game\n\n";
 }

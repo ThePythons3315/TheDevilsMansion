@@ -9,17 +9,15 @@ Room::Room() {
 	inventory;
 	monster;
 	attacks;
-	roomID = 0;
 	lock = false;
 	leftRoom = nullptr;
 	centerRoom = nullptr;
 	rightRoom = nullptr;
 	backRoom = nullptr;
 }
-Room::Room(string name_input, string desc, int id, bool lockStat) {
+Room::Room(string name_input, string desc, bool lockStat) {
 	name = name_input;
 	roomDescription = desc;
-	roomID = id;
 	lock = lockStat;
 	inventory;
 	monster;
@@ -31,44 +29,52 @@ Room::Room(string name_input, string desc, int id, bool lockStat) {
 }
 
 // Mutator Functions -- Functions that will be allowed to change private variables
-void Room::setName(string n) {
+void Room::setName(string n)
+{
 	name = n;
 }
-void Room::setRoomDescription(string d) {
+void Room::setRoomDescription(string d)
+{
 	roomDescription = d;
 }
-void Room::setPlayer(Player character) {
+void Room::setPlayer(Player character)
+{
 	player = character;
 }
-void Room::setInventory(Inventory invent) {
+void Room::setInventory(Inventory invent)
+{
 	inventory = invent;
 }
 void Room::setAttacks(Attacks _attacks)
 {
 	attacks = _attacks;
 }
-void Room::setMonster(Monster _monster) {
+void Room::setMonster(Monster _monster)
+{
 	monster = _monster;
 }
-void Room::setRoomID(int id) {
-	roomID = id;
+void Room::setLeftRoom(Room& left)
+{
+	leftRoom = &left;
 }
+void Room::setCenterRoom(Room& center)
+{
+	centerRoom = &center;
+}
+void Room::setRightRoom(Room& right)
+{
+	rightRoom = &right;
+}
+void Room::setBackRoom(Room& back)
+{
+	backRoom = &back;
+}
+
 void Room::setLockStatus(bool lockStat)
 {
 	lock = lockStat;
 }
-void Room::setLeftRoom(Room& left) {
-	leftRoom = &left;
-}
-void Room::setCenterRoom(Room& center) {
-	centerRoom = &center;
-}
-void Room::setRightRoom(Room& right) {
-	rightRoom = &right;
-}
-void Room::setBackRoom(Room& back) {
-	backRoom = &back;
-}
+
 /*
 void Room::dropMonsterInventoryToRoom(Room*& room)
 {
@@ -112,48 +118,56 @@ void Room::dropMonsterInventoryToRoom(Room*& room)
 	room->getMonster().getInventory().displayMonsterInventory();
 }*/
 
+
 // Accessor Functions -- Functions that will return values of private functions
-string Room::getName() {
+string Room::getName()
+{
 	return name;
 }
-string Room::getRoomDescription() {
+string Room::getRoomDescription()
+{
 	return roomDescription;
 }
-Player Room::getPlayer() {
+Player Room::getPlayer()
+{
 	return player;
 }
-Inventory Room::getInventory() {
+Inventory Room::getInventory()
+{
 	return inventory;
 }
 Attacks Room::getAttacks()
 {
 	return attacks;
 }
-Monster Room::getMonster() {
+Monster Room::getMonster()
+{
 	return monster;
 }
-int Room::getRoomID() {
-	return roomID;
+Room* Room::getLeftRoom()
+{
+	return leftRoom;
+}
+Room* Room::getCenterRoom()
+{
+	return centerRoom;
+}
+Room* Room::getRightRoom()
+{
+	return rightRoom;
+}
+Room* Room::getBackRoom()
+{
+	return backRoom;
 }
 bool Room::getLockStatus()
 {
 	return lock;
 }
-Room* Room::getLeftRoom() {
-	return leftRoom;
-}
-Room* Room::getCenterRoom() {
-	return centerRoom;
-}
-Room* Room::getRightRoom() {
-	return rightRoom;
-}
-Room* Room::getBackRoom() {
-	return backRoom;
-}
 
 // Function that will display both room description and the inventory of the room
-void Room::getRoomInformation() {
+void Room::getRoomInformation()
+{
 	// Description of room - what the room actually looks like
 	cout << getRoomDescription() << endl;
 
@@ -167,10 +181,6 @@ void Room::getRoomInformation() {
 		cout << endl;
 	}
 
-	// Display the player's health
-	//cout << "The player's ";
-	//player.getPlayerHealth().displayHealth();
-
 	if (monster.getHealth().getHealth() == -1) {
 		cout << "You have already killed the " << monster.getName() << " monster\n\n";
 	}
@@ -182,7 +192,8 @@ void Room::getRoomInformation() {
 	}
 }
 
-void Room::moveRoom(string direction) {
+void Room::moveRoom(string direction)
+{
 	// Default player object. This object will be placed in the current room
 	// after passing the player object to the new room.
 	Player defaultPlayer;
@@ -194,27 +205,24 @@ void Room::moveRoom(string direction) {
 	// the current room.
 	if (direction == "center") {
 		centerRoom->setPlayer(player);
-		//cout << "The player has been moved to the " << centerRoom->getName() << endl;
 		player = defaultPlayer;
 	}
 	else if (direction == "left") {
 		leftRoom->setPlayer(player);
-		//cout << "The player has been moved to the " << leftRoom->getName() << endl;
 		player = defaultPlayer;
 	}
 	else if (direction == "right") {
 		rightRoom->setPlayer(player);
-		//cout << "The player has been moved to the " << rightRoom->getName() << endl;
 		player = defaultPlayer;
 	}
 	else if (direction == "back") {
 		backRoom->setPlayer(player);
-		//cout << "The player has been moved to the " << backRoom->getName() << endl;
 		player = defaultPlayer;
 	}
 }
 
-bool Room::validatePossibleRoom(string direction) {
+bool Room::validatePossibleRoom(string direction)
+{
 	if (direction == "center" && centerRoom != nullptr) {
 		return true;
 	}
