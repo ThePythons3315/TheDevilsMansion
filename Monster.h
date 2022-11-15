@@ -6,6 +6,7 @@
 #include <string.h>
 #include "Health.h"
 #include "Attacks.h"
+#include "Inventory.h"
 using namespace std;
 
 class Monster {
@@ -15,10 +16,12 @@ private:
 	string dialogOpening;
 	Health health;
 	Attacks attacks;
+	Inventory monsterInventory;
 public:
 	// Constructors
 	Monster();
 	Monster(string, string, string, Health,Attacks);
+	Monster(string, string, string, Health, Attacks, Inventory);
 
 	// Mutator Functions -- Functions that will be allowed to change private variables
 	void setName(string);
@@ -26,6 +29,7 @@ public:
 	void setDialogOpening(string);
 	void setHealth(Health);
 	void setAttacks(Attacks);
+	void setInventory(Inventory);
 
 	// Accessor Functions -- Functions that will return values of private functions
 	string getName();
@@ -33,6 +37,7 @@ public:
 	string getDialogOpening();
 	Health getHealth();
 	Attacks getAttacks();
+	Inventory getInventory();
 
 	void displayMonster();
 };

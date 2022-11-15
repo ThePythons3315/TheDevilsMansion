@@ -39,6 +39,7 @@ public:
 	void setCenterRoom(Room&); // Take the address of the room object
 	void setRightRoom(Room&); // Take the address of the room object
 	void setBackRoom(Room&); // Take the address of the room object
+	//void dropMonsterInventoryToRoom(Room*&);
 	//void setAssociatedRooms(Room&, Room&, Room&, Room&);
 
 	// Accessor Functions -- Functions that will return values of private functions
