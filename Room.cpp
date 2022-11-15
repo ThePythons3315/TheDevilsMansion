@@ -9,6 +9,7 @@ Room::Room() {
 	inventory;
 	monster;
 	attacks;
+	player;
 	lock = false;
 	leftRoom = nullptr;
 	centerRoom = nullptr;
@@ -19,6 +20,7 @@ Room::Room(string name_input, string desc, bool lockStat) {
 	name = name_input;
 	roomDescription = desc;
 	lock = lockStat;
+	player;
 	inventory;
 	monster;
 	attacks;
@@ -182,7 +184,7 @@ void Room::getRoomInformation()
 	}
 
 	if (monster.getHealth().getHealth() == -1) {
-		cout << "You have already killed the " << monster.getName() << " monster\n\n";
+		cout << "\nYou have already killed the " << monster.getName() << " monster\n";
 	}
 	else if (monster.getName() != "") {
 		monster.displayMonster();
