@@ -1,15 +1,13 @@
 #pragma once
-#ifndef ROOM_H
-#define ROOM_H
 
 #include <iostream>
 #include <string>
 #include "Player.h"
 #include "Inventory.h"
 #include "Monster.h"
-using namespace std;
 
-class Room {
+class Room
+{
 private:
 	string name;
 	string roomDescription;
@@ -22,9 +20,7 @@ private:
 	Room* rightRoom; // pointer to a room object
 	Room* backRoom; // pointer to a room object
 	bool lock;
-
 public:
-
 	// Constructors
 	Room();
 	Room(string, string, bool);
@@ -62,6 +58,4 @@ public:
 	void moveRoom(string);
 
 	bool validatePossibleRoom(string);
-
 };
-#endif // !ROOM_H

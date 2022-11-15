@@ -1,15 +1,13 @@
 #pragma once
-#ifndef MONSTER_H
-#define MONSTER_H
 
 #include <iostream>
 #include <string.h>
 #include "Health.h"
 #include "Attacks.h"
 #include "Inventory.h"
-using namespace std;
 
-class Monster {
+class Monster
+{
 private:
 	string name;
 	string monsterDescription;
@@ -20,7 +18,7 @@ private:
 public:
 	// Constructors
 	Monster();
-	Monster(string, string, string, Health,Attacks);
+	Monster(string, string, string, Health, Attacks);
 	Monster(string, string, string, Health, Attacks, Inventory);
 
 	// Mutator Functions -- Functions that will be allowed to change private variables
@@ -39,6 +37,6 @@ public:
 	Attacks getAttacks();
 	Inventory getInventory();
 
+	// Display the attributes of the monster
 	void displayMonster();
 };
-#endif // !PLAYER_H

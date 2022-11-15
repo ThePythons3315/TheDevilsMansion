@@ -92,7 +92,6 @@ int main() {
 	Health devilsKeyHealth(0, 0);
 	Health skeletonHealth(50, 50);
 	Health hellhoundHealth(70, 70);
-	//Health squashHealth(5, 5);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create weapon objects that will be used by the player and by monsters throughout the game

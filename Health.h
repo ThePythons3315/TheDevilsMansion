@@ -1,11 +1,7 @@
 #pragma once
-#ifndef HEALTH_H
-#define HEALTH_H
 
 #include <iostream>
 #include <string>
-using namespace std;
-
 
 class Health
 {
@@ -13,7 +9,7 @@ private:
 	int health;
 	int maxHealth;
 public:
-	//constructors
+	// Constructors
 	Health();
 	Health(int, int);
 
@@ -26,8 +22,6 @@ public:
 	int getHealth();
 	int getMaxHealth();
 
+	// Displays the current health of the creature
 	void displayHealth();
 };
-
-
-#endif // !HEALTH_H

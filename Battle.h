@@ -1,6 +1,4 @@
 #pragma once
-#ifndef BATTLE_H
-#define BATTLE_H
 
 #include <iostream>
 #include <string>
@@ -8,7 +6,6 @@
 #include "Player.h"
 #include "Monster.h"
 #include "GameUI.h"
-using namespace std;
 
 class Battle
 {
@@ -17,7 +14,7 @@ private:
 	Player player;
 	Monster monster;
 public:
-	//constructors
+	// Constructors
 	Battle();
 	Battle(Room*&, Player, Monster);
 
@@ -41,6 +38,7 @@ public:
 	// Correct commands will be in the keyWords vector.
 	bool validateInput(vector<string>& vect, string sentence);
 
+	// Calculates whether an attack will hit or miss the target
 	bool hitOrMiss(int hitChance);
 	
 	//Checks to ensure the monsters or health is above 0 to decide whether
@@ -48,6 +46,3 @@ public:
 	bool monsterDefeated();
 	bool playerDefeated();
 };
-
-
-#endif // !HEALTH_H

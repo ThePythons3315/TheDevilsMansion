@@ -1,15 +1,13 @@
 #pragma once
-#ifndef PLAYER_H
-#define PLAYER_H
 
 #include <iostream>
 #include <string>
 #include "Inventory.h"
 #include "Health.h"
 #include "Attacks.h"
-using namespace std;
 
-class Player {
+class Player
+{
 private:
 	string name;
 	Inventory inventory;
@@ -34,6 +32,4 @@ public:
 
 	// For testing purposes
 	void printPlayerInfo();
-	
 };
-#endif // !PLAYER_H

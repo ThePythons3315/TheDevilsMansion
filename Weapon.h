@@ -1,12 +1,11 @@
 #pragma once
-#ifndef WEAPON_H
-#define WEAPON_H
 
 #include <iostream>
 #include <string>
-using namespace std;
+using namespace std; // ToDo: Take this out and replace everything with std::
 
-class Weapon {
+class Weapon
+{
 private:
 	string name;
 	string attackName;
@@ -28,6 +27,4 @@ public:
 	string getAttackName();
 	int getAttackDamage();
 	int getHitChance();
-	
 };
-#endif // !WEAPON_H

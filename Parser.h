@@ -6,18 +6,18 @@
 class Parser
 {
 public:
-
-	// Possible first user entered commands
+	// Primary commands that will run the game
 	enum MainCommandMenu
 	{
 		HELP, MOVE, COLLECT, USE, DROP, INVENTORY, HEALTH, BATTLE, ATTACKS, QUIT, ERROR1
 	};
-	// Possible second user entered commands
+	// Secondary Commands that can be used along side certain primary commands
 	enum SecondaryCommandMenu
 	{ 
 		LEFT, CENTER, RIGHT, BACK, BLUEBERRY, SKELETON, BOW, PUNCH, KICK, DEVILSKEY, ERROR2
 	};
 
+	// Struct of commands that will be filled when user input is parsed
 	struct InputStruct
 	{
 		MainCommandMenu command1;
