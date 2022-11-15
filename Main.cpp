@@ -44,31 +44,6 @@ int main() {
 	Room* roomPointer = nullptr; // Pointer variable that will point to the current room the player is in
 	std::string userInputString;   // raw user input - retrived from UI & redirected to parser for processing
 
-/*
-	// Loop variable that starts off as true. While the variable is true the mainloop will
-	// run the game and continuoulsy ask for user input.
-	bool mainLoop = true;
-
-	// Temporary string used to hold the value being returned when a user
-	// is entering input.
-	string input = "";
-
-	// Vector of keywords that will be valid inputs when playing the game.
-	// Eventually this will be broken up into different vectors with each vector
-	// holding specific types of key words. Ex. movement vector, items in use vector, etc.
-	vector <string> keyWords = { "q", "quit", "left", "center", "right", "back", "inventory", "drop blueberry", "blueberry",
-								 "eat blueberry","devils key","drop devils key","use devils key", "bow","bite", "kick", "punch",
-								 "drop bow","drop bite", "drop punch", "drop kick", "health", "battle", "attacks", "help"};
-	// "squash", "eat squash", "drop squash" - Tester items strings
-
-	// Pointer variable that will point to the current room the player is in
-	Room* roomPointer = nullptr;
-
-	// Create a game instance which will allow for user input and console output
-	// to be used.
-	UserInterface ui;
-  */
-
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create all string variables of text that will be used as dialog throughout the game.
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -590,31 +565,6 @@ int main() {
 			case Parser::BOW:
 				//Lets the player drop the bow attack
 				if (checkForAttack(roomPointer, "bow") == true)
-			/*else {
-				cout << "The attack you have entered is not in this room.\n";
-				cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
-			}
-		}
-		//Lets the user unlock the bow attack
-		else if (input == "bite") {
-			if (checkIfAttackIsInRoom(roomPointer, "bite") == true) {
-				if (roomPointer->getPlayer().getAttacks().getSize() != 4) {
-					attackFromRoomrtoPlayer(roomPointer, "bite");
-				}
-				else
-				{
-					cout << "You have the max amount of attacks that can be used at one time.\n";
-				}
-			}
-			else {
-				cout << "The attack you have entered is not in this room.\n";
-				cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
-			}
-		}
-		//Lets the user unlock the kick attack
-		else if (input == "kick") {
-			if (checkIfAttackIsInRoom(roomPointer, "kick") == true) {
-				if (roomPointer->getPlayer().getAttacks().getSize() != 4)
 				{
 					attackFromPlayertoRoom(roomPointer, "bow");
 				}
@@ -622,7 +572,8 @@ int main() {
 				{
 					cout << "You do not currently have the attack that you wish to drop.\n";
 				}
-				break;*/
+				break;
+			
 			case Parser::PUNCH:
 				//Lets the player drop the punch attack
 				if (checkForAttack(roomPointer, "punch") == true)
@@ -634,6 +585,7 @@ int main() {
 					cout << "You do not currently have the attack that you wish to drop.\n";
 				}
 				break;
+
 			case Parser::KICK:
 				//Lets the player drop the kick attack
 				if (checkForAttack(roomPointer, "kick") == true)
@@ -674,7 +626,7 @@ int main() {
 
 				if (roomPointer->getMonster().getHealth().getHealth() < 1 && roomPointer->getAttacks().getSize() == 0)
 				{
-					attackFromMonstertoRoom(roomPointer, "bow");
+					attackFromMonstertoRoom(roomPointer);
 				}
 				else if (roomPointer->getPlayer().getPlayerHealth().getHealth() < 1)
 				{
@@ -686,109 +638,6 @@ int main() {
 				// ToDo: Change this to display that a command for that monster could
 				// not be found
 				parser.incorrectMonsterCommand(console);
-
-/*
-			else {
-				cout << "The attack you have entered is not in this room.\n";
-				cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
-			}
-		}
-		//Lets the player drop the bow attack
-		else if (input == "drop bow") {
-			if (checkForAttack(roomPointer, "bow") == true) {
-				attackFromPlayertoRoom(roomPointer, "bow");
-			}
-			else {
-				cout << "You do not currently have the attack that you wish to drop.\n";
-			}
-		}
-		//Lets the player drop the kick attack
-		else if (input == "drop kick") {
-			if (checkForAttack(roomPointer, "kick") == true) {
-				attackFromPlayertoRoom(roomPointer, "kick");
-			}
-			else {
-				cout << "You do not currently have the attack that you wish to drop.\n";
-			}
-		}
-		//Lets the player drop the bow attack
-		else if (input == "drop bite") {
-			if (checkForAttack(roomPointer, "bite") == true) {
-				attackFromPlayertoRoom(roomPointer, "bite");
-			}
-			else {
-				cout << "You do not currently have the attack that you wish to drop.\n";
-			}
-		}
-		//Lets the player drop the kick attack
-		else if (input == "drop kick") {
-			if (checkForAttack(roomPointer, "kick") == true) {
-				attackFromPlayertoRoom(roomPointer, "kick");
-			}
-			else {
-				cout << "You do not currently have the attack that you wish to drop.\n";
-			}
-		}
-
-		//Lets the player drop the punch attack
-		else if (input == "drop punch") {
-			if (checkForAttack(roomPointer, "punch") == true) {
-				attackFromPlayertoRoom(roomPointer, "punch");
-			}
-			else {
-				cout << "You do not currently have the attack that you wish to drop.\n";
-			}
-		}
-		// Lets the player drop the blueberry
-		else if (input == "drop blueberry") {
-			itemFromPlayerToRoom(roomPointer, "blueberry");
-		}
-		// Lets the player drop the devils key
-		else if (input == "drop devils key") {
-		itemFromPlayerToRoom(roomPointer, "devils key");
-		}
-		// Lets the player eat the blueberry and regain health
-		else if (input == "eat blueberry") {
-			if (checkForItem(roomPointer, "blueberry") == true) {
-				addItemHealthToPlayer(roomPointer, "blueberry");
-				roomPointer->getPlayer().getPlayerHealth().displayHealth();
-			}
-			else {
-				cout << "\nThat item is not in your inventory. It cannot be used.\n\n";
-			}
-			
-		}
-		// Lets the player eat the blueberry and regain health
-		else if (input == "use devils key") {
-		if (checkForItem(roomPointer, "devils key") == true) {
-			unlockDoor(roomPointer, "devils key");
-		}
-		else {
-			cout << "\nThat item is not in your inventory. It cannot be used.\n\n";
-		}
-
-		}
-		// Lets the player see how much health they currently have
-		else if (input == "health") {
-			roomPointer->getPlayer().getPlayerHealth().displayHealth();
-		}
-		else if (input == "battle") {
-			if (roomPointer->getMonster().getName() != "" && roomPointer->getMonster().getHealth().getHealth() > 0) {
-				Battle battle(roomPointer, roomPointer->getPlayer(), roomPointer->getMonster());
-				roomPointer->getMonster().getInventory().displayMonsterInventory();
-				battle.runBattle();
-			}
-			else {
-				cout << "\nThere is no current monster to battle.\n\n";
-			}				
-			if (roomPointer->getMonster().getHealth().getHealth() < 1 && roomPointer->getAttacks().getSize() == 0) {
-				attackFromMonstertoRoom(roomPointer);
-				//roomPointer->getMonster().getInventory().displayMonsterInventory();
-				dropMonsterInventoryToRoom(roomPointer);
-			}
-			else if (roomPointer->getPlayer().getPlayerHealth().getHealth() < 1){
-
-*/
 				break;
 			}
 			break;
@@ -979,7 +828,7 @@ void attackFromMonstertoRoom(Room*& room)
 	room->setMonster(tempMonster);
 
 	// Display the inventories of the room and the player
-	std::cout << endl << room->getMonster().getName() << " has just dropped " << attackName << endl;
+	std::cout << endl << room->getMonster().getName() << " has just dropped " << "**Add Attack Name Here**" << endl;
 	std::cout << "Monster attacks\n";
 
 	/*cout << endl << room->getMonster().getName() << " has just dropped " << temp.getMonsterWeapon().getName() << endl;

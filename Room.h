@@ -22,7 +22,9 @@ private:
 	Room* rightRoom; // pointer to a room object
 	Room* backRoom; // pointer to a room object
 	bool lock;
+
 public:
+
 	// Constructors
 	Room();
 	Room(string, string, bool);
@@ -39,8 +41,7 @@ public:
 	void setCenterRoom(Room&); // Take the address of the room object
 	void setRightRoom(Room&); // Take the address of the room object
 	void setBackRoom(Room&); // Take the address of the room object
-	//void dropMonsterInventoryToRoom(Room*&);
-	//void setAssociatedRooms(Room&, Room&, Room&, Room&);
+	void dropMonsterInventoryToRoom(Room*&);
 
 	// Accessor Functions -- Functions that will return values of private functions
 	string getName();

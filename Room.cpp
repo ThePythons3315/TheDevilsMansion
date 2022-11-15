@@ -75,7 +75,7 @@ void Room::setLockStatus(bool lockStat)
 	lock = lockStat;
 }
 
-/*
+
 void Room::dropMonsterInventoryToRoom(Room*& room)
 {
 	Monster tempMonster;
@@ -116,7 +116,7 @@ void Room::dropMonsterInventoryToRoom(Room*& room)
 	cout << "\nThe " << room->getMonster().getName() << " has just dropped it's entire inventory." << endl;
 	room->getInventory().displayRoomInventory();
 	room->getMonster().getInventory().displayMonsterInventory();
-}*/
+}
 
 
 // Accessor Functions -- Functions that will return values of private functions
