@@ -112,6 +112,10 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = FIREBREATH;
 			}
+			else if (command2 == "flamethrower")
+			{
+				parsedInput->command2 = FLAMETHROWER;
+			}
 			else if (command2 == "devilskey")
 			{
 				parsedInput->command2 = DEVILSKEY;
@@ -165,6 +169,10 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = FIREBREATH;
 			}
+			else if (command2 == "flamethrower")
+			{
+				parsedInput->command2 = FLAMETHROWER;
+			}
 			else if (command2 == "devilskey")
 			{
 				parsedInput->command2 = DEVILSKEY;
@@ -190,6 +198,10 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			else if (command2 == "chimera")
 			{
 				parsedInput->command2 = CHIMERA;
+			}
+			else if (command2 == "dragon")
+			{
+				parsedInput->command2 = DRAGON;
 			}
 			else
 			{

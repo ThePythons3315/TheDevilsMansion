@@ -74,6 +74,7 @@ int main() {
 	Inventory roomInventory5;
 	Inventory hellhoundInventory;
 	Inventory chimeraInventory;
+	Inventory dragonInventory;
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create Attacks objects that will be used in various players, monsters, rooms, etc.
@@ -87,6 +88,7 @@ int main() {
 	Attacks skeletonAttacks;
 	Attacks hellhoundAttacks;
 	Attacks chimeraAttacks;
+	Attacks dragonAttacks;
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create health objects that will be used in various players, monsters, items, etc.
@@ -102,6 +104,7 @@ int main() {
 	Health skeletonHealth(50, 50);
 	Health hellhoundHealth(80, 80);
 	Health chimeraHealth(80, 80);
+	Health dragonHealth(80, 80);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create weapon objects that will be used by the player and by monsters throughout the game
@@ -111,6 +114,7 @@ int main() {
 	Weapon bow("bow", "bow Shot", -20, 90);
 	Weapon bite("bite", "bite", -25, 85);
 	Weapon firebreath("firebreath", "firebreath", -30, 90);
+	Weapon flamethrower("flamethrower", "flamethrower", -35, 50);
 	Weapon placeHolderWeapon("Temp", "Temp", 0, 0);
 	
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -121,6 +125,7 @@ int main() {
 	skeletonAttacks.addAttack(bow);
 	hellhoundAttacks.addAttack(bite);
 	chimeraAttacks.addAttack(firebreath);
+	dragonAttacks.addAttack(flamethrower);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create item objects that will be used in various player inventories, room inventories
@@ -162,6 +167,10 @@ int main() {
 							   "More Chimera Description.\n"
 							   "More Chimera Description.\n\n",
 							   chimeraHealth, chimeraAttacks);
+	Monster dragon("Dragon", "Dragon Description.\n",
+							 "More Dragon Description.\n"
+							 "More Dragon Description.\n\n",
+							 dragonHealth, dragonAttacks);
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -191,8 +200,9 @@ int main() {
 	Room archDevilRoom("Room Of Demonic Magic", "You are now in the Room Of Demonic Magic.\n"
 												"Demonic magic is creeping down your spine.\n"
 												"You think some kind of demon lives here???\n\n", false);
-	Room testRoom6("Test Room 6", "You are now in the 6th test room, \nClearly you have managed to unlock the door\n"
-								  "to access this room\n\n", true);
+	Room dragonRoom("Room of Dragon(s)???", "You are now in The Room of Dragon(s)???.\n"
+											"Here is description part 1.\n"
+											"Here is description part 2.\n\n", true);
 
 	// ToDo: Make a function to do these in one line
 	// Starting Steps - associated rooms
@@ -210,9 +220,9 @@ int main() {
 
 	// Other Rooms - associated rooms
 	hellHoundRoom.setRightRoom(skeletonRoom);
-	chimeraRoom.setCenterRoom(testRoom6);
+	chimeraRoom.setCenterRoom(dragonRoom);
 	chimeraRoom.setBackRoom(skeletonRoom);
-	testRoom6.setBackRoom(chimeraRoom);
+	dragonRoom.setBackRoom(chimeraRoom);
 	archDevilRoom.setLeftRoom(skeletonRoom);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -222,6 +232,7 @@ int main() {
 	skeletonRoom.setMonster(skeleton);
 	hellHoundRoom.setMonster(hellhound);
 	chimeraRoom.setMonster(chimera);
+	dragonRoom.setMonster(dragon);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Add item objects to room inventories, add room inventories to actual room objects
@@ -559,6 +570,25 @@ int main() {
 					cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
 				}
 				break;
+			case Parser::FLAMETHROWER:
+				//Lets the user unlock the kick attack
+				if (checkIfAttackIsInRoom(roomPointer, "flamethrower") == true)
+				{
+					if (roomPointer->getPlayer().getAttacks().getSize() != 4)
+					{
+						attackFromRoomToPlayer(roomPointer, "flamethrower");
+					}
+					else
+					{
+						cout << "You have the max amount of attacks that can be used at one time.\n";
+					}
+				}
+				else
+				{
+					cout << "The attack you have entered is not in this room.\n";
+					cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
+				}
+				break;
 			case Parser::DEVILSKEY:
 				// Lets the user pick up the devils key
 				if (checkIfItemIsInRoom(roomPointer, "devils key") == true)
@@ -674,6 +704,17 @@ int main() {
 					cout << "You do not currently have the attack that you wish to drop.\n";
 				}
 				break;
+			case Parser::FLAMETHROWER:
+				//Lets the player drop the kick attack
+				if (checkForAttack(roomPointer, "flamethrower") == true)
+				{
+					attackFromPlayertoRoom(roomPointer, "flamethrower");
+				}
+				else
+				{
+					cout << "You do not currently have the attack that you wish to drop.\n";
+				}
+				break;
 			case Parser::DEVILSKEY:
 				// Lets the player drop the devils key
 				itemFromPlayerToRoom(roomPointer, "devils key");
@@ -730,6 +771,26 @@ int main() {
 				}
 				break;
 			case Parser::CHIMERA:
+				if (roomPointer->getMonster().getName() != "" && roomPointer->getMonster().getHealth().getHealth() > 0)
+				{
+					Battle battle(roomPointer, roomPointer->getPlayer(), roomPointer->getMonster());
+					battle.runBattle();
+				}
+				else
+				{
+					cout << "\nThere is no current monster to battle.\n\n";
+				}
+
+				if (roomPointer->getMonster().getHealth().getHealth() < 1 && roomPointer->getAttacks().getSize() == 0)
+				{
+					attackFromMonstertoRoom(roomPointer);
+				}
+				else if (roomPointer->getPlayer().getPlayerHealth().getHealth() < 1)
+				{
+					break;
+				}
+				break;
+			case Parser::DRAGON:
 				if (roomPointer->getMonster().getName() != "" && roomPointer->getMonster().getHealth().getHealth() > 0)
 				{
 					Battle battle(roomPointer, roomPointer->getPlayer(), roomPointer->getMonster());
