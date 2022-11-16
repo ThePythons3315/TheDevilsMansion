@@ -38,5 +38,5 @@ int Health::getMaxHealth() {
 }
 
 void Health::displayHealth() {
-	cout << "current health is: " << health << endl << endl;
+	cout << "Current health is: " << health << endl;
 }

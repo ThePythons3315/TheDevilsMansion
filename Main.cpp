@@ -20,7 +20,7 @@ void itemFromRoomToPlayer(Room*& room, string itemName);
 void itemFromPlayerToRoom(Room*& room, string itemName);
 void dropMonsterInventoryToRoom(Room*& room);
 void attackFromMonstertoRoom(Room*& room);
-void attackFromRoomrtoPlayer(Room*& room, string attackName);
+void attackFromRoomToPlayer(Room*& room, string attackName);
 void attackFromPlayertoRoom(Room*& room, string attackName);
 bool checkIfItemIsInRoom(Room*& room, string itemName);
 bool checkIfAttackIsInRoom(Room*& room, string attackName);
@@ -28,7 +28,6 @@ bool checkIfRoomIsLocked(Room*& room, string direction);
 void unlockDoor(Room*& room, string itemName);
 bool checkForItem(Room*& room, string itemName);
 bool checkForAttack(Room*& room, string itemName);
-
 void addItemHealthToPlayer(Room*& room, string itemName);
 
 int main() {
@@ -48,19 +47,23 @@ int main() {
 	// Create all string variables of text that will be used as dialog throughout the game.
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	string version = "Welcome to the Devil's Mansion V3.01\n";
-	string endSentence = "\nThanks for playing The Devil's Mansion!!";
-	string askCharacterName = "Hello there, please enter the name you would like your character to have: ";
-	string askUserToMove = "Please enter `center` to go through the door: ";
-	string blueberryOnFloor = "Please enter `blueberry` to pick up the blueberry: ";
-	string checkInventory = "Please now type `inventory` to see what you have in your inventory: ";
-	string endOfIntro = "You are now aware of how to move and how to pick up items.\n"
-						"If you forget the commands or need any help on attacking/using items enter 'help' at any time.\n"
-						"Please continue with the game on your own...\n";
-	string incorrectRoom = "\nThat was not a valid room.\nThe player will stay in the current room.\n";
-	string startingDescription = ""; //Will be given a value after player has entered their name
-	string quitGame = "You have quit the game...\n";
-	string inputPrompt = "What would you like to do: ";
+	// Strings that are not associated with user input
+	string version =		"Welcome to the Devil's Mansion V3.01\n\n";
+	string incorrectRoom =	"That was not a valid room.\nThe player will stay in the current room.\n";
+	string quitGame =		"You have quit the game...\n";
+
+	// Strings associated with user input
+	string askCharacterName =	"Hello there you fabulous person, please enter the name you would like your character to have: ";
+	string askUserToMove =		"Please enter `move center` to go through the door: ";
+	string blueberryOnFloor =	"Please enter `collect blueberry` to pick up the blueberry: ";
+	string checkInventory =		"Please enter `inventory` to see what you have in your inventory: ";
+	string inputPrompt =		"What would you like to do: ";
+
+	// Strings that need a \n at the start too
+	string endSentence =	"\nThanks for playing The Devil's Mansion!!\n";
+	string endOfIntro =		"\nYou are now aware of how to move and how to pick up items.\n"
+							"If you forget the commands or need any help on attacking/using items enter 'help' at any time.\n"
+							"Please continue with the game on your own...\n";
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create inventory objects that will be used in various players, monsters, rooms, etc.
@@ -69,7 +72,7 @@ int main() {
 	Inventory playerInventory;
 	Inventory roomInventory1;
 	Inventory roomInventory5;
-	Inventory hellhoundInventory;
+	//Inventory hellhoundInventory; // ToDo: Re-Add Back in
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create Attacks objects that will be used in various players, monsters, rooms, etc.
@@ -78,7 +81,7 @@ int main() {
 	Attacks playerAttack;
 	Attacks roomAttacks;
 	Attacks skeletonAttacks;
-	Attacks hellhoundAttacks;
+	//Attacks hellhoundAttacks; // ToDo: Re-Add Back in
 	Attacks devilAttacks;
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -91,7 +94,7 @@ int main() {
 	Health devilHealth(0, 0);
 	Health devilsKeyHealth(0, 0);
 	Health skeletonHealth(50, 50);
-	Health hellhoundHealth(70, 70);
+	//Health hellhoundHealth(70, 70);  // ToDo: Re-Add Back in
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create weapon objects that will be used by the player and by monsters throughout the game
@@ -99,7 +102,7 @@ int main() {
 	Weapon punch("punch", "punch", -20, 95);
 	Weapon kick("kick", "kick", -25, 90);
 	Weapon bow("bow", "bow Shot", -20, 90);
-	Weapon bite("bite", "bite", -25, 85);
+	//Weapon bite("bite", "bite", -25, 85); // ToDo: Re-Add Back in
 	Weapon placeHolderWeapon("Temp", "Temp", 0, 0);
 	
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -108,7 +111,7 @@ int main() {
 	
 	devilAttacks.addAttack(placeHolderWeapon);
 	skeletonAttacks.addAttack(bow);
-	hellhoundAttacks.addAttack(bite);
+	//hellhoundAttacks.addAttack(bite); // ToDo: Re-Add Back in
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create item objects that will be used in various player inventories, room inventories
@@ -116,12 +119,12 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 	Item blueberry("blueberry", blueberryHealth);
 	Item devilsKey("devils key", devilsKeyHealth);
-	Item fireFang("fire fang", fireFangHeakth);
+	//Item fireFang("fire fang", fireFangHeakth); // ToDo: Re-Add Back in
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Add item objects to monster inventories, add room inventories to actual room objects
 	///////////////////////////////////////////////////////////////////////////////////////////
-	hellhoundInventory.addItem(fireFang);
+	//hellhoundInventory.addItem(fireFang); // ToDo: Re-Add Back in
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create monster objects that will be used to battle the player throughout the game
@@ -130,23 +133,22 @@ int main() {
 	// Create the Devil who will be the main villain of the game. He will also be the one
 	// to give the player info on how to play the game.
 	Monster devil("Devil", "The devil is a tall, crimson red, and overwhelmingly handsome man.\n",
-		"Welcome to my mansion!!\n"
-		"I am the Devil and you have died in real life.\n"
-		"This has resulted in you being sent down to my mansion to play a little game.\n"
-		"I have minions all over my mansion from skeletons to lava hounds.\n"
-		"You will have to face all of my minions in battle to make it through the mansion.\n"
-		"If you successfully make it out, you will have won your life back.\n\n"
-		"Since this is a video game and everything is fake, I don't need to tell you the controls.\n"
-		"You can just type `help` to see them for yourself.\n\n"
-		"That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
-		"...The devil zoomed away\n", devilHealth, devilAttacks);
+						   "Welcome to my mansion!!\n"
+						   "I am the Devil and you have died in real life.\n"
+						   "This has resulted in you being sent down to my mansion to play a little game.\n"
+					       "I have minions all over my mansion from skeletons to lava hounds.\n"
+						   "You will have to face all of my minions in battle to make it through the mansion.\n"
+						   "If you successfully make it out, you will have won your life back.\n\n"
+						   "Since this is a video game and everything is fake, I don't need to tell you the controls.\n"
+						   "You can just type `help` to see them for yourself.\n\n"
+						   "That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
+						   "...The devil zoomed away\n\n", devilHealth, devilAttacks);
 	Monster skeleton("Skeleton", "The skeleton is a 10 foot tall, skinny, white thing of bones.\n",
-		"Hello there peasent, I am the skeleton.\n"
-		"Welcome to my room. I am going to take you down no matter what.\n", skeletonHealth, skeletonAttacks);
-	Monster hellhound("Hellhound", "The devils most loyal beasts. They patrol his manor, sniffing out any intruder who dares to wander these cursed halls.\n",
+								 "Hello there peasent, I am the skeleton.\n"
+								 "Welcome to my room. I am going to take you down no matter what.\n\n", skeletonHealth, skeletonAttacks);
+	/*Monster hellhound("Hellhound", "The devils most loyal beasts. They patrol his manor, sniffing out any intruder who dares to wander these cursed halls.\n",
 		"Hellow there you no life scum, I am the Hellhound.\n" "Welcome to my room. I am going to send you to the depths of hell no matter the cost.\n",
-		hellhoundHealth, hellhoundAttacks, hellhoundInventory);
-
+		hellhoundHealth, hellhoundAttacks, hellhoundInventory);*/ // ToDo: Re-Add Back in
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -155,29 +157,30 @@ int main() {
 
 	// Create the starting steps. This will be the first area the player is dropped in
 	// at the start of the game.
-	Room startingSteps("Starting Steps", "\nYou are currently at the Starting Steps.\n"
+	Room startingSteps("Starting Steps", "You are currently at the Starting Steps.\n"
 										 "The starting steps lead up to a large and tall mansion in front of you.\n"
 										 "The mansion is dark, mysterious and gives you a chill you did not think possible.\n"
-									     "Before you is a door.\n", false);
+									     "Before you is a door.\n\n", false);
 	// Create the starting room. This is the 2nd location that the user can go to.
 	// This room will come after the starting steps and will house the devil.
 	// In this room the devil will explain the rules of the game to you.
-	Room startingRoom("Starting Room",  "\nYou are now in the Starting Room.\n"
+	Room startingRoom("Starting Room",  "You are now in the Starting Room.\n"
 										"The starting room is a large open dark room with spider webs everywhere.\n"
 										"Someone should really dust in here.\n"
-										"Standing before you is the devil.\n", false);
-	Room skeletonRoom("Room Of Unlucky Souls", "\nYou are now in the Room Of Unlucky Souls.\n"
-											   "The sounds of screams are coming from every inch of the room.\n", false);
-	Room hellHoundRoom("Room Of The Devil's Most Loyal Friend", "\nYou are now in the Room Of The Devil's Most Loyal Friend.\n"
+										"Standing before you is the devil.\n\n", false);
+	Room skeletonRoom("Room Of Unlucky Souls", "You are now in the Room Of Unlucky Souls.\n"
+											   "The sounds of screams are coming from every inch of the room.\n\n", false);
+	Room hellHoundRoom("Room Of The Devil's Most Loyal Friend", "You are now in the Room Of The Devil's Most Loyal Friend.\n"
 																"The room is filled with lava all around the perimeter.\n"
-																"Someone should really do something about that.\n", false);
-	Room chimeraRoom("Room Of Pure Black", "\nYou are now in the Room of Pure Black.\n"
-										   "..... you can't see anything....\n", false);
-	Room archDevilRoom("Room Of Demonic Magic", "\nYou are now in the Room Of Demonic Magic.\n"
-											"Demonic magic is creeping down your spine.\n"
-											"You think some kind of demon lives here???\n", false);
+																"Someone should really do something about that.\n\n", false);
+	Room chimeraRoom("Room Of Pure Black", "You are now in the Room of Pure Black.\n"
+										   "........you can't see anything........\n\n", false);
+	Room archDevilRoom("Room Of Demonic Magic", "You are now in the Room Of Demonic Magic.\n"
+												"Demonic magic is creeping down your spine.\n"
+												"You think some kind of demon lives here???\n\n", false);
 	Room testRoom6("Test Room 6", "You are now in the 6th test room, \nClearly you have managed to unlock the door\n"
-											"to access this room\n", true);
+								  "to access this room\n\n", true);
+
 	// ToDo: Make a function to do these in one line
 	// Starting Steps - associated rooms
 	startingSteps.setCenterRoom(startingRoom);
@@ -204,7 +207,7 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	skeletonRoom.setMonster(skeleton);
-	hellHoundRoom.setMonster(hellhound);
+	//hellHoundRoom.setMonster(hellhound); // ToDo: Re-Add Back in
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Add item objects to room inventories, add room inventories to actual room objects
@@ -223,8 +226,12 @@ int main() {
 	playerAttack.addAttack(kick);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////
 	// Introduction for the game. Ask the user to enter their name. 
 	// The user input will be used to run the game and progress throughout the game.
+	///////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Print the current version of the game
@@ -236,41 +243,42 @@ int main() {
 	} while (userInputString == "");
 	
 	// Create the main player object and set the starting steps as their current room
-	Player player(userInputString, playerInventory, playerHealth,playerAttack);
+	Player player(userInputString, playerInventory, playerHealth, playerAttack);
 	startingSteps.setPlayer(player);
 	roomPointer = &startingSteps;
 
 	// Print the starting descriptions of the game to the screen. 
-	startingDescription = "\nHello there " + player.getName() + ".\n"
-						  "You have just died and been sent down to The Devils Mansion.\n"
-						  "Currently you are outside of the mansion and standing on the starting steps.";
+	string startingDescription = "Hello there " + player.getName() + ".\n"
+								 "You have just died and been sent down to The Devils Mansion.\n"
+								 "Currently you are outside of the mansion and standing on the starting steps.\n\n";
 	console.writeOutput(startingDescription);
 	console.writeOutput(startingSteps.getRoomDescription());
 
-	// Once the user enters `center`, send them into the starting room and have the devil 
+	// Once the user enters `move center`, send them into the starting room and have the devil 
 	// give his little spiel about how the game works and runs.
 	do {
 		userInputString = console.getUserInput(askUserToMove);
-	} while (userInputString != "center");
-	roomPointer->moveRoom(userInputString);
+	} while (userInputString != "move center");
+
+	roomPointer->moveRoom("center");
 	roomPointer = roomPointer->getCenterRoom();
 	console.writeOutput(roomPointer->getRoomDescription());
 	console.writeOutput(devil.getMonsterDescription());
 	console.writeOutput(devil.getDialogOpening());
 
 	// Reset the room so the devil is not displayed after the first entrance
-	roomPointer->setRoomDescription("\nYou are now in the starting room.\n"
-									"The starting room is a large open dark room with spider webs everywhere.\n");
+	roomPointer->setRoomDescription("You are now in the starting room.\n"
+									"The starting room is a large open dark room with spider webs everywhere.\n\n");
 	
+	// Let the player know the devil dropped a blueberry on the ground
 	console.writeOutput("It seems as though the devil dropped something on the ground.\n"
 						"It looks to be a blueberry.\n"
-						"That would probably be something cool to pick up.\n");
-
+						"That would probably be something cool to pick up.\n\n");
 
 	// Let the player see there is a blueberry on the ground.
 	do {
 		userInputString = console.getUserInput(blueberryOnFloor);
-	} while (userInputString != "blueberry");
+	} while (userInputString != "collect blueberry");
 
 	// Move the blueberry from the room to the player
 	itemFromRoomToPlayer(roomPointer, "blueberry");
@@ -340,7 +348,7 @@ int main() {
 					else
 					{
 						cout << "It looks like the " << roomPointer->getLeftRoom()->getName()
-							 << " is locked.\n" << "You must have a key to unlock the door.\n\n";
+							 << " is locked.\n" << "You must have a key to unlock the door.\n";
 					}
 				}
 				else
@@ -365,7 +373,7 @@ int main() {
 					else
 					{
 						cout << "It looks like the " << roomPointer->getCenterRoom()->getName()
-							 << " is locked.\n" << "You must have a key to unlock the door.\n\n";
+							 << " is locked.\n" << "You must have a key to unlock the door.\n";
 					}
 				}
 				else
@@ -373,7 +381,6 @@ int main() {
 					console.writeOutput(incorrectRoom);
 				}
 				break;
-
 			case Parser::RIGHT:
 				// ToDo: Refactor into a single function
 				// Add extra variable with the direction you are moving
@@ -390,7 +397,7 @@ int main() {
 					else
 					{
 						cout << "It looks like the " << roomPointer->getRightRoom()->getName()
-							 << " is locked.\n" << "You must have a key to unlock the door.\n\n";
+							 << " is locked.\n" << "You must have a key to unlock the door.\n";
 					}
 				}
 				else
@@ -398,7 +405,6 @@ int main() {
 					console.writeOutput(incorrectRoom);
 				}
 				break;
-
 			case Parser::BACK:
 				// ToDo: Refactor into a single function
 				// Add extra variable with the direction you are moving
@@ -415,7 +421,7 @@ int main() {
 					else
 					{
 						cout << "It looks like the " << roomPointer->getBackRoom()->getName()
-							<< " is locked.\n" << "You must have a key to unlock the door.\n\n";
+							<< " is locked.\n" << "You must have a key to unlock the door.\n";
 					}
 				}
 				else
@@ -423,7 +429,6 @@ int main() {
 					console.writeOutput(incorrectRoom);
 				}
 				break;
-
 			case Parser::ERROR2:
 				parser.incorrectDirectionCommand(console);
 				break;
@@ -439,8 +444,8 @@ int main() {
 					itemFromRoomToPlayer(roomPointer, "blueberry");
 				}
 				else {
-					cout << "\nThe item you have entered is not in this room.\n";
-					cout << "Check other rooms..... or your inventory.\n\n";
+					cout << "The item you have entered is not in this room.\n";
+					cout << "Check other rooms..... or your inventory.\n";
 				}
 				break;
 			case Parser::BOW:
@@ -449,7 +454,7 @@ int main() {
 				{
 					if (roomPointer->getPlayer().getAttacks().getSize() != 4)
 					{
-						attackFromRoomrtoPlayer(roomPointer, "bow");
+						attackFromRoomToPlayer(roomPointer, "bow");
 					}
 					else
 					{
@@ -468,7 +473,7 @@ int main() {
 				{
 					if (roomPointer->getPlayer().getAttacks().getSize() != 4)
 					{
-						attackFromRoomrtoPlayer(roomPointer, "punch");
+						attackFromRoomToPlayer(roomPointer, "punch");
 					}
 					else
 					{
@@ -487,7 +492,7 @@ int main() {
 				{
 					if (roomPointer->getPlayer().getAttacks().getSize() != 4)
 					{
-						attackFromRoomrtoPlayer(roomPointer, "kick");
+						attackFromRoomToPlayer(roomPointer, "kick");
 					}
 					else
 					{
@@ -512,7 +517,6 @@ int main() {
 					cout << "Check other rooms..... or your inventory.\n\n";
 				}
 				break;
-
 			case Parser::ERROR2:
 				// ToDo: Change this to display that a command for that item could
 				// not be found
@@ -545,7 +549,6 @@ int main() {
 					cout << "\nThat item is not in your inventory. It cannot be used.\n\n";
 				}
 				break;
-
 			case Parser::ERROR2:
 				// ToDo: Change this to display that a command for that item could
 				// not be found
@@ -572,7 +575,6 @@ int main() {
 					cout << "You do not currently have the attack that you wish to drop.\n";
 				}
 				break;
-			
 			case Parser::PUNCH:
 				//Lets the player drop the punch attack
 				if (checkForAttack(roomPointer, "punch") == true)
@@ -612,7 +614,6 @@ int main() {
 			switch (parserOutput->command2)
 			{
 			case Parser::SKELETON:
-
 				if (roomPointer->getMonster().getName() != "" && roomPointer->getMonster().getHealth().getHealth() > 0)
 				{
 					Battle battle(roomPointer, roomPointer->getPlayer(), roomPointer->getMonster());
@@ -632,7 +633,6 @@ int main() {
 					break;
 				}
 				break;
-
 			case Parser::ERROR2:
 				// ToDo: Change this to display that a command for that monster could
 				// not be found
@@ -640,6 +640,7 @@ int main() {
 				break;
 			}
 			break;
+
 		default:
 			parser.incorrectMainCommand(console);
 			break;
@@ -694,8 +695,9 @@ void itemFromRoomToPlayer(Room*& room, string itemName) {
 	room->setPlayer(tempPlayer);
 
 	// Display the inventories of the room and the player
-	std::cout << "\nYou have just picked up a " << itemName << endl;
+	std::cout << "You have just picked up a " << itemName << ".\n\n";
 	room->getInventory().displayRoomInventory();
+	//std::cout << std::endl;
 	room->getPlayer().getInventory().displayPlayerInventory();
 }
 
@@ -827,20 +829,15 @@ void attackFromMonstertoRoom(Room*& room)
 	room->setMonster(tempMonster);
 
 	// Display the inventories of the room and the player
-	std::cout << endl << room->getMonster().getName() << " has just dropped " << "**Add Attack Name Here**" << endl;
-	std::cout << "Monster attacks\n";
+	std::cout << endl << room->getMonster().getName() << " has just dropped their " << temp.getMonsterWeapon().getName() << ".\n";
+	//std::cout << "Monster attacks\n"; // Dont think we need
+	//room->getMonster().getAttacks().displayattacks(); // Dont think we need
 
-	/*cout << endl << room->getMonster().getName() << " has just dropped " << temp.getMonsterWeapon().getName() << endl;
-	cout << "Monster attacks\n";*/
-
-	room->getMonster().getAttacks().displayattacks();
-	std::cout << endl;
-	std::cout << "Attacks in the room that you can pickup: " << endl;
+	std::cout << "\nAttacks in the room that you can pickup: " << endl;
 	room->getAttacks().displayattacks();
-	std::cout << endl;
 }
 
-void attackFromRoomrtoPlayer(Room*& room, string attackName)
+void attackFromRoomToPlayer(Room*& room, string attackName)
 {
 	// Variables
 	Player tempPlayer;
@@ -877,9 +874,10 @@ void attackFromRoomrtoPlayer(Room*& room, string attackName)
 	room->setPlayer(tempPlayer);
 
 	// Display the attack lists of the room and the player
-	std::cout << "\nYou have just picked up a " << attackName;
+	std::cout << "You have just picked up a " << attackName << ".\n";
 	std::cout << "\nRoom attacks " << endl;
 	room->getAttacks().displayattacks();
+	std::cout << std::endl;
 	std::cout << "Player attacks is now: " << endl;
 	room->getPlayer().getAttacks().displayattacks();
 }
@@ -921,13 +919,12 @@ void attackFromPlayertoRoom(Room*& room, string attackName)
 	room->setPlayer(tempPlayer);
 
 	// Display the attacks of the room and the player
-	std::cout << endl << room->getPlayer().getName() << " has just dropped " << attackName << endl;
+	std::cout << room->getPlayer().getName() << " has just dropped the attack " << attackName << ".\n\n";
 	std::cout << "Attacks in the room that you can pickup: " << endl;
 	room->getAttacks().displayattacks();
 	std::cout << endl;
 	std::cout << "Player attacks\n";
 	room->getPlayer().getAttacks().displayattacks();
-	std::cout << endl;
 }
 
 // Checks if a specified item is already in a room. Returns true if 

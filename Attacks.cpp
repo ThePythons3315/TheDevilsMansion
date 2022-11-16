@@ -11,7 +11,7 @@ void Attacks::addAttack(Weapon weapon){
 
 void Attacks::displayattacks(){
 	if (attacks.size() == 0) {
-		cout << "-There are no attacks." << endl;
+		cout << "-There are no attacks.\n";
 	}
 	else {
 		cout << "Attack list: " << endl;

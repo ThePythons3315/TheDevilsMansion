@@ -9,6 +9,7 @@ Room::Room() {
 	inventory;
 	monster;
 	attacks;
+	player;
 	lock = false;
 	leftRoom = nullptr;
 	centerRoom = nullptr;
@@ -19,6 +20,7 @@ Room::Room(string name_input, string desc, bool lockStat) {
 	name = name_input;
 	roomDescription = desc;
 	lock = lockStat;
+	player;
 	inventory;
 	monster;
 	attacks;
@@ -169,7 +171,7 @@ bool Room::getLockStatus()
 void Room::getRoomInformation()
 {
 	// Description of room - what the room actually looks like
-	cout << getRoomDescription() << endl;
+	cout << getRoomDescription();
 
 	// Display the items in the room
 	inventory.displayRoomInventory();
@@ -182,13 +184,13 @@ void Room::getRoomInformation()
 	}
 
 	if (monster.getHealth().getHealth() == -1) {
-		cout << "You have already killed the " << monster.getName() << " monster\n\n";
+		cout << "\nYou have already killed the " << monster.getName() << " monster\n";
 	}
 	else if (monster.getName() != "") {
 		monster.displayMonster();
 	}
 	else {
-		cout << "It does not look like there is a monster in this room.\nContinue to be weary though\n\n";
+		cout << "\nIt does not look like there is a monster in this room.\nContinue to be weary though\n";
 	}
 }
 
