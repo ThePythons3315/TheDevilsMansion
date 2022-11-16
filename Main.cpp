@@ -28,7 +28,6 @@ bool checkIfRoomIsLocked(Room*& room, string direction);
 void unlockDoor(Room*& room, string itemName);
 bool checkForItem(Room*& room, string itemName);
 bool checkForAttack(Room*& room, string itemName);
-
 void addItemHealthToPlayer(Room*& room, string itemName);
 
 int main() {
@@ -73,7 +72,7 @@ int main() {
 	Inventory playerInventory;
 	Inventory roomInventory1;
 	Inventory roomInventory5;
-	//Inventory hellhoundInventory; // ToDo: Re-Add Back in
+	Inventory hellhoundInventory;
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create Attacks objects that will be used in various players, monsters, rooms, etc.
@@ -82,20 +81,22 @@ int main() {
 	Attacks playerAttack;
 	Attacks roomAttacks;
 	Attacks skeletonAttacks;
-	//Attacks hellhoundAttacks; // ToDo: Re-Add Back in
+	Attacks hellhoundAttacks;
 	Attacks devilAttacks;
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create health objects that will be used in various players, monsters, items, etc.
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	Health playerHealth(30, 100);
+	Health playerHealth(90, 100);
+
 	Health blueberryHealth(50, 50);
-	Health fireFangHeakth(30, 30);
-	Health devilHealth(0, 0);
+	Health fireFangHealth(30, 30);
 	Health devilsKeyHealth(0, 0);
+
+	Health devilHealth(0, 0);
 	Health skeletonHealth(50, 50);
-	//Health hellhoundHealth(70, 70);  // ToDo: Re-Add Back in
+	Health hellhoundHealth(80, 80);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create weapon objects that will be used by the player and by monsters throughout the game
@@ -103,7 +104,7 @@ int main() {
 	Weapon punch("punch", "punch", -20, 95);
 	Weapon kick("kick", "kick", -25, 90);
 	Weapon bow("bow", "bow Shot", -20, 90);
-	//Weapon bite("bite", "bite", -25, 85); // ToDo: Re-Add Back in
+	Weapon bite("bite", "bite", -25, 85);
 	Weapon placeHolderWeapon("Temp", "Temp", 0, 0);
 	
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -112,7 +113,7 @@ int main() {
 	
 	devilAttacks.addAttack(placeHolderWeapon);
 	skeletonAttacks.addAttack(bow);
-	//hellhoundAttacks.addAttack(bite); // ToDo: Re-Add Back in
+	hellhoundAttacks.addAttack(bite);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create item objects that will be used in various player inventories, room inventories
@@ -120,7 +121,7 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 	Item blueberry("blueberry", blueberryHealth);
 	Item devilsKey("devils key", devilsKeyHealth);
-	//Item fireFang("fire fang", fireFangHeakth); // ToDo: Re-Add Back in
+	Item fireFang("fire fang", fireFangHealth);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Add item objects to monster inventories, add room inventories to actual room objects
@@ -147,9 +148,10 @@ int main() {
 	Monster skeleton("Skeleton", "The skeleton is a 10 foot tall, skinny, white thing of bones.\n",
 								 "Hello there peasent, I am the skeleton.\n"
 								 "Welcome to my room. I am going to take you down no matter what.\n\n", skeletonHealth, skeletonAttacks);
-	/*Monster hellhound("Hellhound", "The devils most loyal beasts. They patrol his manor, sniffing out any intruder who dares to wander these cursed halls.\n",
-		"Hellow there you no life scum, I am the Hellhound.\n" "Welcome to my room. I am going to send you to the depths of hell no matter the cost.\n",
-		hellhoundHealth, hellhoundAttacks, hellhoundInventory);*/ // ToDo: Re-Add Back in
+	Monster hellhound("Hellhound", "The devils most loyal beasts. They patrol his manor, sniffing out any intruder who dares to wander these cursed halls.\n",
+								   "Hellow there you no life scum, I am the Hellhound.\n" 
+								   "Welcome to my room. I am going to send you to the depths of hell no matter the cost.\n\n",
+								   hellhoundHealth, hellhoundAttacks);
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -208,7 +210,7 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	skeletonRoom.setMonster(skeleton);
-	//hellHoundRoom.setMonster(hellhound); // ToDo: Re-Add Back in
+	hellHoundRoom.setMonster(hellhound);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Add item objects to room inventories, add room inventories to actual room objects
@@ -508,6 +510,25 @@ int main() {
 					cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
 				}
 				break;
+			case Parser::BITE:
+				//Lets the user unlock the kick attack
+				if (checkIfAttackIsInRoom(roomPointer, "bite") == true)
+				{
+					if (roomPointer->getPlayer().getAttacks().getSize() != 4)
+					{
+						attackFromRoomToPlayer(roomPointer, "bite");
+					}
+					else
+					{
+						cout << "You have the max amount of attacks that can be used at one time.\n";
+					}
+				}
+				else
+				{
+					cout << "The attack you have entered is not in this room.\n";
+					cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
+				}
+				break;
 			case Parser::DEVILSKEY:
 				// Lets the user pick up the devils key
 				if (checkIfItemIsInRoom(roomPointer, "devils key") == true)
@@ -601,6 +622,17 @@ int main() {
 					cout << "You do not currently have the attack that you wish to drop.\n";
 				}
 				break;
+			case Parser::BITE:
+				//Lets the player drop the kick attack
+				if (checkForAttack(roomPointer, "bite") == true)
+				{
+					attackFromPlayertoRoom(roomPointer, "bite");
+				}
+				else
+				{
+					cout << "You do not currently have the attack that you wish to drop.\n";
+				}
+				break;
 			case Parser::DEVILSKEY:
 				// Lets the player drop the devils key
 				itemFromPlayerToRoom(roomPointer, "devils key");
@@ -617,6 +649,26 @@ int main() {
 			switch (parserOutput->command2)
 			{
 			case Parser::SKELETON:
+				if (roomPointer->getMonster().getName() != "" && roomPointer->getMonster().getHealth().getHealth() > 0)
+				{
+					Battle battle(roomPointer, roomPointer->getPlayer(), roomPointer->getMonster());
+					battle.runBattle();
+				}
+				else
+				{
+					cout << "\nThere is no current monster to battle.\n\n";
+				}
+
+				if (roomPointer->getMonster().getHealth().getHealth() < 1 && roomPointer->getAttacks().getSize() == 0)
+				{
+					attackFromMonstertoRoom(roomPointer);
+				}
+				else if (roomPointer->getPlayer().getPlayerHealth().getHealth() < 1)
+				{
+					break;
+				}
+				break;
+			case Parser::HELLHOUND:
 				if (roomPointer->getMonster().getName() != "" && roomPointer->getMonster().getHealth().getHealth() > 0)
 				{
 					Battle battle(roomPointer, roomPointer->getPlayer(), roomPointer->getMonster());

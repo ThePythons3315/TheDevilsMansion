@@ -14,7 +14,11 @@ public:
 	// Secondary Commands that can be used along side certain primary commands
 	enum SecondaryCommandMenu
 	{ 
-		LEFT, CENTER, RIGHT, BACK, BLUEBERRY, SKELETON, BOW, PUNCH, KICK, DEVILSKEY, ERROR2
+		LEFT, CENTER, RIGHT, BACK,
+		SKELETON, HELLHOUND,
+		BLUEBERRY, DEVILSKEY,
+		BOW, PUNCH, KICK, BITE,  
+		ERROR2
 	};
 
 	// Struct of commands that will be filled when user input is parsed
