@@ -73,22 +73,26 @@ int main() {
 	Inventory roomInventory1;
 	Inventory roomInventory5;
 	Inventory hellhoundInventory;
+	Inventory chimeraInventory;
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create Attacks objects that will be used in various players, monsters, rooms, etc.
 	///////////////////////////////////////////////////////////////////////////////////////////
 	
 	Attacks playerAttack;
+
 	Attacks roomAttacks;
+
+	Attacks devilAttacks;
 	Attacks skeletonAttacks;
 	Attacks hellhoundAttacks;
-	Attacks devilAttacks;
+	Attacks chimeraAttacks;
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create health objects that will be used in various players, monsters, items, etc.
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	Health playerHealth(90, 100);
+	Health playerHealth(900, 1000);
 
 	Health blueberryHealth(50, 50);
 	Health fireFangHealth(30, 30);
@@ -97,6 +101,7 @@ int main() {
 	Health devilHealth(0, 0);
 	Health skeletonHealth(50, 50);
 	Health hellhoundHealth(80, 80);
+	Health chimeraHealth(80, 80);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create weapon objects that will be used by the player and by monsters throughout the game
@@ -105,6 +110,7 @@ int main() {
 	Weapon kick("kick", "kick", -25, 90);
 	Weapon bow("bow", "bow Shot", -20, 90);
 	Weapon bite("bite", "bite", -25, 85);
+	Weapon firebreath("firebreath", "firebreath", -30, 90);
 	Weapon placeHolderWeapon("Temp", "Temp", 0, 0);
 	
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -114,6 +120,7 @@ int main() {
 	devilAttacks.addAttack(placeHolderWeapon);
 	skeletonAttacks.addAttack(bow);
 	hellhoundAttacks.addAttack(bite);
+	chimeraAttacks.addAttack(firebreath);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create item objects that will be used in various player inventories, room inventories
@@ -121,7 +128,6 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 	Item blueberry("blueberry", blueberryHealth);
 	Item devilsKey("devils key", devilsKeyHealth);
-	Item fireFang("fire fang", fireFangHealth);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Add item objects to monster inventories, add room inventories to actual room objects
@@ -152,6 +158,10 @@ int main() {
 								   "Hellow there you no life scum, I am the Hellhound.\n" 
 								   "Welcome to my room. I am going to send you to the depths of hell no matter the cost.\n\n",
 								   hellhoundHealth, hellhoundAttacks);
+	Monster chimera("Chimera", "Chimera Description.\n",
+							   "More Chimera Description.\n"
+							   "More Chimera Description.\n\n",
+							   chimeraHealth, chimeraAttacks);
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -211,11 +221,12 @@ int main() {
 
 	skeletonRoom.setMonster(skeleton);
 	hellHoundRoom.setMonster(hellhound);
+	chimeraRoom.setMonster(chimera);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Add item objects to room inventories, add room inventories to actual room objects
 	///////////////////////////////////////////////////////////////////////////////////////////
-	//roomInventory1.addItem(squash); - Tester
+
 	roomInventory1.addItem(blueberry);
 	startingRoom.setInventory(roomInventory1);
 	roomInventory5.addItem(devilsKey);
@@ -529,6 +540,25 @@ int main() {
 					cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
 				}
 				break;
+			case Parser::FIREBREATH:
+				//Lets the user unlock the kick attack
+				if (checkIfAttackIsInRoom(roomPointer, "firebreath") == true)
+				{
+					if (roomPointer->getPlayer().getAttacks().getSize() != 4)
+					{
+						attackFromRoomToPlayer(roomPointer, "firebreath");
+					}
+					else
+					{
+						cout << "You have the max amount of attacks that can be used at one time.\n";
+					}
+				}
+				else
+				{
+					cout << "The attack you have entered is not in this room.\n";
+					cout << "Check other rooms or your attack list,you may have unlocked it already.\n";
+				}
+				break;
 			case Parser::DEVILSKEY:
 				// Lets the user pick up the devils key
 				if (checkIfItemIsInRoom(roomPointer, "devils key") == true)
@@ -633,6 +663,17 @@ int main() {
 					cout << "You do not currently have the attack that you wish to drop.\n";
 				}
 				break;
+			case Parser::FIREBREATH:
+				//Lets the player drop the kick attack
+				if (checkForAttack(roomPointer, "firebreath") == true)
+				{
+					attackFromPlayertoRoom(roomPointer, "firebreath");
+				}
+				else
+				{
+					cout << "You do not currently have the attack that you wish to drop.\n";
+				}
+				break;
 			case Parser::DEVILSKEY:
 				// Lets the player drop the devils key
 				itemFromPlayerToRoom(roomPointer, "devils key");
@@ -669,6 +710,26 @@ int main() {
 				}
 				break;
 			case Parser::HELLHOUND:
+				if (roomPointer->getMonster().getName() != "" && roomPointer->getMonster().getHealth().getHealth() > 0)
+				{
+					Battle battle(roomPointer, roomPointer->getPlayer(), roomPointer->getMonster());
+					battle.runBattle();
+				}
+				else
+				{
+					cout << "\nThere is no current monster to battle.\n\n";
+				}
+
+				if (roomPointer->getMonster().getHealth().getHealth() < 1 && roomPointer->getAttacks().getSize() == 0)
+				{
+					attackFromMonstertoRoom(roomPointer);
+				}
+				else if (roomPointer->getPlayer().getPlayerHealth().getHealth() < 1)
+				{
+					break;
+				}
+				break;
+			case Parser::CHIMERA:
 				if (roomPointer->getMonster().getName() != "" && roomPointer->getMonster().getHealth().getHealth() > 0)
 				{
 					Battle battle(roomPointer, roomPointer->getPlayer(), roomPointer->getMonster());
