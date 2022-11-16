@@ -28,6 +28,7 @@ bool checkIfRoomIsLocked(Room*& room, string direction);
 void unlockDoor(Room*& room, string itemName);
 bool checkForItem(Room*& room, string itemName);
 bool checkForAttack(Room*& room, string itemName);
+
 void addItemHealthToPlayer(Room*& room, string itemName);
 
 int main() {
@@ -88,7 +89,7 @@ int main() {
 	// Create health objects that will be used in various players, monsters, items, etc.
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	Health playerHealth(90, 100);
+	Health playerHealth(30, 100);
 	Health blueberryHealth(50, 50);
 	Health fireFangHeakth(30, 30);
 	Health devilHealth(0, 0);
@@ -258,6 +259,7 @@ int main() {
 	// give his little spiel about how the game works and runs.
 	do {
 		userInputString = console.getUserInput(askUserToMove);
+		userInputString = parser.convertLower(userInputString);
 	} while (userInputString != "move center");
 
 	roomPointer->moveRoom("center");
@@ -278,6 +280,7 @@ int main() {
 	// Let the player see there is a blueberry on the ground.
 	do {
 		userInputString = console.getUserInput(blueberryOnFloor);
+		userInputString = parser.convertLower(userInputString);
 	} while (userInputString != "collect blueberry");
 
 	// Move the blueberry from the room to the player
