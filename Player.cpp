@@ -10,11 +10,11 @@ Player::Player()
 	health;
 	attacks;
 };
-Player::Player(string n, Inventory invent, Health playerHealth, Attacks _attacks)
+Player::Player(string _name, Inventory _inventory, Health _health, Attacks _attacks)
 {
-	name = n;
-	inventory = invent;
-	health = playerHealth;
+	name = _name;
+	inventory = _inventory;
+	health = _health;
 	attacks = _attacks;
 }
 
@@ -27,9 +27,9 @@ void Player::setInventory(Inventory _inventory)
 {
 	inventory = _inventory;
 }
-void Player::setPlayerHealth(Health _playerHealth)
+void Player::setPlayerHealth(Health _health)
 {
-	health = _playerHealth;
+	health = _health;
 }
 void Player::setAttacks(Attacks _attacks)
 {
