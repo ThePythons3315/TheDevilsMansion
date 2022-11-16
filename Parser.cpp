@@ -104,6 +104,10 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = KICK;
 			}
+			else if (command2 == "bite")
+			{
+				parsedInput->command2 = BITE;
+			}
 			else if (command2 == "devilskey")
 			{
 				parsedInput->command2 = DEVILSKEY;
@@ -149,6 +153,10 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = KICK;
 			}
+			else if (command2 == "bite")
+			{
+				parsedInput->command2 = BITE;
+			}
 			else if (command2 == "devilskey")
 			{
 				parsedInput->command2 = DEVILSKEY;
@@ -167,6 +175,10 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = SKELETON;
 			}
+			else if (command2 == "hellhound")
+			{
+				parsedInput->command2 = HELLHOUND;
+			}
 			else
 			{
 				parsedInput->command2 = ERROR2;
@@ -182,7 +194,6 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 	{
 		std::cout << "Error from Regex" << std::endl;
 	}
-
 	return (parsedInput);
 }
 
