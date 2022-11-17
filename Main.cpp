@@ -48,22 +48,22 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Strings that are not associated with user input
-	string version =		"Welcome to the Devil's Mansion V3.01\n\n";
-	string incorrectRoom =	"That was not a valid room.\nThe player will stay in the current room.\n";
-	string quitGame =		"You have quit the game...\n";
+	string version = "Welcome to the Devil's Mansion V3.01\n\n";
+	string incorrectRoom = "That was not a valid room.\nThe player will stay in the current room.\n";
+	string quitGame = "You have quit the game...\n";
 
 	// Strings associated with user input
-	string askCharacterName =	"Hello there you fabulous person, please enter the name you would like your character to have: ";
-	string askUserToMove =		"Please enter `move center` to go through the door: ";
-	string blueberryOnFloor =	"Please enter `collect blueberry` to pick up the blueberry: ";
-	string checkInventory =		"Please enter `inventory` to see what you have in your inventory: ";
-	string inputPrompt =		"What would you like to do: ";
+	string askCharacterName = "Hello there you fabulous person, please enter the name you would like your character to have: ";
+	string askUserToMove = "Please enter `move center` to go through the door: ";
+	string blueberryOnFloor = "Please enter `collect blueberry` to pick up the blueberry: ";
+	string checkInventory = "Please enter `inventory` to see what you have in your inventory: ";
+	string inputPrompt = "What would you like to do: ";
 
 	// Strings that need a \n at the start too
-	string endSentence =	"\nThanks for playing The Devil's Mansion!!\n";
-	string endOfIntro =		"\nYou are now aware of how to move and how to pick up items.\n"
-							"If you forget the commands or need any help on attacking/using items enter 'help' at any time.\n"
-							"Please continue with the game on your own...\n";
+	string endSentence = "\nThanks for playing The Devil's Mansion!!\n";
+	string endOfIntro = "\nYou are now aware of how to move and how to pick up items.\n"
+		"If you forget the commands or need any help on attacking/using items enter 'help' at any time.\n"
+		"Please continue with the game on your own...\n";
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create inventory objects that will be used in various players, monsters, rooms, etc.
@@ -80,7 +80,7 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create Attacks objects that will be used in various players, monsters, rooms, etc.
 	///////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	Attacks playerAttack;
 
 	Attacks roomAttacks;
@@ -96,9 +96,9 @@ int main() {
 	// Create health objects that will be used in various players, monsters, items, etc.
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	Health playerHealth(900, 1000);
+	Health playerHealth(200, 200);
 
-	Health blueberryHealth(50, 50);
+	Health blueberryHealth(100, 100);
 	Health fireFangHealth(30, 30);
 	Health devilsKeyHealth(0, 0);
 
@@ -112,19 +112,19 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create weapon objects that will be used by the player and by monsters throughout the game
 	///////////////////////////////////////////////////////////////////////////////////////////
-	Weapon punch("punch", "punch", -20, 95);
-	Weapon kick("kick", "kick", -25, 90);
-	Weapon bow("bow", "bow Shot", -20, 90);
+	Weapon punch("punch", "punch", -25, 95);
+	Weapon kick("kick", "kick", -25, 95);
+	Weapon bow("bow", "bow Shot", -35, 90);
 	Weapon bite("bite", "bite", -25, 85);
 	Weapon firebreath("firebreath", "firebreath", -30, 90);
 	Weapon flamethrower("flamethrower", "flamethrower", -35, 50);
 	Weapon fireball("fireball", "fireball", -25, 99);
 	Weapon placeHolderWeapon("Temp", "Temp", 0, 0);
-	
+
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Add weapon objects to monster attacks, add monster attacks to actual monster objects
 	///////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	devilAttacks.addAttack(placeHolderWeapon);
 	skeletonAttacks.addAttack(bow);
 	hellhoundAttacks.addAttack(bite);
@@ -151,66 +151,61 @@ int main() {
 	// Create the Devil who will be the main villain of the game. He will also be the one
 	// to give the player info on how to play the game.
 	Monster devil("Devil", "The devil is a tall, crimson red, and overwhelmingly handsome man.\n",
-						   "Welcome to my mansion!!\n"
-						   "I am the Devil and you have died in real life.\n"
-						   "This has resulted in you being sent down to my mansion to play a little game.\n"
-					       "I have minions all over my mansion from skeletons to lava hounds.\n"
-						   "You will have to face all of my minions in battle to make it through the mansion.\n"
-						   "If you successfully make it out, you will have won your life back.\n\n"
-						   "Since this is a video game and everything is fake, I don't need to tell you the controls.\n"
-						   "You can just type `help` to see them for yourself.\n\n"
-						   "That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
-						   "...The devil zoomed away\n\n", devilHealth, devilAttacks);
+		"Welcome to my mansion!!\n"
+		"I am the Devil and you have died in real life.\n"
+		"This has resulted in you being sent down to my mansion to play a little game.\n"
+		"I have minions all over my mansion from skeletons to lava hounds.\n"
+		"You will have to face all of my minions in battle to make it through the mansion.\n"
+		"If you successfully make it out, you will have won your life back.\n\n"
+		"Since this is a video game and everything is fake, I don't need to tell you the controls.\n"
+		"You can just type `help` to see them for yourself.\n\n"
+		"That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
+		"...The devil zoomed away\n\n", devilHealth, devilAttacks);
 	Monster skeleton("Skeleton", "The skeleton is a 10 foot tall, skinny, white thing of bones.\n",
-								 "Hello there peasent, I am the skeleton.\n"
-								 "Welcome to my room. I am going to take you down no matter what.\n\n", skeletonHealth, skeletonAttacks);
+		"Hello there peasent, I am the skeleton.\n"
+		"Welcome to my room. I am going to take you down no matter what.\n\n", skeletonHealth, skeletonAttacks);
 	Monster hellhound("Hellhound", "The devils most loyal beasts. They patrol his manor, sniffing out any intruder who dares to wander these cursed halls.\n",
-								   "Hellow there you no life scum, I am the Hellhound.\n" 
-								   "Welcome to my room. I am going to send you to the depths of hell no matter the cost.\n\n",
-								   hellhoundHealth, hellhoundAttacks);
+		"Hellow there you no life scum, I am the Hellhound.\n"
+		"Welcome to my room. I am going to send you to the depths of hell no matter the cost.\n\n",
+		hellhoundHealth, hellhoundAttacks);
 	Monster chimera("Chimera", "Chimera Description.\n",
-							   "More Chimera Description.\n"
-							   "More Chimera Description.\n\n",
-							   chimeraHealth, chimeraAttacks);
+		"More Chimera Description.\n"
+		"More Chimera Description.\n\n",
+		chimeraHealth, chimeraAttacks);
 	Monster dragon("Dragon", "Dragon Description.\n",
-							 "More Dragon Description.\n"
-							 "More Dragon Description.\n\n",
-							 dragonHealth, dragonAttacks);
+		"More Dragon Description.\n"
+		"More Dragon Description.\n\n",
+		dragonHealth, dragonAttacks);
 	Monster archDemon("ArchDemon", "ArchDemon Description.\n",
-								   "More ArchDemon Description.\n"
-							       "More ArchDemon Description.\n\n",
-							       archDemonHealth, archDemonAttacks);
+		"More ArchDemon Description.\n"
+		"More ArchDemon Description.\n\n",
+		archDemonHealth, archDemonAttacks);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create room objects that will be used to move through by the player throughout the game
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	// Create the starting steps. This will be the first area the player is dropped in
-	// at the start of the game.
 	Room startingSteps("Starting Steps", "You are currently at the Starting Steps.\n"
-										 "The starting steps lead up to a large and tall mansion in front of you.\n"
-										 "The mansion is dark, mysterious and gives you a chill you did not think possible.\n"
-									     "Before you is a door.\n\n", false);
-	// Create the starting room. This is the 2nd location that the user can go to.
-	// This room will come after the starting steps and will house the devil.
-	// In this room the devil will explain the rules of the game to you.
-	Room startingRoom("Starting Room",  "You are now in the Starting Room.\n"
-										"The starting room is a large open dark room with spider webs everywhere.\n"
-										"Someone should really dust in here.\n"
-										"Standing before you is the devil.\n\n", false);
+		"The starting steps lead up to a large and tall mansion in front of you.\n"
+		"The mansion is dark, mysterious and gives you a chill you did not think possible.\n"
+		"Before you is a door.\n\n", false);
+	Room startingRoom("Starting Room", "You are now in the Starting Room.\n"
+		"The starting room is a large open dark room with spider webs everywhere.\n"
+		"Someone should really dust in here.\n"
+		"Standing before you is the devil.\n\n", false);
 	Room skeletonRoom("Room Of Unlucky Souls", "You are now in the Room Of Unlucky Souls.\n"
-											   "The sounds of screams are coming from every inch of the room.\n\n", false);
+		"The sounds of screams are coming from every inch of the room.\n\n", false);
 	Room hellHoundRoom("Room Of The Devil's Most Loyal Friend", "You are now in the Room Of The Devil's Most Loyal Friend.\n"
-																"The room is filled with lava all around the perimeter.\n"
-																"Someone should really do something about that.\n\n", false);
+		"The room is filled with lava all around the perimeter.\n"
+		"Someone should really do something about that.\n\n", false);
 	Room chimeraRoom("Room Of Pure Black", "You are now in the Room of Pure Black.\n"
-										   "........you can't see anything........\n\n", false);
+		"........you can't see anything........\n\n", false);
 	Room archDemonRoom("Room Of Demonic Magic", "You are now in the Room Of Demonic Magic.\n"
-												"Demonic magic is creeping down your spine.\n"
-												"You think some kind of demon lives here???\n\n", false);
+		"Demonic magic is creeping down your spine.\n"
+		"You think some kind of demon lives here???\n\n", false);
 	Room dragonRoom("Room of Dragon(s)???", "You are now in The Room of Dragon(s)???.\n"
-											"Here is description part 1.\n"
-											"Here is description part 2.\n\n", true);
+		"It is really hot in here and there is gold everywhere.\n"
+		"Seems fit for a room with a dragon? or dragons????\n\n", true);
 
 	// ToDo: Make a function to do these in one line
 	// Starting Steps - associated rooms
@@ -275,7 +270,7 @@ int main() {
 	do {
 		userInputString = console.getUserInput(askCharacterName);
 	} while (userInputString == "");
-	
+
 	// Create the main player object and set the starting steps as their current room
 	Player player(userInputString, playerInventory, playerHealth, playerAttack);
 	startingSteps.setPlayer(player);
@@ -283,8 +278,8 @@ int main() {
 
 	// Print the starting descriptions of the game to the screen. 
 	string startingDescription = "Hello there " + player.getName() + ".\n"
-								 "You have just died and been sent down to The Devils Mansion.\n"
-								 "Currently you are outside of the mansion and standing on the starting steps.\n\n";
+		"You have just died and been sent down to The Devils Mansion.\n"
+		"Currently you are outside of the mansion and standing on the starting steps.\n\n";
 	console.writeOutput(startingDescription);
 	console.writeOutput(startingSteps.getRoomDescription());
 
@@ -303,12 +298,12 @@ int main() {
 
 	// Reset the room so the devil is not displayed after the first entrance
 	roomPointer->setRoomDescription("You are now in the starting room.\n"
-									"The starting room is a large open dark room with spider webs everywhere.\n\n");
-	
+		"The starting room is a large open dark room with spider webs everywhere.\n\n");
+
 	// Let the player know the devil dropped a blueberry on the ground
 	console.writeOutput("It seems as though the devil dropped something on the ground.\n"
-						"It looks to be a blueberry.\n"
-						"That would probably be something cool to pick up.\n\n");
+		"It looks to be a blueberry.\n"
+		"That would probably be something cool to pick up.\n\n");
 
 	// Let the player see there is a blueberry on the ground.
 	do {
@@ -335,7 +330,7 @@ int main() {
 
 		switch (parserOutput->command1)
 		{
-		// 1 command Key Words
+			// 1 command Key Words
 		case Parser::INVENTORY:
 			// Lets the user redisplay their inventory
 			roomPointer->getPlayer().getInventory().displayPlayerInventory();
@@ -363,7 +358,7 @@ int main() {
 			parser.incorrectMainCommand(console);
 			break;
 
-		// 2 command Key Words
+			// 2 command Key Words
 		case Parser::MOVE:
 			// Move the player based off the direction entered
 			switch (parserOutput->command2)
@@ -384,7 +379,7 @@ int main() {
 					else
 					{
 						cout << "It looks like the " << roomPointer->getLeftRoom()->getName()
-							 << " is locked.\n" << "You must have a key to unlock the door.\n";
+							<< " is locked.\n" << "You must have a key to unlock the door.\n";
 					}
 				}
 				else
@@ -409,7 +404,7 @@ int main() {
 					else
 					{
 						cout << "It looks like the " << roomPointer->getCenterRoom()->getName()
-							 << " is locked.\n" << "You must have a key to unlock the door.\n";
+							<< " is locked.\n" << "You must have a key to unlock the door.\n";
 					}
 				}
 				else
@@ -433,7 +428,7 @@ int main() {
 					else
 					{
 						cout << "It looks like the " << roomPointer->getRightRoom()->getName()
-							 << " is locked.\n" << "You must have a key to unlock the door.\n";
+							<< " is locked.\n" << "You must have a key to unlock the door.\n";
 					}
 				}
 				else
@@ -668,7 +663,7 @@ int main() {
 				break;
 			}
 			break;
-      
+
 		case Parser::DROP:
 			switch (parserOutput->command2)
 			{
@@ -765,11 +760,12 @@ int main() {
 				break;
 			}
 			break;
-      
+
 		case Parser::BATTLE:
 			switch (parserOutput->command2)
 			{
 			case Parser::SKELETON:
+				// Check and see if the monster is in the current room before doing everything else
 				if (roomPointer->getMonster().getName() != "" && roomPointer->getMonster().getHealth().getHealth() > 0)
 				{
 					Battle battle(roomPointer, roomPointer->getPlayer(), roomPointer->getMonster());
@@ -901,7 +897,7 @@ void itemFromRoomToPlayer(Room*& room, string itemName) {
 	Inventory playerInventory;
 	vector<Item> items;
 	int size;
-	
+
 	// Set all of the variables to their corresponding values from the
 	// room. Just doing this to make it the code simpler to look at
 	roomInventory = room->getInventory();
@@ -999,14 +995,14 @@ void dropMonsterInventoryToRoom(Room*& room)
 	items = monsterInventory.getInventory();
 
 	// Add the item to the player and remove it from the room
-	while(room->getMonster().getInventory().getSize() != 0) {
+	while (room->getMonster().getInventory().getSize() != 0) {
 
-			// Add the item to the room's inventory
-			roomInventory.addItem(items.at(i));
+		// Add the item to the room's inventory
+		roomInventory.addItem(items.at(i));
 
-			// Remove the item from the player
-			monsterInventory.removeItem(i);
-			i++;
+		// Remove the item from the player
+		monsterInventory.removeItem(i);
+		i++;
 	}
 
 	// Set the room's inventory to the updated room inventory
@@ -1090,7 +1086,7 @@ void attackFromRoomToPlayer(Room*& room, string attackName)
 	attacks = roomAttacks.getAttacks();
 
 	// Add the item to the player and remove it from the room
-	for (int i = 0; i < size; i++) {	
+	for (int i = 0; i < size; i++) {
 		if (attacks.at(i).getName() == attackName) {
 			// Add the item to the player's inventory
 			playerAttacks.addAttack(attacks.at(i));
@@ -1315,7 +1311,7 @@ void addItemHealthToPlayer(Room*& room, string itemName) {
 
 			// Remove the item from the player
 			playerInventory.removeItem(i);
-			std::cout << "\nThe " << itemName << " has been used." << endl;
+			std::cout << "The " << itemName << " has been used." << endl;
 		}
 	}
 
@@ -1352,26 +1348,26 @@ void unlockDoor(Room*& room, string itemName)
 			if (room->getCenterRoom() != nullptr && room->getCenterRoom()->getLockStatus() != false) {
 				doorIsLocked = false;
 				room->getCenterRoom()->setLockStatus(doorIsLocked);
-				std::cout << "\nYou have unlocked the door to the " << room->getCenterRoom()->getName() << " using the " << itemName << ".\n";
-				std::cout << "Please enter 'center' to go into the " << room->getCenterRoom()->getName() << ".\n\n";
+				std::cout << "You have unlocked the door to the " << room->getCenterRoom()->getName() << " using the " << itemName << ".\n";
+				std::cout << "Please enter 'move center' to go into the " << room->getCenterRoom()->getName() << ".\n";
 			}
 			else if (room->getLeftRoom() != nullptr && room->getLeftRoom()->getLockStatus() != false) {
 				doorIsLocked = false;
 				room->getLeftRoom()->setLockStatus(doorIsLocked);
-				std::cout << "\nYou have unlocked the door to the " << room->getLeftRoom()->getName() << " using the " << itemName << ".\n\n";
-				std::cout << "Please enter 'left' to go into the " << room->getLeftRoom()->getName() << ".\n\n";
+				std::cout << "You have unlocked the door to the " << room->getLeftRoom()->getName() << " using the " << itemName << ".\n\n";
+				std::cout << "Please enter 'move left' to go into the " << room->getLeftRoom()->getName() << ".\n";
 			}
 			else if (room->getRightRoom() != nullptr && room->getRightRoom()->getLockStatus() != false) {
 				doorIsLocked = false;
 				room->getRightRoom()->setLockStatus(doorIsLocked);
-				std::cout << "\nYou have unlocked the door to the " << room->getRightRoom()->getName() << " using the " << itemName << ".\n\n";
-				std::cout << "Please enter 'right' to go into the " << room->getRightRoom()->getName() << ".\n\n";
+				std::cout << "You have unlocked the door to the " << room->getRightRoom()->getName() << " using the " << itemName << ".\n\n";
+				std::cout << "Please enter 'move right' to go into the " << room->getRightRoom()->getName() << ".\n";
 			}
 			else if (room->getBackRoom() != nullptr && room->getBackRoom()->getLockStatus() != false) {
 				doorIsLocked = false;
 				room->getBackRoom()->setLockStatus(doorIsLocked);
-				std::cout << "\nYou have unlocked the door to the " << room->getBackRoom()->getName() << " using the " << itemName << ".\n\n";
-				std::cout << "Please enter 'back' to go into the " << room->getBackRoom()->getName() << ".\n\n";
+				std::cout << "You have unlocked the door to the " << room->getBackRoom()->getName() << " using the " << itemName << ".\n\n";
+				std::cout << "Please enter 'move back' to go into the " << room->getBackRoom()->getName() << ".\n";
 			}
 		}
 	}
