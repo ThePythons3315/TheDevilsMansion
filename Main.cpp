@@ -137,7 +137,7 @@ int main() {
 	// and monster inventories
 	///////////////////////////////////////////////////////////////////////////////////////////
 	Item blueberry("blueberry", blueberryHealth);
-	Item devilsKey("devils key", devilsKeyHealth);
+	Item devilsKey("devilsKey", devilsKeyHealth);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Add item objects to monster inventories, add room inventories to actual room objects
@@ -614,9 +614,9 @@ int main() {
 				break;
 			case Parser::DEVILSKEY:
 				// Lets the user pick up the devils key
-				if (checkIfItemIsInRoom(roomPointer, "devils key") == true)
+				if (checkIfItemIsInRoom(roomPointer, "devilsKey") == true)
 				{
-					itemFromRoomToPlayer(roomPointer, "devils key");
+					itemFromRoomToPlayer(roomPointer, "devilsKey");
 				}
 				else
 				{
@@ -647,9 +647,9 @@ int main() {
 				break;
 			case Parser::DEVILSKEY:
 				// Lets the player eat the blueberry and regain health
-				if (checkForItem(roomPointer, "devils key") == true)
+				if (checkForItem(roomPointer, "devilsKey") == true)
 				{
-					unlockDoor(roomPointer, "devils key");
+					unlockDoor(roomPointer, "devilsKey");
 				}
 				else
 				{
@@ -751,7 +751,7 @@ int main() {
 				break;
 			case Parser::DEVILSKEY:
 				// Lets the player drop the devils key
-				itemFromPlayerToRoom(roomPointer, "devils key");
+				itemFromPlayerToRoom(roomPointer, "devilsKey");
 				break;
 			case Parser::ERROR2:
 				// ToDo: Change this to display that a command for that item could
