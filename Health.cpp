@@ -25,7 +25,6 @@ void Health::changeHealth(int change) {
 	// set the health attribute to the maxHealth
 	if (health > maxHealth) {
 		health = maxHealth;
-		cout << "You are now back at the full health of: " << health << endl;
 	}
 }
 
@@ -38,5 +37,10 @@ int Health::getMaxHealth() {
 }
 
 void Health::displayHealth() {
-	cout << "Current health is: " << health << endl;
+	if (health == maxHealth) {
+		cout << "You currently have full health: " << health << endl;
+	}
+	else {
+		cout << "Current health is: " << health << endl;
+	}
 }
