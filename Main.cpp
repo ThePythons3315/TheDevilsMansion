@@ -877,7 +877,7 @@ int main() {
 			parser.incorrectMainCommand(console);
 			break;
 		};
-	} while (parserOutput->command1 != Parser::QUIT);
+	} while ((parserOutput->command1 != Parser::QUIT) && (roomPointer->getPlayer().getPlayerHealth().getHealth() > 0));
 
 	// Thank the user for playing the game
 	console.writeOutput(endSentence);
