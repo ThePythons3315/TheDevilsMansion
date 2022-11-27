@@ -1147,7 +1147,7 @@ void attackFromPlayertoRoom(Room*& room, string attackName)
 	tempPlayer.setAttacks(playerAttacks);
 	tempPlayer.setName(room->getPlayer().getName());
 	tempPlayer.setPlayerHealth(room->getPlayer().getPlayerHealth());
-	tempPlayer.setInventory(room->getInventory());
+	tempPlayer.setInventory(room->getPlayer().getInventory());
 	room->setPlayer(tempPlayer);
 
 	// Display the attacks of the room and the player
