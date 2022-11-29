@@ -47,6 +47,7 @@ void Battle::runBattle() {
 	vector <string> keyWords = {"q", "quit", "punch", "kick", "bow", "bite", "firebreath", "flamethrower", "fireball"};
 
 	GameUI console;
+	Parser parser;
 	
 	bool battleLoop = true;
 	string input = "";
@@ -71,6 +72,7 @@ void Battle::runBattle() {
 			roomPointer->getPlayer().getAttacks().displayattacks();
 			cout << endl;
 			input = console.getUserInput("What would you like to do: ");
+			input = parser.standardizeInput(input);
 		} while (validateInput(keyWords, input) == false);
 
 		// If the user enter's `q`, then break the main loop and end the game.

@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Monster.h"
 #include "GameUI.h"
+#include "Parser.h"
 
 class Battle
 {
