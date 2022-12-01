@@ -10,6 +10,7 @@ std::string helpText =
 "\t- inventory \t\t-> Shows the player's current inventory\n"
 "\t- health \t\t-> Shows the player's current health\n"
 "\t- attacks \t\t-> Shows the player's current attacks\n"
+"\t- room \t\t\t-> Redisplays the room description, items, attacks/weapons, monsters, and available rooms\n"
 "\t- quit \t\t\t-> Quits the application\n"
 "\t- help \t\t\t-> Gives available commands and descriptions\n"
 "2 keyword commands:\n"
@@ -51,6 +52,8 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			parsedInput->command1 = ATTACKS;
 		else if (command1 == "quit")
 			parsedInput->command1 = QUIT;
+		else if (command1 == "room")
+			parsedInput->command1 = ROOM;
 		else
 			parsedInput->command1 = ERROR1;
 	}
@@ -266,6 +269,9 @@ void Parser::displayParsedOutput(InputStruct* parsedOutput, GameUI console)
 		break;
 	case ATTACKS:
 		console.writeOutput("ATTACKS");
+		break;
+	case ROOM:
+		console.writeOutput("ROOM");
 		break;
 	default:
 		console.writeOutput("\t*** Invalid Command -- Valid commands are ...\n");

@@ -55,6 +55,8 @@ public:
 	// Function that will display both room description and the inventory of the room
 	void getRoomInformation();
 
+	void redisplayRoom();
+	
 	void moveRoom(string);
 
 	bool validatePossibleRoom(string);

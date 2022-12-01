@@ -353,7 +353,11 @@ int main() {
 		case Parser::QUIT:
 			console.writeOutput(quitGame);
 			break;
-
+		
+		case Parser::ROOM:
+			roomPointer->redisplayRoom();
+			break;
+		
 		case Parser::ERROR1:
 			parser.incorrectMainCommand(console);
 			break;

@@ -194,6 +194,62 @@ void Room::getRoomInformation()
 	}
 }
 
+// Function that will redisplay the room description, the inventory, attacks/weapons, 
+//and locked doors/valid dooors that are accessible of the room
+void Room::redisplayRoom()
+{
+	// Description of room - what the room actually looks like
+	cout << getRoomDescription();
+
+	// Display the items in the room
+	inventory.displayRoomInventory();
+
+	// Display the attacks available for the user to pick up
+	if (attacks.getSize() != 0) {
+		cout << "Attacks in the room that you can pickup\n";
+		attacks.displayattacks();
+		cout << endl;
+	}
+
+	if (monster.getHealth().getHealth() == -1) {
+		cout << "\nYou have already killed the " << monster.getName() << " monster\n";
+	}
+	else if (monster.getName() != "") {
+		monster.displayMonster();
+	}
+	else {
+		cout << "\nIt does not look like there is a monster in this room.\nContinue to be weary though\n";
+	}
+
+	//displays the various rooms connected to the current room
+	//and says if the room door is locked or unlocked
+	cout << "\nThese are the rooms availble to access from " << getName() << ":\n";
+	if (centerRoom != nullptr) {
+		if (centerRoom->getLockStatus() == true)
+			cout << "The center room (" << getCenterRoom()->getName() << ") is locked, you need a key to access it\n";
+		else
+			cout << "The center room (" << getCenterRoom()->getName() << ") is unlocked, you can move to it freely\n";
+	}
+	if (leftRoom != nullptr) {
+		if (leftRoom->getLockStatus() == true)
+			cout << "The room to the left (" << getLeftRoom()->getName() << ") is locked, you need a key to access it\n";
+		else
+			cout << "The room to the left (" << getLeftRoom()->getName() << ") is unlocked, you can move to it freely\n";
+	}
+	if (rightRoom != nullptr) {
+		if (rightRoom->getLockStatus() == true)
+			cout << "The room to the right (" << getRightRoom()->getName() << ") is locked, you need a key to access it\n";
+		else
+			cout << "The room to the right (" << getRightRoom()->getName() << ") is unlocked, you can move to it freely\n";
+	}
+	if (backRoom != nullptr) {
+		if (backRoom->getLockStatus() == true)
+			cout << "The back room (" << getBackRoom()->getName() << ") is locked, you need a key to access it\n";
+		else
+			cout << "The back room (" << getBackRoom()->getName() << ") is unlocked, you can move to it freely\n";
+	}
+}
+
 void Room::moveRoom(string direction)
 {
 	// Default player object. This object will be placed in the current room
