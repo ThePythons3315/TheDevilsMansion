@@ -41,6 +41,7 @@ void Health::displayHealth() {
 		cout << "You currently have full health: " << health << endl;
 	}
 	else {
+		cout << "Max health is : " << maxHealth << endl;
 		cout << "Current health is: " << health << endl;
 	}
 }
