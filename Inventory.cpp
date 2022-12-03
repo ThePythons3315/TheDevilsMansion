@@ -68,3 +68,8 @@ vector<Item> Inventory::getInventory() {
 void Inventory::removeItem(int index) {
 	inventory.erase(inventory.begin() + index);
 }
+
+void Inventory::clearMonsterInventory()
+{
+	inventory.erase(inventory.begin(), inventory.end());
+}

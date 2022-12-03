@@ -29,4 +29,7 @@ public:
 
 	// Remove an item from the inventory
 	void removeItem(int);
+
+	//clears monster inventory
+	void clearMonsterInventory();
 };

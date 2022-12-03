@@ -138,11 +138,12 @@ int main() {
 	///////////////////////////////////////////////////////////////////////////////////////////
 	Item blueberry("blueberry", blueberryHealth);
 	Item devilsKey("devilsKey", devilsKeyHealth);
+	Item fireFang("firefang", fireFangHealth);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Add item objects to monster inventories, add room inventories to actual room objects
 	///////////////////////////////////////////////////////////////////////////////////////////
-	//hellhoundInventory.addItem(fireFang); // ToDo: Re-Add Back in
+	hellhoundInventory.addItem(fireFang); // ToDo: Re-Add Back in
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create monster objects that will be used to battle the player throughout the game
@@ -167,7 +168,7 @@ int main() {
 	Monster hellhound("Hellhound", "The devils most loyal beasts. They patrol his manor, sniffing out any intruder who dares to wander these cursed halls.\n",
 		"Hellow there you no life scum, I am the Hellhound.\n"
 		"Welcome to my room. I am going to send you to the depths of hell no matter the cost.\n\n",
-		hellhoundHealth, hellhoundAttacks);
+		hellhoundHealth, hellhoundAttacks, hellhoundInventory);
 	Monster chimera("Chimera", "Chimera Description.\n",
 		"More Chimera Description.\n"
 		"More Chimera Description.\n\n",
@@ -888,6 +889,8 @@ int main() {
 
 				if (roomPointer->getMonster().getHealth().getHealth() < 1 && roomPointer->getAttacks().getSize() == 0)
 				{
+					roomPointer->getMonster().getInventory().displayMonsterInventory();
+					dropMonsterInventoryToRoom(roomPointer);
 					attackFromMonstertoRoom(roomPointer);
 				}
 				else if (roomPointer->getPlayer().getPlayerHealth().getHealth() < 1)
@@ -1071,34 +1074,18 @@ void itemFromPlayerToRoom(Room*& room, string itemName)
 
 void dropMonsterInventoryToRoom(Room*& room)
 {
-	// Variables
-	Monster tempMonster;
-	Inventory roomInventory;
-	Inventory monsterInventory;
-	vector<Item> items;
 	int i = 0;
-
-	// Set all of the variables to their corresponding values from the
-	// room. Just doing this to make it the code simpler to look at
-	roomInventory = room->getInventory();
+	Inventory monsterInventory;
+	Monster tempMonster;
 	monsterInventory = room->getMonster().getInventory();
-	items = monsterInventory.getInventory();
+	// Add the item to the monster and remove it from the room
+	room->setInventory(room->getMonster().getInventory());
 
-	// Add the item to the player and remove it from the room
-	while (room->getMonster().getInventory().getSize() != 0) {
+	//Removes all items from the monsters inventory
+	monsterInventory.clearMonsterInventory();
+	//monsterInventory.displayMonsterInventory();
 
-		// Add the item to the room's inventory
-		roomInventory.addItem(items.at(i));
-
-		// Remove the item from the player
-		monsterInventory.removeItem(i);
-		i++;
-	}
-
-	// Set the room's inventory to the updated room inventory
-	room->setInventory(roomInventory);
-
-	// Set the player's inventory to the updated player's inventory
+	// Set the monster's inventory to the updated monster's inventory
 	tempMonster.setInventory(monsterInventory);
 	tempMonster.setAttacks(room->getMonster().getAttacks());
 	tempMonster.setName(room->getMonster().getName());
@@ -1106,7 +1093,6 @@ void dropMonsterInventoryToRoom(Room*& room)
 	tempMonster.setDialogOpening(room->getMonster().getDialogOpening());
 	tempMonster.setMonsterDescription(room->getMonster().getMonsterDescription());
 	room->setMonster(tempMonster);
-
 
 	// Display the inventories of the room and the player
 	cout << "\nThe " << room->getMonster().getName() << " has just dropped it's entire inventory." << endl;
@@ -1142,12 +1128,13 @@ void attackFromMonstertoRoom(Room*& room)
 	// Set the room's inventory to the updated room inventory
 	room->setAttacks(roomAttacks);
 
-	// Set the player's inventory to the updated player's inventory
+	// Set the monster's inventory to the updated monster's inventory
 	tempMonster.setAttacks(monsterAttacks);
 	tempMonster.setName(room->getMonster().getName());
 	tempMonster.setHealth(room->getMonster().getHealth());
 	tempMonster.setDialogOpening(room->getMonster().getDialogOpening());
 	tempMonster.setMonsterDescription(room->getMonster().getMonsterDescription());
+	tempMonster.setInventory(room->getMonster().getInventory());
 	room->setMonster(tempMonster);
 
 	// Display the inventories of the room and the player

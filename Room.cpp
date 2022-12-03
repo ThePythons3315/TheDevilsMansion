@@ -77,50 +77,6 @@ void Room::setLockStatus(bool lockStat)
 	lock = lockStat;
 }
 
-
-void Room::dropMonsterInventoryToRoom(Room*& room)
-{
-	Monster tempMonster;
-	Inventory roomInventory;
-	Inventory monsterInventory;
-	vector<Item> items;
-	int size;
-
-	// Set all of the variables to their corresponding values from the
-	// room. Just doing this to make it the code simpler to look at
-	roomInventory = room->getInventory();
-	monsterInventory = room->getMonster().getInventory();
-	size = monsterInventory.getSize();
-	items = monsterInventory.getInventory();
-	room->getMonster().getInventory().displayRoomInventory();
-	monsterInventory.displayMonsterInventory();
-	roomInventory.displayRoomInventory();
-
-	// Add the item to the player and remove it from the room
-	for (int i = 0; i < size; i++) {
-			// Add the item to the room's inventory
-			roomInventory.addItem(items.at(i));
-			// Remove the item from the player
-			monsterInventory.removeItem(i);
-	}
-
-	// Set the room's inventory to the updated room inventory
-	room->setInventory(roomInventory);
-
-	// Set the player's inventory to the updated player's inventory
-	tempMonster.setInventory(monsterInventory);
-	tempMonster.setName(room->getMonster().getName());
-	tempMonster.setHealth(room->getMonster().getHealth());
-	tempMonster.setAttacks(room->getMonster().getAttacks());
-	room->setMonster(tempMonster);
-
-	// Display the inventories of the room and the player
-	cout << "\nThe " << room->getMonster().getName() << " has just dropped it's entire inventory." << endl;
-	room->getInventory().displayRoomInventory();
-	room->getMonster().getInventory().displayMonsterInventory();
-}
-
-
 // Accessor Functions -- Functions that will return values of private functions
 string Room::getName()
 {
