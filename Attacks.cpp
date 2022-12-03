@@ -36,6 +36,17 @@ Weapon Attacks::getWeapon(string _weapon){
 	return weapon;
 }
 
+void Attacks::getAttackStats(string _weapon)
+{
+	Weapon weapon;
+	if (_weapon == getWeapon(_weapon).getName()) {
+		weapon = getWeapon(_weapon);
+		cout << weapon.getAttackName() << " stats:\n";
+		cout << "\t- Attack damage \t-> " << weapon.getAttackDamage() << "% health points\n";
+		cout << "\t- Attack hit chance \t-> " << weapon.getHitChance() << "% hit chance\n";
+	}
+}
+
 Weapon Attacks::getMonsterWeapon()
 {
 	return attacks.at(0);

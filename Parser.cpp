@@ -10,7 +10,7 @@ std::string helpText =
 "\t- inventory \t\t-> Shows the player's current inventory\n"
 "\t- health \t\t-> Shows the player's current health\n"
 "\t- attacks \t\t-> Shows the player's current attacks\n"
-"\t- room \t\t\t-> Redisplays the room description, items, attacks/weapons, monsters, and available rooms\n"
+"\t- room \t\t\t-> Redisplays the room description, items, attacks/weapons, monsters, and available\n\t\t\t\t   rooms\n"
 "\t- quit \t\t\t-> Quits the application\n"
 "\t- help \t\t\t-> Gives available commands and descriptions\n"
 "2 keyword commands:\n"
@@ -18,7 +18,8 @@ std::string helpText =
 "\t- collect [item name]\t-> Lets the player add an item from the room to their inventory\n"
 "\t- use [item name]\t-> Lets the player use an item in their inventory\n"
 "\t- drop [item name]\t-> Lets the player drop an object from their inventory\n"
-"\t- battle [monster name]\t-> Lets the player go into battle with a monster\n";
+"\t- battle [monster name]\t-> Lets the player go into battle with a monster\n"
+"\t- stats [attack name]\t-> Lets the player see the stats of the attack they entered\n";
 
 Parser::Parser()
 {
@@ -194,6 +195,45 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			}
 
 		}
+		else if (command1 == "stats")
+		{
+			parsedInput->command1 = STATS;
+
+			if (command2 == "bow")
+			{
+				parsedInput->command2 = BOW;
+			}
+			else if (command2 == "punch")
+			{
+				parsedInput->command2 = PUNCH;
+			}
+			else if (command2 == "kick")
+			{
+				parsedInput->command2 = KICK;
+			}
+			else if (command2 == "bite")
+			{
+				parsedInput->command2 = BITE;
+			}
+			else if (command2 == "firebreath")
+			{
+				parsedInput->command2 = FIREBREATH;
+			}
+			else if (command2 == "flamethrower")
+			{
+				parsedInput->command2 = FLAMETHROWER;
+			}
+			else if (command2 == "fireball")
+			{
+				parsedInput->command2 = FIREBALL;
+			}
+			else
+			{
+				parsedInput->command2 = ERROR2;
+			}
+
+		}
+
 		else if (command1 == "battle")
 		{
 			parsedInput->command1 = BATTLE;
@@ -272,6 +312,9 @@ void Parser::displayParsedOutput(InputStruct* parsedOutput, GameUI console)
 		break;
 	case ROOM:
 		console.writeOutput("ROOM");
+		break;
+	case STATS:
+		console.writeOutput("STATS");
 		break;
 	default:
 		console.writeOutput("\t*** Invalid Command -- Valid commands are ...\n");

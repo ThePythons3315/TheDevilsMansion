@@ -22,6 +22,10 @@ public:
 	// Function that searches for weapon and returns the weapon
 	Weapon getWeapon(string);
 
+	//Function that gets stats of the attack the player enters
+	//and displays the attacks name, damage, and hit chance
+	void getAttackStats(string);
+
 	// Function used to get monster weapon
 	Weapon getMonsterWeapon();
 

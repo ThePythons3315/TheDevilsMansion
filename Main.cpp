@@ -764,7 +764,93 @@ int main() {
 				break;
 			}
 			break;
-
+		case Parser::STATS:
+			switch (parserOutput->command2)
+			{
+			case Parser::BOW:
+				//Lets the player drop the bow attack
+				if (checkForAttack(roomPointer, "bow") == true)
+				{
+					roomPointer->getPlayer().getAttacks().getAttackStats("bow");
+				}
+				else
+				{
+					cout << "You do not currently have the attack that you wish to see stats for.\n";
+				}
+				break;
+			case Parser::PUNCH:
+				//Lets the player drop the punch attack
+				if (checkForAttack(roomPointer, "punch") == true)
+				{
+					roomPointer->getPlayer().getAttacks().getAttackStats("punch");
+				}
+				else
+				{
+					cout << "You do not currently have the attack that you wish to see stats for.\n";
+				}
+				break;
+			case Parser::KICK:
+				//Lets the player drop the kick attack
+				if (checkForAttack(roomPointer, "kick") == true)
+				{
+					roomPointer->getPlayer().getAttacks().getAttackStats("kick");
+				}
+				else
+				{
+					cout << "You do not currently have the attack that you wish to see stats for.\n";
+				}
+				break;
+			case Parser::BITE:
+				//Lets the player drop the kick attack
+				if (checkForAttack(roomPointer, "bite") == true)
+				{
+					roomPointer->getPlayer().getAttacks().getAttackStats("bite");
+				}
+				else
+				{
+					cout << "You do not currently have the attack that you wish to see stats for.\n";
+				}
+				break;
+			case Parser::FIREBREATH:
+				//Lets the player drop the kick attack
+				if (checkForAttack(roomPointer, "firebreath") == true)
+				{
+					roomPointer->getPlayer().getAttacks().getAttackStats("firebreath");
+				}
+				else
+				{
+					cout << "You do not currently have the attack that you wish to see stats for.\n";
+				}
+				break;
+			case Parser::FLAMETHROWER:
+				//Lets the player drop the kick attack
+				if (checkForAttack(roomPointer, "flamethrower") == true)
+				{
+					roomPointer->getPlayer().getAttacks().getAttackStats("flamethrower");
+				}
+				else
+				{
+					cout << "You do not currently have the attack that you wish to see stats for.\n";
+				}
+				break;
+			case Parser::FIREBALL:
+				//Lets the player drop the kick attack
+				if (checkForAttack(roomPointer, "fireball") == true)
+				{
+					roomPointer->getPlayer().getAttacks().getAttackStats("fireball");
+				}
+				else
+				{
+					cout << "You do not currently have the attack that you wish to see stats for.\n";
+				}
+				break;
+			case Parser::ERROR2:
+				// ToDo: Change this to display that a command for that item could
+				// not be found
+				parser.incorrectItemCommand(console);
+				break;
+			}
+			break;
 		case Parser::BATTLE:
 			switch (parserOutput->command2)
 			{

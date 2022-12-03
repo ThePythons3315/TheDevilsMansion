@@ -223,30 +223,30 @@ void Room::redisplayRoom()
 
 	//displays the various rooms connected to the current room
 	//and says if the room door is locked or unlocked
-	cout << "\nThese are the rooms availble to access from " << getName() << ":\n";
+	cout << "\nHere is the room(s) availble to access from " << getName() << ":\n";
 	if (centerRoom != nullptr) {
 		if (centerRoom->getLockStatus() == true)
-			cout << "The center room (" << getCenterRoom()->getName() << ") is locked, you need a key to access it\n";
+			cout << "The center room (" << getCenterRoom()->getName() << ") is locked, you need a key to access it.\n";
 		else
-			cout << "The center room (" << getCenterRoom()->getName() << ") is unlocked, you can move to it freely\n";
+			cout << "The center room (" << getCenterRoom()->getName() << ") is unlocked, you can move to it freely.\n";
 	}
 	if (leftRoom != nullptr) {
 		if (leftRoom->getLockStatus() == true)
-			cout << "The room to the left (" << getLeftRoom()->getName() << ") is locked, you need a key to access it\n";
+			cout << "The room to the left (" << getLeftRoom()->getName() << ") is locked, you need a key to access it.\n";
 		else
-			cout << "The room to the left (" << getLeftRoom()->getName() << ") is unlocked, you can move to it freely\n";
+			cout << "The room to the left (" << getLeftRoom()->getName() << ") is unlocked, you can move to it freely.\n";
 	}
 	if (rightRoom != nullptr) {
 		if (rightRoom->getLockStatus() == true)
-			cout << "The room to the right (" << getRightRoom()->getName() << ") is locked, you need a key to access it\n";
+			cout << "The room to the right (" << getRightRoom()->getName() << ") is locked, you need a key to access it.\n";
 		else
-			cout << "The room to the right (" << getRightRoom()->getName() << ") is unlocked, you can move to it freely\n";
+			cout << "The room to the right (" << getRightRoom()->getName() << ") is unlocked, you can move to it freely.\n";
 	}
 	if (backRoom != nullptr) {
 		if (backRoom->getLockStatus() == true)
-			cout << "The back room (" << getBackRoom()->getName() << ") is locked, you need a key to access it\n";
+			cout << "The back room (" << getBackRoom()->getName() << ") is locked, you need a key to access it.\n";
 		else
-			cout << "The back room (" << getBackRoom()->getName() << ") is unlocked, you can move to it freely\n";
+			cout << "The back room (" << getBackRoom()->getName() << ") is unlocked, you can move to it freely.\n";
 	}
 }
 

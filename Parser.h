@@ -9,7 +9,7 @@ public:
 	// Primary commands that will run the game
 	enum MainCommandMenu
 	{
-		HELP, MOVE, COLLECT, USE, DROP, INVENTORY, HEALTH, BATTLE, ATTACKS, QUIT, ROOM, ERROR1
+		HELP, MOVE, COLLECT, USE, DROP, INVENTORY, HEALTH, BATTLE, ATTACKS, QUIT, ROOM, STATS, ERROR1
 	};
 	// Secondary Commands that can be used along side certain primary commands
 	enum SecondaryCommandMenu
