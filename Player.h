@@ -13,10 +13,11 @@ private:
 	int health;
 	int maxHealth;
 	bool alive;
+	int statusEffect;
 public:
 	// Constructors
 	Player();
-	Player(std::string _name, int _health, int _maxHealth, bool _alive);
+	Player(std::string _name, int _health, int _maxHealth, bool _alive, int statusEffect);
 
 	// Mutator Functions -- Functions that will be allowed to change private variables
 	void setName(std::string _name);
@@ -24,6 +25,7 @@ public:
 	void setHealth(int _health);
 	void setMaxHealth(int _maxHealth);
 	void setAlive(bool _alive);
+	void setStatusEffect(int _statusEffect);
 
 	// Accessor Functions -- Functions that will return values of private functions
 	std::string getName();
@@ -31,6 +33,7 @@ public:
 	int getHealth();
 	int getMaxHealth();
 	bool getAlive();
+	int getStatusEffect();
 
 	// Display functions
 	void printPlayerInfo(GameUI console);

@@ -6,12 +6,16 @@ Attack::Attack()
 	name = "";
 	damage = 0;
 	hitChance = 0;
+	statusEffect = 0;
+	statusEffectHitChance = 0;
 }
-Attack::Attack(std::string _name, int _damage, int _hitChance)
+Attack::Attack(std::string _name, int _damage, int _hitChance, int _statusEffect, int _statusEffectHitChance)
 {
 	name = _name;
 	damage = _damage;
 	hitChance = _hitChance;
+	statusEffect = _statusEffect;
+	statusEffectHitChance = _statusEffectHitChance;
 }
 
 // Mutator Functions -- Functions that will be allowed to change private variables
@@ -27,6 +31,14 @@ void Attack::setHitChance(int _hitChance)
 {
 	hitChance = _hitChance;
 }
+void Attack::setStatusEffect(int _statusEffect)
+{
+	statusEffect = _statusEffect;
+}
+void Attack::setStatusEffectHitChance(int _statusEffectHitChance)
+{
+	statusEffectHitChance = _statusEffectHitChance;
+}
 
 // Accessor Functions -- Functions that will return values of private functions
 std::string Attack::getName()
@@ -40,6 +52,14 @@ int Attack::getDamage()
 int Attack::getHitChance()
 {
 	return hitChance;
+}
+int Attack::getStatusEffect()
+{
+	return statusEffect;
+}
+int Attack::getStatusEffectHitChance()
+{
+	return statusEffectHitChance;
 }
 
 // Displays the stats of the attack

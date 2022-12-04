@@ -63,22 +63,23 @@ int main()
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Health items
-	Item blueberry("blueberry", 100);
+	Item blueberry("blueberry", 100, 0);
+	Item paralysisHeal("paralysisheal", 0, 1);
 
 	// Non health items
-	Item devilskey("devilskey", 0);
+	Item devilskey("devilskey", 0, 0);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of attack objects
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	Attack punch("punch", -20, 95);
-	Attack kick("kick", -100, 95);
-	Attack bowshot("bowshot", -20, 95);
-	Attack bite("bite", -20, 95);
-	Attack firebreath("firebreath", -20, 95);
-	Attack flamethrower("flamethrower", -20, 95);
-	Attack fireball("fireball", -20, 95);
+	Attack punch("punch", -20, 95, 0, 0);
+	Attack kick("kick", -100, 95, 0, 0);
+	Attack bowshot("bowshot", -20, 95, 0, 0);
+	Attack bite("bite", -20, 95, 1, 20);
+	Attack firebreath("firebreath", -20, 95, 0, 0);
+	Attack flamethrower("flamethrower", -20, 95, 0, 0);
+	Attack fireball("fireball", -20, 95, 0, 0);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of inventory objects
@@ -128,12 +129,12 @@ int main()
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Create the monster objects
-	Monster devil("devil", "devil description", 100, 100, true);
-	Monster skeleton("skeleton", "skeleton description", 100, 100, true);
-	Monster hellhound("hellhound", "hellhound description", 100, 100, true);
-	Monster chimera("chimera", "chimera description", 100, 100, true);
-	Monster dragon("dragon", "dragon description", 100, 100, true);
-	Monster archdemon("archdemon", "archdemon description", 100, 100, true);
+	Monster devil("devil", "devil description", 100, 100, true, 0);
+	Monster skeleton("skeleton", "skeleton description", 100, 100, true, 0);
+	Monster hellhound("hellhound", "hellhound description", 100, 100, true, 0);
+	Monster chimera("chimera", "chimera description", 100, 100, true, 0);
+	Monster dragon("dragon", "dragon description", 100, 100, true, 0);
+	Monster archdemon("archdemon", "archdemon description", 100, 100, true, 0);
 
 	// Set monster objects with their appropriate inventories
 	devil.setInventory(devilInventory);
@@ -195,7 +196,7 @@ int main()
 	} while (userInputString == "");
 
 	// Create the main player object and set the starting steps as their current room
-	Player player(userInputString, 200, 200, true);
+	Player player(userInputString, 200, 200, true, 0);
 	player.setInventory(playerInventory);
 
 	// Set the current room pointer to the starting room which is also initialized with the player
