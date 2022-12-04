@@ -2,22 +2,29 @@
 
 #include <iostream>
 #include <string>
+#include "GameUI.h"
 
-class Item
+class Attack
 {
 private:
 	std::string name;
-	int healing;
+	int damage;
+	double hitChance;
 public:
 	// Constructors
-	Item();
-	Item(std::string _name, int _healing);
+	Attack();
+	Attack(std::string _name, int _damage, int _hitChance);
 
 	// Mutator Functions -- Functions that will be allowed to change private variables
 	void setName(std::string _name);
-	void setHealing(int _healing);
+	void setDamage(int _damage);
+	void setHitChance(int _hitChance);
 
 	// Accessor Functions -- Functions that will return values of private functions
 	std::string getName();
-	int getHealing();
+	int getDamage();
+	int getHitChance();
+
+	// Displays the stats of the attack
+	void displayAttackStats(GameUI console);
 };

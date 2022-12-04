@@ -2,34 +2,43 @@
 
 #include <iostream>
 #include <string>
-#include <vector>
+#include <list>
+#include "GameUI.h"
 #include "Item.h"
+#include "Attack.h"
 
 class Inventory
 {
 private:
-	vector<Item> inventory;
+	// List of pointers to item objects
+	std::list<Item*> itemInventory;
+	std::list<Attack*> attackInventory;
 public:
-	// Constructors
+	// Constructor
 	Inventory();
 
-	// Function that adds items to inventory
-	void addItem(Item);
+	// Adds an item object to the item inventory list
+	void addItem(Item& _item);
+	void addAttack(GameUI console, Attack& _attack);
 
-	// Function to display all the items in the player inventory
-	void displayRoomInventory();
-	void displayPlayerInventory();
-	void displayMonsterInventory();
+	// Returns a pointer to the address of the specified item
+	Item* getItem(GameUI console, std::string item);
+	Attack* getAttack(GameUI console);
+	Attack* getAttack(GameUI console, std::string attack);
 
-	// Get the number of items being stored in the inventory
-	int getSize();
+	// Displays all of the items in the item inventory
+	void displayItemInventory(GameUI console, std::string _type);
+	void displayAttackInventory(GameUI console, std::string _type);
 
-	// Function that returns a vector of the items in the inventory
-	vector<Item> getInventory();
+	// Remove an item from the item inventory
+	void removeItem(GameUI console, std::string item);
+	void removeAttack(GameUI console, std::string attack);
 
-	// Remove an item from the inventory
-	void removeItem(int);
+	// Searches the item inventory list and returns true or false based on
+	// if the item was found or not
+	bool searchItemInventory(std::string item);
+	bool searchAttackInventory(std::string attack);
 
-	//clears monster inventory
-	void clearMonsterInventory();
+	// Returns the size of the attack inventory
+	int getAttackInventorySize();
 };

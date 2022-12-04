@@ -7,28 +7,42 @@
 // Text that will display what commands are available and their descriptions
 std::string helpText =
 "1 keyword commands:\n"
-"\t- inventory \t\t-> Shows the player's current inventory\n"
-"\t- health \t\t-> Shows the player's current health\n"
-"\t- attacks \t\t-> Shows the player's current attacks\n"
-"\t- room \t\t\t-> Redisplays the room description, items, attacks/weapons, monsters, and available\n\t\t\t\t   rooms\n"
-"\t- quit \t\t\t-> Quits the application\n"
-"\t- help \t\t\t-> Gives available commands and descriptions\n"
+"\t- inventory \t\t\t-> Shows the player's current inventory.\n"
+"\t- health \t\t\t-> Shows the player's current health.\n"
+"\t- room \t\t\t\t-> Redisplays the current room.\n"
+"\t- player \t\t\t-> Shows all of the player's attributes.\n"
+"\t- attacks \t\t\t-> Shows the player's current attacks.\n"
+"\t- help \t\t\t\t-> Gives available commands and descriptions.\n"
+"\t- quit \t\t\t\t-> Quits the application.\n"
 "2 keyword commands:\n"
-"\t- move [direction]\t-> Moves the player to a different room\n"
-"\t- collect [item name]\t-> Lets the player add an item from the room to their inventory\n"
-"\t- use [item name]\t-> Lets the player use an item in their inventory\n"
-"\t- drop [item name]\t-> Lets the player drop an object from their inventory\n"
-"\t- battle [monster name]\t-> Lets the player go into battle with a monster\n"
-"\t- stats [attack name]\t-> Lets the player see the stats of the attack they entered\n";
+"\t- move [direction]\t\t-> Moves the player to a different room.\n"
+"\t- collect [item name]\t\t-> Lets the player add an item from the room to their inventory.\n"
+"\t- use [attack/item name]\t-> Lets the player use an attack/item in their inventory.\n"
+"\t- drop [item name]\t\t-> Lets the player drop an object from their inventory.\n"
+"\t- battle [monster name]\t\t-> Lets the player go into battle with a monster.\n";
+
+std::string battleHelpText =
+"1 keyword commands:\n"
+"\t- inventory \t\t\t-> Shows the player's current inventory.\n"
+"\t- health \t\t\t-> Shows the player's current health.\n"
+"\t- attacks \t\t\t-> Shows the player's current attacks.\n"
+"\t- help \t\t\t\t-> Gives available commands and descriptions.\n"
+"\t- quit \t\t\t\t-> Quits the application.\n"
+"2 keyword commands:\n"
+"\t- use [attack/item name]\t-> Lets the player use an attack/item in their inventory.\n";
+
+
+
 
 Parser::Parser()
 {
-	// null constructor
+	// Null constructor
 }
 
 // Parse user input into a useable format
 Parser::InputStruct* Parser::parseInput(std::string userString)
 {
+	// The struct that will hold the commands the user enters
 	InputStruct* parsedInput = new InputStruct;
 
 	// Standardize the input to a version we can work with
@@ -39,6 +53,7 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 	std::regex cmdRegex("^\\s*[a-zA-Z]+\\s*$");
 	std::regex cmdRegexTwoArg("^\\s*[a-zA-Z]+\\s*[a-zA-Z]+\\s*$");
 
+	// Use regex_match to make sure the text the user enters matches the form it should
 	if (regex_match(standardString, cmdRegex))
 	{
 		std::string command1 = getFirstCommand(standardString);
@@ -51,10 +66,12 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			parsedInput->command1 = HEALTH;
 		else if (command1 == "attacks")
 			parsedInput->command1 = ATTACKS;
-		else if (command1 == "quit")
-			parsedInput->command1 = QUIT;
 		else if (command1 == "room")
 			parsedInput->command1 = ROOM;
+		else if (command1 == "player")
+			parsedInput->command1 = PLAYER;
+		else if (command1 == "quit")
+			parsedInput->command1 = QUIT;
 		else
 			parsedInput->command1 = ERROR1;
 	}
@@ -71,17 +88,17 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = LEFT;
 			}
-			else if (command2 == "center")
+			else if (command2 == "up")
 			{
-				parsedInput->command2 = CENTER;
+				parsedInput->command2 = UP;
 			}
 			else if (command2 == "right")
 			{
 				parsedInput->command2 = RIGHT;
 			}
-			else if (command2 == "back")
+			else if (command2 == "down")
 			{
-				parsedInput->command2 = BACK;
+				parsedInput->command2 = DOWN;
 			}
 			else
 			{
@@ -96,9 +113,9 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = BLUEBERRY;
 			}
-			else if (command2 == "bow")
+			else if (command2 == "bowshot")
 			{
-				parsedInput->command2 = BOW;
+				parsedInput->command2 = BOWSHOT;
 			}
 			else if (command2 == "punch")
 			{
@@ -133,12 +150,41 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 				parsedInput->command2 = ERROR2;
 			}
 		}
-		else if (command1 == "use") {
+		else if (command1 == "use")
+		{
 			parsedInput->command1 = USE;
 
 			if (command2 == "blueberry")
 			{
 				parsedInput->command2 = BLUEBERRY;
+			}
+			else if (command2 == "punch")
+			{
+				parsedInput->command2 = PUNCH;
+			}
+			else if (command2 == "kick")
+			{
+				parsedInput->command2 = KICK;
+			}
+			else if (command2 == "bowshot")
+			{
+				parsedInput->command2 = BOWSHOT;
+			}
+			else if (command2 == "bite")
+			{
+				parsedInput->command2 = BITE;
+			}
+			else if (command2 == "firebreath")
+			{
+				parsedInput->command2 = FIREBREATH;
+			}
+			else if (command2 == "flamethrower")
+			{
+				parsedInput->command2 = FLAMETHROWER;
+			}
+			else if (command2 == "fireball")
+			{
+				parsedInput->command2 = FIREBALL;
 			}
 			else if (command2 == "devilskey")
 			{
@@ -157,9 +203,9 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = BLUEBERRY;
 			}
-			else if (command2 == "bow")
+			else if (command2 == "bowshot")
 			{
-				parsedInput->command2 = BOW;
+				parsedInput->command2 = BOWSHOT;
 			}
 			else if (command2 == "punch")
 			{
@@ -195,45 +241,6 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			}
 
 		}
-		else if (command1 == "stats")
-		{
-			parsedInput->command1 = STATS;
-
-			if (command2 == "bow")
-			{
-				parsedInput->command2 = BOW;
-			}
-			else if (command2 == "punch")
-			{
-				parsedInput->command2 = PUNCH;
-			}
-			else if (command2 == "kick")
-			{
-				parsedInput->command2 = KICK;
-			}
-			else if (command2 == "bite")
-			{
-				parsedInput->command2 = BITE;
-			}
-			else if (command2 == "firebreath")
-			{
-				parsedInput->command2 = FIREBREATH;
-			}
-			else if (command2 == "flamethrower")
-			{
-				parsedInput->command2 = FLAMETHROWER;
-			}
-			else if (command2 == "fireball")
-			{
-				parsedInput->command2 = FIREBALL;
-			}
-			else
-			{
-				parsedInput->command2 = ERROR2;
-			}
-
-		}
-
 		else if (command1 == "battle")
 		{
 			parsedInput->command1 = BATTLE;
@@ -267,7 +274,6 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 		{
 			parsedInput->command1 = ERROR1;
 		}
-
 	}
 	else
 	{
@@ -276,72 +282,49 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 	return (parsedInput);
 }
 
-// Knows how to print all elements of parser output structure
-void Parser::displayParsedOutput(InputStruct* parsedOutput, GameUI console)
-{
-	switch (parsedOutput->command1) {
-	case QUIT:
-		console.writeOutput("QUIT");
-		break;
-	case HELP:
-		console.writeOutput("HELP");
-		break;
-	case MOVE:
-		console.writeOutput("MOVE");
-		break;
-	case COLLECT:
-		console.writeOutput("COLLECT");
-		break;
-	case USE:
-		console.writeOutput("USE");
-		break;
-	case DROP:
-		console.writeOutput("DROP");
-		break;
-	case INVENTORY:
-		console.writeOutput("INVENTORY");
-		break;
-	case HEALTH:
-		console.writeOutput("HEATLH");
-		break;
-	case BATTLE:
-		console.writeOutput("BATTLE");
-		break;
-	case ATTACKS:
-		console.writeOutput("ATTACKS");
-		break;
-	case ROOM:
-		console.writeOutput("ROOM");
-		break;
-	case STATS:
-		console.writeOutput("STATS");
-		break;
-	default:
-		console.writeOutput("\t*** Invalid Command -- Valid commands are ...\n");
-		console.writeOutput(helpText);
-		break;
-	}
-	console.writeOutput("\n");
-}
+///////////////////////////////////////////////////////////////////////////////////////////
+// Helpful display functions
+///////////////////////////////////////////////////////////////////////////////////////////
 
 // Displays the help text in the console
-void Parser::displayHelpText(GameUI console)
+void Parser::displayHelpText(GameUI console, bool* inBattle)
 {
-	console.writeOutput(helpText);
+	// Print the regular help text if not in battle
+	if (*inBattle == false)
+	{
+		// Print regular help text
+		console.writeOutput(helpText);
+	}
+	else
+	{
+		// Print battle help text
+		console.writeOutput(battleHelpText);
+	}
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////
+// Error message functions
+///////////////////////////////////////////////////////////////////////////////////////////
+
 // Display to the user that they made an incorrect command, redisplay commands
-void Parser::incorrectMainCommand(GameUI console)
+void Parser::incorrectMainCommand(GameUI console, bool* inBattle)
 {
-	console.writeOutput("\t*** Invalid Command -- Valid Commands Are ***\n");
-	console.writeOutput(helpText);
+	// Message for the user
+	std::string errorMessage = "\t*** Invalid Command -- Valid Commands Are ***\n";
+
+	// Display the errors
+	console.writeOutput(errorMessage);
+	displayHelpText(console, inBattle);
 }
 
 // Display to the user that they made an incorrect direction command
 void Parser::incorrectDirectionCommand(GameUI console)
 {
-	console.writeOutput("\t*** Invalid Direction - Directions Are ***\n"
-		"\t      [left] [center] [right] [back]\n");
+	// Message for the user
+	std::string errorMessage = "\t*** Invalid Direction - Directions Are ***\n\t      [left] [up] [right] [down]\n";
+
+	// Display the error
+	console.writeOutput(errorMessage);
 }
 
 // Display to the user that they made an incorrect item command
@@ -350,7 +333,12 @@ void Parser::incorrectItemCommand(GameUI console)
 	// ToDo: Add the possible items the player could be using right now
 	// - Player inventory items
 	// - Room inventory items
-	console.writeOutput("\t*** Invalid Item - Try Again ***\n");
+
+	// Message for the user
+	std::string errorMessage = "\t*** Invalid Item - Try Again ***\n";
+
+	// Display the error
+	console.writeOutput(errorMessage);
 }
 
 // Display to the user that they made an incorrect monster command
@@ -358,8 +346,17 @@ void Parser::incorrectMonsterCommand(GameUI console)
 {
 	// ToDo: Add the possible monster the player could be battling
 	// - Current room you are in monster's only
-	console.writeOutput("\t*** Invalid Monster - Try Again ***\n");
+
+	// Message for the user
+	std::string errorMessage = "\t*** Invalid Monster - Try Again ***\n";
+
+	// Display the error
+	console.writeOutput(errorMessage);
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// Convert user input into a standardized version that we can use
+///////////////////////////////////////////////////////////////////////////////////////////
 
 // Function that takes a string and returns the string in all lowercase
 std::string Parser::convertLower(std::string sentence)
@@ -391,7 +388,7 @@ std::string Parser::formatWithOneSpace(std::string sentence)
 			newString.push_back(' ');
 		}
 
-		// Pusht the current character onto the temp string
+		// Push the current character onto the temp string
 		temp.push_back(c);
 
 		// If the current character is not white space, push it onto the string that will be returned
@@ -420,6 +417,10 @@ std::string Parser::standardizeInput(std::string userString)
 
 	return newString;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// Get commands from the parsed string
+///////////////////////////////////////////////////////////////////////////////////////////
 
 // Get the first command word from a standardized user input
 std::string Parser::getFirstCommand(std::string userString)

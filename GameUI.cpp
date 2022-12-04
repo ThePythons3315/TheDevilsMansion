@@ -2,10 +2,9 @@
 #include <stdlib.h>
 #include "GameUI.h"
 
-// empty constructor
 GameUI::GameUI()
 {
-
+    // null constructor
 }
 
 // Gets input from the user

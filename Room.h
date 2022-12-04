@@ -5,58 +5,78 @@
 #include "Player.h"
 #include "Inventory.h"
 #include "Monster.h"
+#include "Parser.h"
 
 class Room
 {
 private:
-	string name;
-	string roomDescription;
-	Player player;
-	Inventory inventory;
-	Attacks attacks;
-	Monster monster;
-	Room* leftRoom; // pointer to a room object
-	Room* centerRoom; // pointer to a room object
-	Room* rightRoom; // pointer to a room object
-	Room* backRoom; // pointer to a room object
-	bool lock;
+	std::string name;
+	std::string description;
+	Room* leftRoom;
+	Room* upRoom;
+	Room* rightRoom;
+	Room* downRoom;
+	Player* player;
+	Inventory* inventory;
+	Monster* monster;
+	bool upRoomLocked;
 public:
 	// Constructors
 	Room();
-	Room(string, string, bool);
+	Room(std::string _name, std::string _description, bool _upRoomLocked);
 
 	// Mutator Functions -- Functions that will be allowed to change private variables
-	void setName(string);
-	void setRoomDescription(string);
-	void setPlayer(Player);
-	void setInventory(Inventory);
-	void setAttacks(Attacks);
-	void setMonster(Monster);
-	void setLockStatus(bool);
-	void setLeftRoom(Room&); // Take the address of the room object
-	void setCenterRoom(Room&); // Take the address of the room object
-	void setRightRoom(Room&); // Take the address of the room object
-	void setBackRoom(Room&); // Take the address of the room object
+	void setName(std::string _name);
+	void setDescription(std::string _description);
+	void setLeftRoom(Room& _leftRoom); // Take the address of the room object
+	void setUpRoom(Room& _upRoom); // Take the address of the room object
+	void setRightRoom(Room& _rightRoom); // Take the address of the room object
+	void setDownRoom(Room& _downRoom); // Take the address of the room object
+	void setPlayer(Player& _player);
+	void setInventory(Inventory& _inventory);
+	void setMonster(Monster& _monster);
+	void setUpRoomLocked(bool _upRoomLocked);
 
 	// Accessor Functions -- Functions that will return values of private functions
-	string getName();
-	string getRoomDescription();
-	Player getPlayer();
-	Inventory getInventory();
-	Attacks getAttacks();
-	Monster getMonster();
-	bool getLockStatus();
+	std::string getName();
+	std::string getDescription();
 	Room* getLeftRoom();
-	Room* getCenterRoom();
+	Room* getUpRoom();
 	Room* getRightRoom();
-	Room* getBackRoom();
+	Room* getDownRoom();
+	Player* getPlayer();
+	Inventory* getInventory();
+	Monster* getMonster();
+	bool getUpRoomLocked();
 
-	// Function that will display both room description and the inventory of the room
-	void getRoomInformation();
+	// Set all 4 of the rooms that can be moved to from this current room
+	void setOrientations(Room& _leftRoom, Room& _upRoom, Room& _rightRoom, Room& _downRoom);
 
-	void redisplayRoom();
-	
-	void moveRoom(string);
+	// Displays certain attributes of the room
+	void printRoomInfo(GameUI console, bool* inBattle);
+	void printBasicRoom(GameUI console, std::string direction);
+	void printPlayerAttributes(GameUI console, bool* inBattle);
 
-	bool validatePossibleRoom(string);
+	// Move the player in the direction the user wants to go to
+	void moveRoom(GameUI console, Room** currentRoom, std::string direction, bool* inBattle);
+
+	// Functions that involve items moving from one inventory to another
+	void pickupItem(GameUI console, std::string item, bool* inBattle);
+	void pickupAttack(GameUI console, std::string attack, bool* inBattle);
+	void dropItem(GameUI console, std::string item, bool* inBattle);
+	void dropAttack(GameUI console, std::string attack, bool* inBattle);
+	void dropMonsterAttack(GameUI console);
+
+	// Functions used for battle
+	void battleMonster(GameUI console, std::string monsterName, bool* inBattle);
+	void battle(GameUI console, std::string attack, bool* inBattle);
+	void useAttack(GameUI console, std::string attack, bool* inBattle, Parser::InputStruct* parserOutput);
+	void playerAttacksMonster(GameUI console, std::string attack);
+	void monsterAttacksPlayer(GameUI console);
+	bool hitOrMiss(int hitChance);
+
+	// Functions related to the usage of doors
+	void lockDoor();
+	void unlockDoor();
+	void useKey(GameUI console, std::string key, bool* inBattle);
 };

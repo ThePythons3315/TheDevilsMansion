@@ -1,42 +1,48 @@
 #pragma once
 
 #include <iostream>
-#include <string.h>
-#include "Health.h"
-#include "Attacks.h"
+#include <string>
+#include "GameUI.h"
 #include "Inventory.h"
 
 class Monster
 {
 private:
-	string name;
-	string monsterDescription;
-	string dialogOpening;
-	Health health;
-	Attacks attacks;
-	Inventory monsterInventory;
+	std::string name;
+	std::string description;
+	Inventory* inventory;
+	int health;
+	int maxHealth;
+	bool alive;
 public:
 	// Constructors
 	Monster();
-	Monster(string, string, string, Health, Attacks);
-	Monster(string, string, string, Health, Attacks, Inventory);
+	Monster(std::string _name, std::string _description, int _health, int _maxHealth, bool _alive);
 
 	// Mutator Functions -- Functions that will be allowed to change private variables
-	void setName(string);
-	void setMonsterDescription(string);
-	void setDialogOpening(string);
-	void setHealth(Health);
-	void setAttacks(Attacks);
-	void setInventory(Inventory);
+	void setName(std::string _name);
+	void setDescription(std::string _name);
+	void setInventory(Inventory& _inventory);
+	void setHealth(int _health);
+	void setMaxHealth(int _maxHealth);
+	void setAlive(bool _alive);
 
 	// Accessor Functions -- Functions that will return values of private functions
-	string getName();
-	string getMonsterDescription();
-	string getDialogOpening();
-	Health getHealth();
-	Attacks getAttacks();
-	Inventory getInventory();
+	std::string getName();
+	std::string getDescription();
+	Inventory* getInventory();
+	int getHealth();
+	int getMaxHealth();
+	bool getAlive();
 
-	// Display the attributes of the monster
-	void displayMonster();
+	// Prints all of the player's attributes to the screen - mainly for testing.
+	void printMonsterInfo(GameUI console);
+	void printMonsterInRoom(GameUI console);
+
+	// Lets the player heal from an item
+	void changeHealth(GameUI console, int _health);
+	void displayHealth(GameUI console);
+
+	// Turns the player's alive variable to false - meaning they were killed.
+	void kill();
 };

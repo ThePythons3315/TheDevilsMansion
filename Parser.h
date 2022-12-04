@@ -9,15 +9,16 @@ public:
 	// Primary commands that will run the game
 	enum MainCommandMenu
 	{
-		HELP, MOVE, COLLECT, USE, DROP, INVENTORY, HEALTH, BATTLE, ATTACKS, QUIT, ROOM, STATS, ERROR1
+		HELP, MOVE, COLLECT, USE, DROP, INVENTORY, HEALTH,
+		BATTLE, ATTACKS, QUIT, ROOM, PLAYER, ERROR1
 	};
 	// Secondary Commands that can be used along side certain primary commands
 	enum SecondaryCommandMenu
-	{ 
-		LEFT, CENTER, RIGHT, BACK,
+	{
+		LEFT, UP, RIGHT, DOWN,
 		SKELETON, HELLHOUND, CHIMERA, DRAGON, ARCHDEMON,
 		BLUEBERRY, DEVILSKEY,
-		BOW, PUNCH, KICK, BITE, FIREBREATH, FLAMETHROWER, FIREBALL,  
+		BOWSHOT, PUNCH, KICK, BITE, FIREBREATH, FLAMETHROWER, FIREBALL,
 		ERROR2
 	};
 
@@ -34,10 +35,10 @@ public:
 
 	// Helpful display functions
 	void displayParsedOutput(InputStruct* parsedOutput, GameUI console);
-	void displayHelpText(GameUI console);
+	void displayHelpText(GameUI console, bool* inBattle);
 
 	// Error message functions
-	void incorrectMainCommand(GameUI console);
+	void incorrectMainCommand(GameUI console, bool* inBattle);
 	void incorrectDirectionCommand(GameUI console);
 	void incorrectItemCommand(GameUI console);
 	void incorrectMonsterCommand(GameUI console);
