@@ -74,6 +74,10 @@ public:
 	void playerAttacksMonster(GameUI console, std::string attack);
 	void monsterAttacksPlayer(GameUI console);
 	bool hitOrMiss(int hitChance);
+	void monsterWasParalyzed(GameUI console, std::string attack);
+	void playerWasParalyzed(GameUI console);
+	bool checkMonsterParalyzed();
+	bool checkPlayerParalyzed();
 
 	// Functions related to the usage of doors
 	void lockDoor();

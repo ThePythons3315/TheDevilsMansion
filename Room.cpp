@@ -691,37 +691,55 @@ void Room::playerAttacksMonster(GameUI console, std::string attack)
 	std::string attackHitText = "The attack hit for " + std::to_string(hitPoints * -1) + " damage.\n";
 	std::string attackMissedText = "The attack missed!! " + monster->getName() + " took no damage.\n";
 	std::string monsterDiedHealthText = monster->getName() + "'s New Health: 0.\n";
+	std::string monsterAlreadyParalyzed = "The monster continues to be paralyzed.\n";
+	std::string playerParalyzed = "The player's paralysis prevented them from attacking.\n";
 
-	// Display the attack the player used to the user
-	console.writeOutput(attackPlayerUsedText);
-
-	// If the attack is going to be a hit, take hitpoints from the monster and display the 
-	// new health of the monster. Otherwise say the attack missed.
-	if (hitOrMiss(player->getInventory()->getAttack(console, attack)->getHitChance()) == true)
+	// If the player is paralyzed and the paralysis prevents them from attacking, tell the user they could not attack 
+	if (checkPlayerParalyzed() == true && hitOrMiss(player->getStatusEffectHitChance()) == true)
 	{
-		// Make the damage affect the monster
-		monster->changeHealth(console, hitPoints);
-
-		// Output that the player's attack hit
-		console.writeOutput(attackHitText);
-
-		// If the monster's health reaches 0 or below, output that they died with 0 health left
-		if (monster->getHealth() <= 0)
-		{
-			// Output the health being 0
-			console.writeOutput(monsterDiedHealthText);
-		}
-		else
-		{
-			// Output the monster's health after the player's attack has hit
-			console.writeOutput("New Monster Health: " + std::to_string(monster->getHealth()) + ".\n");
-		}
+		// Display that the player cannot attack
+		console.writeOutput(playerParalyzed);
 	}
 	else
 	{
-		// Let the user know that the monster's attack missed and redisplay their health
-		console.writeOutput(attackMissedText);
-		console.writeOutput("Monster Health: " + std::to_string(monster->getHealth()) + ".\n");
+		// Display the attack the player used to the user
+		console.writeOutput(attackPlayerUsedText);
+
+		// If the attack is going to be a hit, take hitpoints from the monster and display the 
+		// new health of the monster. Otherwise say the attack missed.
+		if (hitOrMiss(player->getInventory()->getAttack(console, attack)->getHitChance()) == true)
+		{
+			// Make the damage affect the monster
+			monster->changeHealth(console, hitPoints);
+
+			// Output that the player's attack hit
+			console.writeOutput(attackHitText);
+
+			// Completes the check to see if the monster was paralyzed from this attack
+			monsterWasParalyzed(console, attack);
+
+			// If the monster's health reaches 0 or below, output that they died with 0 health left
+			if (monster->getHealth() <= 0)
+			{
+				// Output the health being 0
+				console.writeOutput(monsterDiedHealthText);
+			}
+			else
+			{
+				// Output the monster's health after the player's attack has hit
+				console.writeOutput("New Monster Health: " + std::to_string(monster->getHealth()) + ".\n");
+			}
+		}
+		else
+		{
+			// Let the user know that the monster's attack missed and redisplay their health
+			console.writeOutput(attackMissedText);
+			if (checkMonsterParalyzed() == true)
+			{
+				console.writeOutput(monsterAlreadyParalyzed);
+			}
+			console.writeOutput("Monster Health: " + std::to_string(monster->getHealth()) + ".\n");
+		}
 	}
 }
 
@@ -738,44 +756,62 @@ void Room::monsterAttacksPlayer(GameUI console)
 	std::string attackHitText = "The attack hit for " + std::to_string(hitPoints * -1) + " damage.\n";
 	std::string attackMissedText = "The attack missed!! " + player->getName() + " took no damage.\n";
 	std::string playerDiedHealthText = player->getName() + "'s New Health: 0.\n";
+	std::string playerAlreadyParalyzed = "The player continues to be paralyzed.\n";
+	std::string monsterParalyzed = "The monster's paralysis prevented them from attacking.\n";
 
-
-	// Display the attack the monster used to the user
-	console.writeOutput(attackMonsterUsedText);
-
-	// If the attack is going to be a hit, take hitpoints from the monster and display the 
-	// new health of the monster. Otherwise say the attack missed.
-	if (hitOrMiss(monster->getInventory()->getAttack(console)->getHitChance()) == true)
+	// If the player is paralyzed and the paralysis prevents them from attacking, tell the user they could not attack 
+	if (checkMonsterParalyzed() == true && hitOrMiss(monster->getStatusEffectHitChance()) == true)
 	{
-		// Make the damage affect the player
-		player->changeHealth(console, hitPoints);
-
-		// Output that the player's attack hit
-		console.writeOutput(attackHitText);
-
-		// If the player's health reaches 0 or below, output that they died with 0 health left
-		if (player->getHealth() <= 0)
-		{
-			// Output the health being 0
-			console.writeOutput(playerDiedHealthText);
-		}
-		else
-		{
-			// Output the player's health after the monster's attack has hit
-			console.writeOutput(player->getName() + "'s New Health: " + std::to_string(player->getHealth()) + ".\n");
-		}
+		// Display that the player cannot attack
+		console.writeOutput(monsterParalyzed);
 	}
 	else
 	{
-		// Let the user know that the monster's attack missed and redisplay their health
-		console.writeOutput(attackMissedText);
-		console.writeOutput(player->getName() + "'s Health: " + std::to_string(player->getHealth()) + ".\n");
+		// Display the attack the monster used to the user
+		console.writeOutput(attackMonsterUsedText);
+
+		// If the attack is going to be a hit, take hitpoints from the monster and display the 
+		// new health of the monster. Otherwise say the attack missed.
+		if (hitOrMiss(monster->getInventory()->getAttack(console)->getHitChance()) == true)
+		{
+			// Make the damage affect the player
+			player->changeHealth(console, hitPoints);
+
+			// Output that the player's attack hit
+			console.writeOutput(attackHitText);
+
+			// Completes the check to see if the player was paralyzed from this attack
+			playerWasParalyzed(console);
+
+			// If the player's health reaches 0 or below, output that they died with 0 health left
+			if (player->getHealth() <= 0)
+			{
+				// Output the health being 0
+				console.writeOutput(playerDiedHealthText);
+			}
+			else
+			{
+				// Output the player's health after the monster's attack has hit
+				console.writeOutput(player->getName() + "'s New Health: " + std::to_string(player->getHealth()) + ".\n");
+			}
+		}
+		else
+		{
+			// Let the user know that the monster's attack missed and redisplay their health
+			console.writeOutput(attackMissedText);
+			if (checkPlayerParalyzed() == true)
+			{
+				console.writeOutput(playerAlreadyParalyzed);
+			}
+			console.writeOutput(player->getName() + "'s Health: " + std::to_string(player->getHealth()) + ".\n");
+		}
 	}
 }
 
-// Takes a percentage as a decimal and randomly chooses whether the attack
-// will hit or miss based off of that percentage
-bool Room::hitOrMiss(int hitChance) {
+// Takes an integer and randomly chooses whether the attack
+// will hit or miss based off of that number
+bool Room::hitOrMiss(int hitChance)
+{
 	// Used for generating a random number
 	std::random_device rd;
 	std::mt19937 mt(rd());
@@ -794,6 +830,124 @@ bool Room::hitOrMiss(int hitChance) {
 	}
 	return false;
 
+}
+
+// Checks to see if the monster was paralyzed from the attack
+void Room::monsterWasParalyzed(GameUI console, std::string attack)
+{
+	// Text messages to the user
+	std::string notAParalysisMove = "This move does not have paralysis.\n";
+	std::string monsterParalyzed = "The monster has been paralyzed from the attack.\n";
+	std::string monsterNotParalyzed = "The monster has not been paralyzed from the attack.\n";
+	std::string monsterAlreadyParalyzed = "The monster continues to be paralyzed.\n";
+	
+	// Check to see if the monster is already paralyzed or not
+	if (checkMonsterParalyzed() == true)
+	{
+		console.writeOutput(monsterAlreadyParalyzed);
+	}
+	else
+	{
+		// Make sure the attack has the paralysis effect
+		if (player->getInventory()->getAttack(console, attack)->getStatusEffect() == 1)
+		{
+			// If the attack has the paralysis effect, then check to see if the 
+			// player will be paralyzed or not
+			if (hitOrMiss(player->getInventory()->getAttack(console, attack)->getStatusEffectHitChance()) == true)
+			{
+				// Set the monster to be paralyzed
+				monster->setStatusEffect(1);
+				console.writeOutput(monsterParalyzed);
+			}
+			else
+			{
+				// The monster was not paralyzed
+				//console.writeOutput(monsterNotParalyzed);
+			}
+		}
+		else
+		{
+			// This is not a paralysis move
+			//console.writeOutput(notAParalysisMove);
+		}
+	}
+}
+
+// Checks to see if the player was paralyzed from the attack
+void Room::playerWasParalyzed(GameUI console)
+{
+	// Text messages to the user
+	std::string notAParalysisMove = "This move does not have paralysis.\n";
+	std::string playerParalyzed = "The player has been paralyzed from the attack.\n";
+	std::string playerNotParalyzed = "The player has not been paralyzed from the attack.\n";
+	std::string playerAlreadyParalyzed = "The player continues to be paralyzed.\n";
+
+	// Check to see if the player is already paralyzed or not
+	if (checkPlayerParalyzed() == true)
+	{
+		console.writeOutput(playerAlreadyParalyzed);
+	}
+	else
+	{
+		// Make sure the attack has the paralysis effect
+		if (monster->getInventory()->getAttack(console)->getStatusEffect() == 1)
+		{
+			// If the attack has the paralysis effect, then check to see if the 
+			// player will be paralyzed or not
+			if (hitOrMiss(monster->getInventory()->getAttack(console)->getStatusEffectHitChance()) == true)
+			{
+				// Set the monster to be paralyzed
+				player->setStatusEffect(1);
+				console.writeOutput(playerParalyzed);
+			}
+			else
+			{
+				// The monster was not paralyzed
+				//console.writeOutput(playerNotParalyzed);
+			}
+		}
+		else
+		{
+			// This is not a paralysis move
+			//console.writeOutput(notAParalysisMove);
+		}
+	}
+}
+
+// Before allowing the monster to attack, we must first check to see if the 
+// monster is paralyzed. If they are paralyzed perform the check to see if the
+// monster will be allowed to attack or not
+bool Room::checkMonsterParalyzed()
+{
+	// Check to see if the monster is paralyzed
+	if (monster->getStatusEffect() == 1)
+	{
+		// The monster is paralyzed
+		return true;
+	}
+	else
+	{
+		// The monster is not paralyzed
+		return false;
+	}
+}
+
+// Before allowing the player to attack, we must first check to see if the 
+// player is paralyzed. If they are paralyzed perform the check to see if the
+// player will be allowed to attack or not
+bool Room::checkPlayerParalyzed()
+{
+	// Check to see if the monster is paralyzed
+	if (player->getStatusEffect() == 1)
+	{
+		// The player is paralyzed
+		return true;
+	}
+	else
+	{
+		// The player is not paralyzed
+		return false;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////

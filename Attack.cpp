@@ -69,9 +69,25 @@ void Attack::displayAttackStats(GameUI console)
 	std::string attackName = name + ":\n";
 	std::string attackDamage = "-Damage: " + std::to_string(damage * -1) + ".\n";
 	std::string attackHitChance = "-Hit Chance: " + std::to_string(int(hitChance)) + "%.\n";
+	std::string status = "-Status Effect: None.\n";
+	std::string statusHitChance = "";
 
+	// Change the outputs based on whether the attack has a status effect or not
+	if (statusEffect == 1)
+	{
+		status = "-Status Effect: Paralysis.\n";
+		statusHitChance = "-Status Effect Hit Chance: " + std::to_string(statusEffectHitChance) + ".\n";
+	}
+	else if (statusEffect == 2)
+	{
+		status = "-Status Effect: Burn.\n";
+		statusHitChance = "-Status Effect Hit Chance: " + std::to_string(statusEffectHitChance) + ".\n";
+	}
+	
 	// Display the attack's stats
 	console.writeOutput(attackName);
 	console.writeOutput(attackDamage);
 	console.writeOutput(attackHitChance);
+	console.writeOutput(status);
+	console.writeOutput(statusHitChance);
 }

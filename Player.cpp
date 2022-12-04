@@ -10,7 +10,7 @@ Player::Player()
 	alive = true;
 	statusEffect = 0;
 }
-Player::Player(std::string _name, int _health, int _maxHealth, bool _alive, int _statusEffect)
+Player::Player(std::string _name, int _health, int _maxHealth, bool _alive, int _statusEffect, int _statusEffectHitChance)
 {
 	name = _name;
 	inventory;
@@ -18,6 +18,7 @@ Player::Player(std::string _name, int _health, int _maxHealth, bool _alive, int 
 	maxHealth = _maxHealth;
 	alive = _alive;
 	statusEffect = _statusEffect;
+	statusEffectHitChance = _statusEffectHitChance;
 }
 
 // Mutator Functions -- Functions that will be allowed to change private variables
@@ -45,6 +46,10 @@ void Player::setStatusEffect(int _statusEffect)
 {
 	statusEffect = _statusEffect;
 }
+void Player::setStatusEffectHitChance(int _statusEffectHitChance)
+{
+	statusEffectHitChance = _statusEffectHitChance;
+}
 
 // Accessor Functions -- Functions that will return values of private functions
 std::string Player::getName()
@@ -70,6 +75,10 @@ bool Player::getAlive()
 int Player::getStatusEffect()
 {
 	return statusEffect;
+}
+int Player::getStatusEffectHitChance()
+{
+	return statusEffectHitChance;
 }
 
 // Prints all of the player's attributes to the screen - mainly for testing.

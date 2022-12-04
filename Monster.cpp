@@ -9,7 +9,7 @@ Monster::Monster()
 	health = 100;
 	maxHealth = 100;
 }
-Monster::Monster(std::string _name, std::string _description, int _health, int _maxHealth, bool _alive, int _statusEffect)
+Monster::Monster(std::string _name, std::string _description, int _health, int _maxHealth, bool _alive, int _statusEffect, int _statusEffectHitChance)
 {
 	name = _name;
 	description = _description;
@@ -18,6 +18,7 @@ Monster::Monster(std::string _name, std::string _description, int _health, int _
 	maxHealth = _maxHealth;
 	alive = _alive;
 	statusEffect = _statusEffect;
+	statusEffectHitChance = _statusEffectHitChance;
 }
 
 // Mutator Functions -- Functions that will be allowed to change private variables
@@ -49,6 +50,10 @@ void Monster::setStatusEffect(int _statusEffect)
 {
 	statusEffect = _statusEffect;
 }
+void Monster::setStatusEffectHitChance(int _statusEffectHitChance)
+{
+	statusEffectHitChance = _statusEffectHitChance;
+}
 
 // Accessor Functions -- Functions that will return values of private functions
 std::string Monster::getName()
@@ -78,6 +83,10 @@ bool Monster::getAlive()
 int Monster::getStatusEffect()
 {
 	return statusEffect;
+}
+int Monster::getStatusEffectHitChance()
+{
+	return statusEffectHitChance;
 }
 
 // Prints all of the monster's attributes to the screen - mainly for testing.

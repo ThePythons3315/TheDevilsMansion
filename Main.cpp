@@ -76,7 +76,7 @@ int main()
 	Attack punch("punch", -20, 95, 0, 0);
 	Attack kick("kick", -100, 95, 0, 0);
 	Attack bowshot("bowshot", -20, 95, 0, 0);
-	Attack bite("bite", -20, 95, 1, 20);
+	Attack bite("bite", -20, 95, 1, 95);
 	Attack firebreath("firebreath", -20, 95, 0, 0);
 	Attack flamethrower("flamethrower", -20, 95, 0, 0);
 	Attack fireball("fireball", -20, 95, 0, 0);
@@ -129,12 +129,12 @@ int main()
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Create the monster objects
-	Monster devil("devil", "devil description", 100, 100, true, 0);
-	Monster skeleton("skeleton", "skeleton description", 100, 100, true, 0);
-	Monster hellhound("hellhound", "hellhound description", 100, 100, true, 0);
-	Monster chimera("chimera", "chimera description", 100, 100, true, 0);
-	Monster dragon("dragon", "dragon description", 100, 100, true, 0);
-	Monster archdemon("archdemon", "archdemon description", 100, 100, true, 0);
+	Monster devil("devil", "devil description", 100, 100, true, 0, 20);
+	Monster skeleton("skeleton", "skeleton description", 100, 100, true, 0, 20);
+	Monster hellhound("hellhound", "hellhound description", 100, 100, true, 0, 20);
+	Monster chimera("chimera", "chimera description", 100, 100, true, 0, 20);
+	Monster dragon("dragon", "dragon description", 100, 100, true, 0, 20);
+	Monster archdemon("archdemon", "archdemon description", 100, 100, true, 0, 20);
 
 	// Set monster objects with their appropriate inventories
 	devil.setInventory(devilInventory);
@@ -196,7 +196,7 @@ int main()
 	} while (userInputString == "");
 
 	// Create the main player object and set the starting steps as their current room
-	Player player(userInputString, 200, 200, true, 0);
+	Player player(userInputString, 200, 200, true, 0, 50);
 	player.setInventory(playerInventory);
 
 	// Set the current room pointer to the starting room which is also initialized with the player
