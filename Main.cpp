@@ -37,6 +37,26 @@ int main()
 		"Ha Ha Ha Ha Ha...... Another one bites the dust.\n"
 		"That was the worst attempt at getting through my mansion that I have ever seen.\n"
 		"Have fun in the depths of hell, scum.\n";
+	std::string askUserToMove = "Please enter `move up` to go through the door: ";
+	std::string blueberryOnFloor = "Please enter `collect blueberry` to pick up the blueberry: ";
+	std::string droppedBlueberryText = "It seems as though the devil dropped something on the ground.\n"
+									   "It looks to be a blueberry.\n"
+									   "That would probably be something cool to pick up.\n\n";
+	std::string endOfIntro = "\nYou are now aware of how to move and how to pick up items.\n"
+							 "If you forget the commands or need any help on attacking/using items enter 'help' at any time.\n"
+							 "Please continue with the game on your own...\n";
+	std::string devilsSpiel = "Standing before you is the devil.\n"
+							  "The devil is a tall, crimson red, and overwhelmingly handsome man.\n\n"
+							  "Welcome to my mansion!!\n"
+							  "I am the Devil and you have died in real life.\n"
+							  "This has resulted in you being sent down to my mansion to play a little game.\n"
+							  "I have minions all over my mansion from skeletons to lava hounds.\n"
+							  "You will have to face all of my minions in battle to make it through the mansion.\n"
+							  "If you successfully make it out, you will have won your life back.\n\n"
+							  "Since this is a video game and everything is fake, I don't need to tell you the controls.\n"
+							  "You can just type `help` to see them for yourself.\n\n"
+							  "That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
+							  "...The devil zoomed away\n\n";
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of item objects
@@ -178,9 +198,56 @@ int main()
 	Player player(userInputString, 200, 200, true);
 	player.setInventory(playerInventory);
 
-	// Set the current room pointer to the starting steps which is also initialized with the player
-	startingSteps.setPlayer(player);
-	roomPointer = &startingSteps;
+	// Set the current room pointer to the starting room which is also initialized with the player
+	startingRoom.setPlayer(player);
+
+	///////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////
+
+	// Change the need to strings to include the player's name
+	std::string startingDescription = "Hello there " + player.getName() + ".\n"
+									  "You have just died and been sent down to The Devils Mansion.\n"
+									  "Currently you are outside of the mansion and standing on the starting steps.\n\n";
+	std::string movedStartingRoomText = player.getName() + " has moved into the starting room.\n\n"
+										"You are now in the Starting Room.\n\n"
+										"The starting room is a large open dark room with spider webs everywhere.\n"
+										"Someone should really dust in here.\n\n";
+	
+	// Display the starting description to the screen
+	console.writeOutput(startingDescription);
+
+	// Once the user enters `move up`, send them into the starting room and have the devil 
+	// give his little spiel about how the game works and runs.
+	do {
+		userInputString = console.getUserInput(askUserToMove);
+		userInputString = parser.convertLower(userInputString);
+	} while (userInputString != "move up");
+
+	// Move into the starting room
+	roomPointer = &startingRoom;
+	console.writeOutput(movedStartingRoomText);
+
+	// Display the devil's spiel
+	console.writeOutput(devilsSpiel);
+
+	// Let the player know the devil dropped a blueberry on the ground
+	console.writeOutput(droppedBlueberryText);
+
+	// Let the player see there is a blueberry on the ground.
+	do {
+		userInputString = console.getUserInput(blueberryOnFloor);
+		userInputString = parser.convertLower(userInputString);
+	} while (userInputString != "collect blueberry");
+
+	// Move the blueberry from the room to the player
+	roomPointer->pickupItem(console, "blueberry", &inBattle);
+
+	// Show the end of the introduction statement, the player is on there own for 
+	// the most part from now on.
+	console.writeOutput(endOfIntro);
+
+	///////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Start the main loop of the game. The main loop will continuously ask the user for input.
