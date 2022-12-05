@@ -31,7 +31,7 @@ int main()
 	///////////////////////////////////////////////////////////////////////////////////////////
 	std::string versionText = "Welcome to The Devil's Mansion version 4.01\n\n";
 	std::string getCharacterNameText = "Hello there you fabulous person, please enter the name you would like your character to have: ";
-	std::string endOfGameText = "\nThanks for playing The Devils Mansion.";
+	std::string endOfGameText = "Thanks for playing The Devils Mansion.\n\n\n\n";
 	std::string playerLostText = "\nThe Devil has reappeared.\n"
 		"He has the widest grin stuck on his face.\n\n"
 		"Ha Ha Ha Ha Ha...... Another one bites the dust.\n"
@@ -111,6 +111,7 @@ int main()
 
 	// Add items to room inventories
 	startingRoomInventory.addItem(blueberry);
+	startingRoomInventory.addItem(paralysisHeal);
 	hellhoundRoomInventory.addItem(devilskey);
 
 	// Add attacks to player
@@ -323,6 +324,9 @@ int main()
 			case Parser::DEVILSKEY:
 				roomPointer->pickupItem(console, "devilskey", &inBattle);
 				break;
+			case Parser::PARALYSISHEAL:
+				roomPointer->pickupItem(console, "paralysisheal", &inBattle);
+				break;
 			case Parser::BOWSHOT:
 				roomPointer->pickupAttack(console, "bowshot", &inBattle);
 				break;
@@ -359,6 +363,9 @@ int main()
 			case Parser::DEVILSKEY:
 				roomPointer->useKey(console, "devilskey", &inBattle);
 				break;
+			case Parser::PARALYSISHEAL:
+				roomPointer->healStatusEffect(console);
+				break;
 			case Parser::PUNCH:
 				roomPointer->useAttack(console, "punch", &inBattle, parserOutput);
 				break;
@@ -394,6 +401,9 @@ int main()
 				break;
 			case Parser::DEVILSKEY:
 				roomPointer->dropItem(console, "devilskey", &inBattle);
+				break;
+			case Parser::PARALYSISHEAL:
+				roomPointer->dropItem(console, "paralysisheal", &inBattle);
 				break;
 			case Parser::BOWSHOT:
 				roomPointer->dropAttack(console, "bowshot", &inBattle);

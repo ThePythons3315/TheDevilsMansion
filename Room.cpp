@@ -950,6 +950,33 @@ bool Room::checkPlayerParalyzed()
 	}
 }
 
+// Heals the player from any status effect they have
+void Room::healStatusEffect(GameUI console)
+{
+	// Text message to the user
+	std::string healedMessage = "The player has been healed from their status effect.\n";
+	std::string errorMessage = "The player is not paralyzed, this item cannot be used.\n";
+
+	// Check if the player is paralyzed before healing them
+	if (checkPlayerParalyzed() == true)
+	{
+		// Set the player to not have a status effect
+		player->setStatusEffect(0);
+
+		// Remove the item from the player
+		player->getInventory()->removeItem(console, "paralysisheal");
+
+		// Display that they were healed
+		console.writeOutput(healedMessage);
+	}
+	else
+	{
+		console.writeOutput(errorMessage);
+	}
+	
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Functions related to the usage of doors
 ///////////////////////////////////////////////////////////////////////////////////////////

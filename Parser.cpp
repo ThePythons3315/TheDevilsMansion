@@ -113,6 +113,10 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = BLUEBERRY;
 			}
+			else if (command2 == "paralysisheal")
+			{
+				parsedInput->command2 = PARALYSISHEAL;
+			}
 			else if (command2 == "bowshot")
 			{
 				parsedInput->command2 = BOWSHOT;
@@ -158,6 +162,10 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = BLUEBERRY;
 			}
+			else if (command2 == "paralysisheal")
+			{
+				parsedInput->command2 = PARALYSISHEAL;
+			}
 			else if (command2 == "punch")
 			{
 				parsedInput->command2 = PUNCH;
@@ -202,6 +210,10 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			if (command2 == "blueberry")
 			{
 				parsedInput->command2 = BLUEBERRY;
+			}
+			else if (command2 == "paralysisheal")
+			{
+				parsedInput->command2 = PARALYSISHEAL;
 			}
 			else if (command2 == "bowshot")
 			{

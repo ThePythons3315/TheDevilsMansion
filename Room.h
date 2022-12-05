@@ -74,10 +74,13 @@ public:
 	void playerAttacksMonster(GameUI console, std::string attack);
 	void monsterAttacksPlayer(GameUI console);
 	bool hitOrMiss(int hitChance);
+
+	// Status effect related functions
 	void monsterWasParalyzed(GameUI console, std::string attack);
 	void playerWasParalyzed(GameUI console);
 	bool checkMonsterParalyzed();
 	bool checkPlayerParalyzed();
+	void healStatusEffect(GameUI console);
 
 	// Functions related to the usage of doors
 	void lockDoor();
