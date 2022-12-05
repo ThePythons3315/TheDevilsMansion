@@ -49,6 +49,11 @@ public:
 	void changeHealth(GameUI console, int _health);
 	void displayHealth(GameUI console);
 
+	// Deals with status conditions
+	bool checkParalyzed();
+	bool checkBurned();
+	void performBurn(GameUI console);
+
 	// Turns the player's alive variable to false - meaning they were killed.
 	void kill();
 };

@@ -197,6 +197,59 @@ void Player::displayBothHealth(GameUI console)
 	console.writeOutput(playersMaxHealth);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////
+// Deals with status conditions
+///////////////////////////////////////////////////////////////////////////////////////////
+
+// Checks for paralysis
+bool Player::checkParalyzed()
+{
+	// Check to see if the player is paralyzed
+	if (statusEffect == 1)
+	{
+		// The player is paralyzed
+		return true;
+	}
+	else
+	{
+		// The player is not paralyzed
+		return false;
+	}
+}
+
+// Checks for burn
+bool Player::checkBurned()
+{
+	// Check to see if the player is paralyzed
+	if (statusEffect == 2)
+	{
+		// The player is paralyzed
+		return true;
+	}
+	else
+	{
+		// The player is not paralyzed
+		return false;
+	}
+}
+
+// The player is burned, take away an extra 5 hp from the player
+void Player::performBurn(GameUI console)
+{
+	// Burn damage
+	int damage = 5;
+
+	// Output message to tell the user the burn has affected them
+	std::string outputMessage = "The player's burn has hit them for an extra " + std::to_string(damage) + " damage.\n";
+
+	// Take away the 5 burn damage when this function is called
+	health = health - damage;
+
+	// Display that the burn has taken affect
+	console.writeOutput(outputMessage);
+}
+
+
 // Turns the player's alive variable to false - meaning they were killed.
 void Player::kill()
 {

@@ -76,10 +76,8 @@ public:
 	bool hitOrMiss(int hitChance);
 
 	// Status effect related functions
-	void monsterWasParalyzed(GameUI console, std::string attack);
-	void playerWasParalyzed(GameUI console);
-	bool checkMonsterParalyzed();
-	bool checkPlayerParalyzed();
+	void monsterGetsStatus(GameUI console, std::string attack);
+	void playerGetsStatus(GameUI console);
 	void healStatusEffect(GameUI console);
 
 	// Functions related to the usage of doors

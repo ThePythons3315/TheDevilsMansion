@@ -695,7 +695,7 @@ void Room::playerAttacksMonster(GameUI console, std::string attack)
 	std::string playerParalyzed = "The player's paralysis prevented them from attacking.\n";
 
 	// If the player is paralyzed and the paralysis prevents them from attacking, tell the user they could not attack 
-	if (checkPlayerParalyzed() == true && hitOrMiss(player->getStatusEffectHitChance()) == true)
+	if (player->checkParalyzed() == true && hitOrMiss(player->getStatusEffectHitChance()) == true)
 	{
 		// Display that the player cannot attack
 		console.writeOutput(playerParalyzed);
@@ -714,9 +714,16 @@ void Room::playerAttacksMonster(GameUI console, std::string attack)
 
 			// Output that the player's attack hit
 			console.writeOutput(attackHitText);
-
+			
 			// Completes the check to see if the monster was paralyzed from this attack
-			monsterWasParalyzed(console, attack);
+			monsterGetsStatus(console, attack);
+
+			// If the monster is burned.... Take the burn damage away
+			if (monster->getStatusEffect() == 2)
+			{
+				// Take an extra 5 hp from the monster
+				monster->performBurn(console);
+			}
 
 			// If the monster's health reaches 0 or below, output that they died with 0 health left
 			if (monster->getHealth() <= 0)
@@ -734,7 +741,7 @@ void Room::playerAttacksMonster(GameUI console, std::string attack)
 		{
 			// Let the user know that the monster's attack missed and redisplay their health
 			console.writeOutput(attackMissedText);
-			if (checkMonsterParalyzed() == true)
+			if (monster->checkParalyzed() == true)
 			{
 				console.writeOutput(monsterAlreadyParalyzed);
 			}
@@ -760,7 +767,7 @@ void Room::monsterAttacksPlayer(GameUI console)
 	std::string monsterParalyzed = "The monster's paralysis prevented them from attacking.\n";
 
 	// If the player is paralyzed and the paralysis prevents them from attacking, tell the user they could not attack 
-	if (checkMonsterParalyzed() == true && hitOrMiss(monster->getStatusEffectHitChance()) == true)
+	if (monster->checkParalyzed() == true && hitOrMiss(monster->getStatusEffectHitChance()) == true)
 	{
 		// Display that the player cannot attack
 		console.writeOutput(monsterParalyzed);
@@ -780,8 +787,16 @@ void Room::monsterAttacksPlayer(GameUI console)
 			// Output that the player's attack hit
 			console.writeOutput(attackHitText);
 
-			// Completes the check to see if the player was paralyzed from this attack
-			playerWasParalyzed(console);
+			// Completes the check to see if the player gets a status condition from this attack
+			playerGetsStatus(console);
+
+			// If the monster is burned.... Take the burn damage away
+			if (player->getStatusEffect() == 2)
+			{
+				// Take an extra 5 hp from the monster
+				player->performBurn(console);
+			}
+
 
 			// If the player's health reaches 0 or below, output that they died with 0 health left
 			if (player->getHealth() <= 0)
@@ -799,7 +814,8 @@ void Room::monsterAttacksPlayer(GameUI console)
 		{
 			// Let the user know that the monster's attack missed and redisplay their health
 			console.writeOutput(attackMissedText);
-			if (checkPlayerParalyzed() == true)
+
+			if (player->checkParalyzed() == true)
 			{
 				console.writeOutput(playerAlreadyParalyzed);
 			}
@@ -829,124 +845,113 @@ bool Room::hitOrMiss(int hitChance)
 		return true;
 	}
 	return false;
-
 }
 
-// Checks to see if the monster was paralyzed from the attack
-void Room::monsterWasParalyzed(GameUI console, std::string attack)
+// Checks to see if the monster will get a status condition from an attack, if they do
+// then the statusEffect variable of the monster is set to that status condition
+void Room::monsterGetsStatus(GameUI console, std::string attack)
 {
+	// Get values we want into simpler variables
+	int status = player->getInventory()->getAttack(console, attack)->getStatusEffect();
+	int percentHit = player->getInventory()->getAttack(console, attack)->getStatusEffectHitChance();
+
 	// Text messages to the user
-	std::string notAParalysisMove = "This move does not have paralysis.\n";
+	std::string monsterBurned = "The monster has been burned from the attack.\n";
 	std::string monsterParalyzed = "The monster has been paralyzed from the attack.\n";
-	std::string monsterNotParalyzed = "The monster has not been paralyzed from the attack.\n";
+	std::string monsterAlreadyBurned = "The monster continues to be burned.\n";
 	std::string monsterAlreadyParalyzed = "The monster continues to be paralyzed.\n";
-	
-	// Check to see if the monster is already paralyzed or not
-	if (checkMonsterParalyzed() == true)
+
+	// Check to see if the monster already currently has a status condition or not
+	if (monster->checkParalyzed() == true)
 	{
+		// Monster has paralysis currently
 		console.writeOutput(monsterAlreadyParalyzed);
 	}
+	else if (monster->checkBurned() == true)
+	{
+		// Monster has burn currently
+		console.writeOutput(monsterAlreadyBurned);
+	}
+	// Monster has no current status condition, lets see if they get one below
 	else
 	{
-		// Make sure the attack has the paralysis effect
-		if (player->getInventory()->getAttack(console, attack)->getStatusEffect() == 1)
+		// Check to see if the attack has the paralysis effect
+		if (status == 1)
 		{
-			// If the attack has the paralysis effect, then check to see if the 
-			// player will be paralyzed or not
-			if (hitOrMiss(player->getInventory()->getAttack(console, attack)->getStatusEffectHitChance()) == true)
+			// If the attack has the burn effect, then check to see if the
+			// monster will be burned or not
+			if (hitOrMiss(percentHit) == true)
 			{
-				// Set the monster to be paralyzed
+				// Set the monster to be burned
 				monster->setStatusEffect(1);
 				console.writeOutput(monsterParalyzed);
 			}
-			else
-			{
-				// The monster was not paralyzed
-				//console.writeOutput(monsterNotParalyzed);
-			}
-		}
-		else
+		} // Check to see if the attack has the burn effect
+		else if (status == 2)
 		{
-			// This is not a paralysis move
-			//console.writeOutput(notAParalysisMove);
+			// If the attack has the burn effect, then check to see if the
+			// monster will be burned or not
+			if (hitOrMiss(percentHit) == true)
+			{
+				// Set the monster to be burned
+				monster->setStatusEffect(2);
+				console.writeOutput(monsterBurned);
+			}
 		}
 	}
 }
 
-// Checks to see if the player was paralyzed from the attack
-void Room::playerWasParalyzed(GameUI console)
+// Checks to see if the player will get a status condition from an attack, if they do
+// then the statusEffect variable of the player is set to that status condition
+void Room::playerGetsStatus(GameUI console)
 {
+	// Get values we want into simpler variables
+	int status = monster->getInventory()->getAttack(console)->getStatusEffect();
+	int percentHit = monster->getInventory()->getAttack(console)->getStatusEffectHitChance();
+
 	// Text messages to the user
-	std::string notAParalysisMove = "This move does not have paralysis.\n";
+	std::string playerBurned = "The player has been burned from the attack.\n";
 	std::string playerParalyzed = "The player has been paralyzed from the attack.\n";
-	std::string playerNotParalyzed = "The player has not been paralyzed from the attack.\n";
+	std::string playerAlreadyBurned = "The player continues to be burned.\n";
 	std::string playerAlreadyParalyzed = "The player continues to be paralyzed.\n";
 
-	// Check to see if the player is already paralyzed or not
-	if (checkPlayerParalyzed() == true)
+	// Check to see if the player already currently has a status condition or not
+	if (player->checkParalyzed() == true)
 	{
+		// Player has paralysis currently
 		console.writeOutput(playerAlreadyParalyzed);
 	}
+	else if (player->checkBurned() == true)
+	{
+		// Player has burn currently
+		console.writeOutput(playerAlreadyBurned);
+	}
+	// Player has no current status condition, lets see if they get one below
 	else
 	{
-		// Make sure the attack has the paralysis effect
-		if (monster->getInventory()->getAttack(console)->getStatusEffect() == 1)
+		// Check to see if the attack has the paralysis effect
+		if (status == 1)
 		{
-			// If the attack has the paralysis effect, then check to see if the 
-			// player will be paralyzed or not
-			if (hitOrMiss(monster->getInventory()->getAttack(console)->getStatusEffectHitChance()) == true)
+			// If the attack has the burn effect, then check to see if the
+			// player will be burned or not
+			if (hitOrMiss(percentHit) == true)
 			{
-				// Set the monster to be paralyzed
+				// Set the player to be burned
 				player->setStatusEffect(1);
 				console.writeOutput(playerParalyzed);
 			}
-			else
+		} // Check to see if the attack has the burn effect
+		else if (status == 2)
+		{
+			// If the attack has the burn effect, then check to see if the
+			// player will be burned or not
+			if (hitOrMiss(percentHit) == true)
 			{
-				// The monster was not paralyzed
-				//console.writeOutput(playerNotParalyzed);
+				// Set the player to be burned
+				player->setStatusEffect(2);
+				console.writeOutput(playerBurned);
 			}
 		}
-		else
-		{
-			// This is not a paralysis move
-			//console.writeOutput(notAParalysisMove);
-		}
-	}
-}
-
-// Before allowing the monster to attack, we must first check to see if the 
-// monster is paralyzed. If they are paralyzed perform the check to see if the
-// monster will be allowed to attack or not
-bool Room::checkMonsterParalyzed()
-{
-	// Check to see if the monster is paralyzed
-	if (monster->getStatusEffect() == 1)
-	{
-		// The monster is paralyzed
-		return true;
-	}
-	else
-	{
-		// The monster is not paralyzed
-		return false;
-	}
-}
-
-// Before allowing the player to attack, we must first check to see if the 
-// player is paralyzed. If they are paralyzed perform the check to see if the
-// player will be allowed to attack or not
-bool Room::checkPlayerParalyzed()
-{
-	// Check to see if the monster is paralyzed
-	if (player->getStatusEffect() == 1)
-	{
-		// The player is paralyzed
-		return true;
-	}
-	else
-	{
-		// The player is not paralyzed
-		return false;
 	}
 }
 
@@ -955,10 +960,11 @@ void Room::healStatusEffect(GameUI console)
 {
 	// Text message to the user
 	std::string healedMessage = "The player has been healed from their status effect.\n";
-	std::string errorMessage = "The player is not paralyzed, this item cannot be used.\n";
+	std::string paralyzeMessage = "The player is not paralyzed, this item cannot be used.\n";
+	std::string burnMessage = "The player is not burned, this item cannot be used.\n";
 
 	// Check if the player is paralyzed before healing them
-	if (checkPlayerParalyzed() == true)
+	if (player->checkParalyzed() == true || player->checkBurned() == true)
 	{
 		// Set the player to not have a status effect
 		player->setStatusEffect(0);
@@ -971,10 +977,21 @@ void Room::healStatusEffect(GameUI console)
 	}
 	else
 	{
-		console.writeOutput(errorMessage);
-	}
-	
+		// Output the correct error message based on the status effect
+		if (player->checkParalyzed() == true)
+		{
+			// Paralyzed message
+			console.writeOutput(paralyzeMessage);
+		}
+		else
+		{
+			// Burned message
+			console.writeOutput(burnMessage);
+		}
+		
+	}	
 }
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////

@@ -176,6 +176,58 @@ void Monster::displayHealth(GameUI console)
 	console.writeOutput(healthMessage);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////
+// Deals with status conditions
+///////////////////////////////////////////////////////////////////////////////////////////
+
+// Checks for paralysis
+bool Monster::checkParalyzed()
+{
+	// Check to see if the player is paralyzed
+	if (statusEffect == 1)
+	{
+		// The player is paralyzed
+		return true;
+	}
+	else
+	{
+		// The player is not paralyzed
+		return false;
+	}
+}
+
+// Checks for burn
+bool Monster::checkBurned()
+{
+	// Check to see if the player is paralyzed
+	if (statusEffect == 2)
+	{
+		// The player is paralyzed
+		return true;
+	}
+	else
+	{
+		// The player is not paralyzed
+		return false;
+	}
+}
+
+// The monster is burned, take away an extra 5 hp from the monster
+void Monster::performBurn(GameUI console)
+{
+	// Burn damage
+	int damage = 5;
+
+	// Output message to tell the user the burn has affected the monster
+	std::string outputMessage = "The monster's burn has hit them for an extra " + std::to_string(damage) + " damage.\n";
+
+	// Take away the 5 burn damage when this function is called
+	health = health - damage;
+
+	// Display that the burn has taken affect
+	console.writeOutput(outputMessage);
+}
+
 // Turns the monster's alive variable to false - meaning they were killed.
 void Monster::kill()
 {

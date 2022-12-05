@@ -65,6 +65,7 @@ int main()
 	// Health items
 	Item blueberry("blueberry", 100, 0);
 	Item paralysisHeal("paralysisheal", 0, 1);
+	Item burnHeal("burnheal", 0, 2);
 
 	// Non health items
 	Item devilskey("devilskey", 0, 0);
@@ -77,9 +78,9 @@ int main()
 	Attack kick("kick", -100, 95, 0, 0);
 	Attack bowshot("bowshot", -20, 95, 0, 0);
 	Attack bite("bite", -20, 95, 1, 95);
-	Attack firebreath("firebreath", -20, 95, 0, 0);
-	Attack flamethrower("flamethrower", -20, 95, 0, 0);
-	Attack fireball("fireball", -20, 95, 0, 0);
+	Attack firebreath("firebreath", -20, 95, 2, 95);
+	Attack flamethrower("flamethrower", -20, 95, 2, 95);
+	Attack fireball("fireball", -20, 95, 2, 95);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of inventory objects
@@ -112,6 +113,7 @@ int main()
 	// Add items to room inventories
 	startingRoomInventory.addItem(blueberry);
 	startingRoomInventory.addItem(paralysisHeal);
+	startingRoomInventory.addItem(burnHeal);
 	hellhoundRoomInventory.addItem(devilskey);
 
 	// Add attacks to player
@@ -327,6 +329,9 @@ int main()
 			case Parser::PARALYSISHEAL:
 				roomPointer->pickupItem(console, "paralysisheal", &inBattle);
 				break;
+			case Parser::BURNHEAL:
+				roomPointer->pickupItem(console, "burnheal", &inBattle);
+				break;
 			case Parser::BOWSHOT:
 				roomPointer->pickupAttack(console, "bowshot", &inBattle);
 				break;
@@ -364,6 +369,9 @@ int main()
 				roomPointer->useKey(console, "devilskey", &inBattle);
 				break;
 			case Parser::PARALYSISHEAL:
+				roomPointer->healStatusEffect(console);
+				break;
+			case Parser::BURNHEAL:
 				roomPointer->healStatusEffect(console);
 				break;
 			case Parser::PUNCH:
@@ -404,6 +412,9 @@ int main()
 				break;
 			case Parser::PARALYSISHEAL:
 				roomPointer->dropItem(console, "paralysisheal", &inBattle);
+				break;
+			case Parser::BURNHEAL:
+				roomPointer->dropItem(console, "burnheal", &inBattle);
 				break;
 			case Parser::BOWSHOT:
 				roomPointer->dropAttack(console, "bowshot", &inBattle);
