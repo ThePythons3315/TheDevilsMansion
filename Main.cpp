@@ -81,6 +81,7 @@ int main()
 	Attack firebreath("firebreath", -20, 95, 2, 95);
 	Attack flamethrower("flamethrower", -20, 95, 2, 95);
 	Attack fireball("fireball", -20, 95, 2, 95);
+	Attack slash("slash", -20, 95, 0, 0);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of inventory objects
@@ -94,6 +95,7 @@ int main()
 	Inventory chimeraRoomInventory;
 	Inventory archDemonRoomInventory;
 	Inventory dragonRoomInventory;
+	Inventory reaperRoomInventory;
 
 	// Monster inventories
 	Inventory devilInventory;
@@ -102,6 +104,7 @@ int main()
 	Inventory chimeraInventory;
 	Inventory dragonInventory;
 	Inventory archDemonInventory;
+	Inventory reaperInventory;
 
 	// Player inventory
 	Inventory playerInventory;
@@ -126,6 +129,7 @@ int main()
 	chimeraInventory.addAttack(console, firebreath);
 	dragonInventory.addAttack(console, flamethrower);
 	archDemonInventory.addAttack(console, fireball);
+	reaperInventory.addAttack(console, slash);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of monster objects
@@ -138,6 +142,7 @@ int main()
 	Monster chimera("chimera", "chimera description", 100, 100, true, 0, 20);
 	Monster dragon("dragon", "dragon description", 100, 100, true, 0, 20);
 	Monster archdemon("archdemon", "archdemon description", 100, 100, true, 0, 20);
+	Monster reaper("reaper", "reaper description", 100, 100, true, 0, 20);
 
 	// Set monster objects with their appropriate inventories
 	devil.setInventory(devilInventory);
@@ -146,6 +151,7 @@ int main()
 	chimera.setInventory(chimeraInventory);
 	dragon.setInventory(dragonInventory);
 	archdemon.setInventory(archDemonInventory);
+	reaper.setInventory(reaperInventory);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of room objects
@@ -160,6 +166,7 @@ int main()
 	Room chimeraRoom("Chimera Room", "Chimera Room Description.\n", true); // door between ChimeraRoom and DragonRoom is locked
 	Room archDemonRoom("ArchDemon Room", "ArchDemon Room Description.\n", false);
 	Room dragonRoom("Dragon Room", "Dragon Room Description.\n", false);
+	Room reaperRoom("Reaper Room", "Reaper Room Decription.\n", false);
 
 	// Set room objects with their appropriate monsters
 	skeletonRoom.setMonster(skeleton);
@@ -167,15 +174,18 @@ int main()
 	chimeraRoom.setMonster(chimera);
 	archDemonRoom.setMonster(archdemon);
 	dragonRoom.setMonster(dragon);
+	reaperRoom.setMonster(reaper);
 
 	// Set up all of the rooms to their correct orientations of each other.
+	//input room order: left, up , right, down
 	startingSteps.setOrientations(nullRoom, startingRoom, nullRoom, nullRoom);
 	startingRoom.setOrientations(nullRoom, skeletonRoom, nullRoom, startingSteps);
 	skeletonRoom.setOrientations(hellhoundRoom, chimeraRoom, archDemonRoom, startingRoom);
-	hellhoundRoom.setOrientations(nullRoom, nullRoom, skeletonRoom, nullRoom);
-	chimeraRoom.setOrientations(nullRoom, dragonRoom, nullRoom, skeletonRoom);
+	hellhoundRoom.setOrientations(nullRoom, reaperRoom, skeletonRoom, nullRoom);
+	chimeraRoom.setOrientations(reaperRoom, dragonRoom, nullRoom, skeletonRoom);
 	archDemonRoom.setOrientations(skeletonRoom, nullRoom, nullRoom, nullRoom);
 	dragonRoom.setOrientations(nullRoom, nullRoom, nullRoom, chimeraRoom);
+	reaperRoom.setOrientations(nullRoom, nullRoom, chimeraRoom, hellhoundRoom);
 
 	// Set up all room objects with their correct inventories
 	startingSteps.setInventory(startingStepsInventory);
@@ -185,6 +195,7 @@ int main()
 	chimeraRoom.setInventory(chimeraRoomInventory);
 	archDemonRoom.setInventory(archDemonRoomInventory);
 	dragonRoom.setInventory(dragonRoomInventory);
+	reaperRoom.setInventory(reaperRoomInventory);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Start of the introduction
@@ -353,6 +364,9 @@ int main()
 			case Parser::FIREBALL:
 				roomPointer->pickupAttack(console, "fireball", &inBattle);
 				break;
+			case Parser::SLASH:
+				roomPointer->pickupAttack(console, "slash", &inBattle);
+				break;
 			case Parser::ERROR2:
 				parser.incorrectItemCommand(console);
 				break;
@@ -394,6 +408,9 @@ int main()
 				break;
 			case Parser::FIREBALL:
 				roomPointer->useAttack(console, "fireball", &inBattle, parserOutput);
+				break;
+			case Parser::SLASH:
+				roomPointer->useAttack(console, "slash", &inBattle,parserOutput);
 				break;
 			case Parser::ERROR2:
 				parser.incorrectItemCommand(console);
@@ -437,6 +454,9 @@ int main()
 			case Parser::FIREBALL:
 				roomPointer->dropAttack(console, "fireball", &inBattle);
 				break;
+			case Parser::SLASH:
+				roomPointer->pickupAttack(console, "slash", &inBattle);
+				break;
 			case Parser::ERROR2:
 				parser.incorrectItemCommand(console);
 				break;
@@ -460,6 +480,9 @@ int main()
 				break;
 			case Parser::ARCHDEMON:
 				roomPointer->battleMonster(console, "archdemon", &inBattle);
+				break;
+			case Parser::REAPER:
+				roomPointer->battleMonster(console, "reaper", &inBattle);
 				break;
 			case Parser::ERROR2:
 				parser.incorrectMonsterCommand(console);

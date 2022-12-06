@@ -153,6 +153,10 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = DEVILSKEY;
 			}
+			else if (command2 == "slash")
+			{
+				parsedInput->command2 = SLASH;
+			}
 			else
 			{
 				parsedInput->command2 = ERROR2;
@@ -205,6 +209,10 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			else if (command2 == "devilskey")
 			{
 				parsedInput->command2 = DEVILSKEY;
+			}
+			else if (command2 == "slash")
+			{
+				parsedInput->command2 = SLASH;
 			}
 			else
 			{
@@ -259,6 +267,10 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = DEVILSKEY;
 			}
+			else if (command2 == "slash")
+			{
+				parsedInput->command2 = SLASH;
+			}
 			else
 			{
 				parsedInput->command2 = ERROR2;
@@ -288,6 +300,10 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			else if (command2 == "archdemon")
 			{
 				parsedInput->command2 = ARCHDEMON;
+			}
+			else if (command2 == "reaper")
+			{
+				parsedInput->command2 = REAPER;
 			}
 			else
 			{
