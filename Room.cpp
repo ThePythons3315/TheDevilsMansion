@@ -581,6 +581,7 @@ void Room::battleMonster(GameUI console, std::string monsterName, bool* inBattle
 		else
 		{
 			// Let the player enter battle with the monster
+			console.changeToBattleColors();
 			console.writeOutput(enteringBattleText);
 			*inBattle = true;
 		}
@@ -597,9 +598,10 @@ void Room::battle(GameUI console, std::string attack, bool* inBattle)
 {
 	// Text messages to the user
 	std::string extraNewline = "\n";
-	std::string playerDefeatedText = "\n" + player->getName() + " has been defeated.\n\nThe battle has ended.\n";
-	std::string monsterDefeatedText = "\nThe " + monster->getName() + " has been defeated.\n\nThe battle has ended.\n\n";
-	std::string dropMonsterAttackText = "The " + monster->getName() + " has dropped his " + monster->getInventory()->getAttack(console)->getName() + " attack.\n";
+	std::string playerDefeatedText = "\n" + player->getName() + " has been defeated.\n";
+	std::string monsterDefeatedText = "\nThe " + monster->getName() + " has been defeated.\n\n";
+	std::string dropMonsterAttackText = "The " + monster->getName() + " has dropped his " + monster->getInventory()->getAttack(console)->getName() 
+										+ " attack.\n\nThe battle has ended.\n";
 
 	// Player attacks the monster
 	playerAttacksMonster(console, attack);
@@ -624,6 +626,9 @@ void Room::battle(GameUI console, std::string attack, bool* inBattle)
 
 			// Get out of the battle state
 			*inBattle = false;
+			
+			// Revert to normal colors for the text
+			console.changeToNormalColors();
 		}
 	}
 	else
@@ -640,6 +645,9 @@ void Room::battle(GameUI console, std::string attack, bool* inBattle)
 
 		// Get out of the battle state
 		*inBattle = false;
+
+		// Revert to normal colors for the text
+		console.changeToNormalColors();
 	}
 }
 
