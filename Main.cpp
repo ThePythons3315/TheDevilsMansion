@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <Windows.h>
 #include "GameUI.h"
 #include "Parser.h"
 #include "Player.h"
@@ -31,7 +32,7 @@ int main()
 	///////////////////////////////////////////////////////////////////////////////////////////
 	std::string versionText = "Welcome to The Devil's Mansion version 4.01\n\n";
 	std::string getCharacterNameText = "Hello there you fabulous person, please enter the name you would like your character to have: ";
-	std::string endOfGameText = "Thanks for playing The Devils Mansion.\n\n\n\n";
+	std::string thanksText = "\nThanks for playing The Devils Mansion.\n";
 	std::string playerLostText = "\nThe Devil has reappeared.\n"
 		"He has the widest grin stuck on his face.\n\n"
 		"Ha Ha Ha Ha Ha...... Another one bites the dust.\n"
@@ -45,6 +46,10 @@ int main()
 	std::string endOfIntro = "\nYou are now aware of how to move and how to pick up items.\n"
 							 "If you forget the commands or need any help on attacking/using items enter 'help' at any time.\n"
 							 "Please continue with the game on your own...\n";
+	std::string endOfGame = "\nDamn........................................................\n"
+							"You actually beat my game...................................\n\n"
+							"Welp, I guess I have to send you back up.\n"
+							"Have fun up there, I better not see youa again.\n\n";
 	std::string devilsSpiel = "Standing before you is the devil.\n"
 							  "The devil is a tall, crimson red, and overwhelmingly handsome man.\n\n"
 							  "Welcome to my mansion!!\n"
@@ -57,6 +62,16 @@ int main()
 							  "You can just type `help` to see them for yourself.\n\n"
 							  "That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
 							  "...The devil zoomed away\n\n";
+	std::string playerWon = "-----------------------------------------\n"
+							"-----------------------------------------\n"
+							"----------------You Won------------------\n"
+							"-----------------------------------------\n"
+							"-----------------------------------------\n\n";
+	std::string playerLost = "-----------------------------------------\n"
+							 "-----------------------------------------\n"
+							 "----------------You Lost-----------------\n"
+							 "-----------------------------------------\n"
+							 "-----------------------------------------\n\n";
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of item objects
@@ -219,7 +234,7 @@ int main()
 	reaperRoom.setOrientations(nullRoom, nullRoom, chimeraRoom, hellhoundRoom);
 	mimicRoom.setOrientations(chimeraRoom, nullRoom, nullRoom, archDemonRoom);
 	spiritRoom.setOrientations(nullRoom, nullRoom, hydraRoom, dragonRoom);
-	hydraRoom.setOrientations(hydraRoom, devilRoom, nullRoom, nullRoom);
+	hydraRoom.setOrientations(spiritRoom, devilRoom, nullRoom, nullRoom);
 	devilRoom.setOrientations(nullRoom, nullRoom, nullRoom, hydraRoom);
 
 	// Set up all room objects with their correct inventories
@@ -590,14 +605,33 @@ int main()
 			parser.incorrectMainCommand(console, &inBattle);
 			break;
 		};
+
+		// When the devil dies, end the loop
+		if (devil.getAlive() == false)
+		{
+			parserOutput->command1 = Parser::QUIT;
+		}
+
 	} while (parserOutput->command1 != Parser::QUIT);
+
+	// When the devil dies, end the loop
+	if (devil.getAlive() == false)
+	{
+		// Output the end of game rant
+		console.writeOutput(endOfGame);
+		console.writeOutput(playerWon);
+	}
 
 	// If the player died to lose the game, add extra statement telling them how they failed
 	if (player.getAlive() == false)
 	{
 		console.writeOutput(playerLostText);
+		console.writeOutput(playerLost);
 	}
 
 	// Thank the user for playing the game
-	console.writeOutput(endOfGameText);
+	console.writeOutput(thanksText);
+
+	// Sleep for 10 seconds so the window doesn't automatically go away
+	Sleep(10000);
 }
