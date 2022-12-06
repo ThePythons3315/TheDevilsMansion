@@ -161,6 +161,18 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = SLAM;
 			}
+			else if (command2 == "shadowball")
+			{
+				parsedInput->command2 = SHADOWBALL;
+			}
+			else if (command2 == "eruption")
+			{
+				parsedInput->command2 = ERUPTION;
+			}
+			else if (command2 == "overheat")
+			{
+				parsedInput->command2 = OVERHEAT;
+			}
 			else
 			{
 				parsedInput->command2 = ERROR2;
@@ -221,6 +233,18 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			else if (command2 == "slam")
 			{
 				parsedInput->command2 = SLAM;
+			}
+			else if (command2 == "shadowball")
+			{
+				parsedInput->command2 = SHADOWBALL;
+			}
+			else if (command2 == "eruption")
+			{
+				parsedInput->command2 = ERUPTION;
+			}
+			else if (command2 == "overheat")
+			{
+				parsedInput->command2 = OVERHEAT;
 			}
 			else
 			{
@@ -283,6 +307,18 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = SLAM;
 			}
+			else if (command2 == "shadowball")
+			{
+				parsedInput->command2 = SHADOWBALL;
+			}
+			else if (command2 == "eruption")
+			{
+				parsedInput->command2 = ERUPTION;
+			}
+			else if (command2 == "overheat")
+			{
+				parsedInput->command2 = OVERHEAT;
+			}
 			else
 			{
 				parsedInput->command2 = ERROR2;
@@ -320,6 +356,18 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			else if (command2 == "mimic")
 			{
 				parsedInput->command2 = MIMIC;
+			}
+			else if (command2 == "spirit")
+			{
+				parsedInput->command2 = SPIRIT;
+			}
+			else if (command2 == "hydra")
+			{
+				parsedInput->command2 = HYDRA;
+			}
+			else if (command2 == "devil")
+			{
+				parsedInput->command2 = DEVIL;
 			}
 			else
 			{

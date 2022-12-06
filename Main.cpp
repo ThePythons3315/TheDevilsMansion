@@ -83,6 +83,9 @@ int main()
 	Attack fireball("fireball", -20, 95, 2, 95);
 	Attack slash("slash", -20, 95, 0, 0);
 	Attack slam("slam", -20, 80, 0, 0);
+	Attack shadowball("shadowball", -20, 80, 0, 0);
+	Attack eruption("eruption", -20, 80, 0, 0);
+	Attack overheat("overheat", -20, 80, 0, 0);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of inventory objects
@@ -98,9 +101,11 @@ int main()
 	Inventory dragonRoomInventory;
 	Inventory reaperRoomInventory;
 	Inventory mimicRoomInventory;
+	Inventory spiritRoomInventory;
+	Inventory hydraRoomInventory;
+	Inventory devilRoomInventory;
 
 	// Monster inventories
-	Inventory devilInventory;
 	Inventory skeletonInventory;
 	Inventory hellhoundInventory;
 	Inventory chimeraInventory;
@@ -108,6 +113,9 @@ int main()
 	Inventory archDemonInventory;
 	Inventory reaperInventory;
 	Inventory mimicInventory;
+	Inventory spiritInventory;
+	Inventory hydraInventory;
+	Inventory devilInventory;
 
 	// Player inventory
 	Inventory playerInventory;
@@ -134,13 +142,15 @@ int main()
 	archDemonInventory.addAttack(console, fireball);
 	reaperInventory.addAttack(console, slash);
 	mimicInventory.addAttack(console, slam);
+	spiritInventory.addAttack(console, shadowball);
+	hydraInventory.addAttack(console, eruption);
+	devilInventory.addAttack(console, overheat);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of monster objects
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Create the monster objects
-	Monster devil("devil", "devil description", 100, 100, true, 0, 20);
 	Monster skeleton("skeleton", "skeleton description", 100, 100, true, 0, 20);
 	Monster hellhound("hellhound", "hellhound description", 100, 100, true, 0, 20);
 	Monster chimera("chimera", "chimera description", 100, 100, true, 0, 20);
@@ -148,9 +158,11 @@ int main()
 	Monster archdemon("archdemon", "archdemon description", 100, 100, true, 0, 20);
 	Monster reaper("reaper", "reaper description", 100, 100, true, 0, 20);
 	Monster mimic("mimic", "mimic description", 100, 100, true, 0, 20);
+	Monster spirit("spirit", "spirit description", 100, 100, true, 0, 20);
+	Monster hydra("hydra", "hydra description", 100, 100, true, 0, 20);
+	Monster devil("devil", "devil description", 100, 100, true, 0, 20);
 
 	// Set monster objects with their appropriate inventories
-	devil.setInventory(devilInventory);
 	skeleton.setInventory(skeletonInventory);
 	hellhound.setInventory(hellhoundInventory);
 	chimera.setInventory(chimeraInventory);
@@ -158,6 +170,9 @@ int main()
 	archdemon.setInventory(archDemonInventory);
 	reaper.setInventory(reaperInventory);
 	mimic.setInventory(mimicInventory);
+	spirit.setInventory(spiritInventory);
+	hydra.setInventory(hydraInventory);
+	devil.setInventory(devilInventory);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of room objects
@@ -174,6 +189,9 @@ int main()
 	Room dragonRoom("Dragon Room", "Dragon Room Description.\n", false);
 	Room reaperRoom("Reaper Room", "Reaper Room Decription.\n", false);
 	Room mimicRoom("Mimic Room", "Mimic Room Description\n", false);
+	Room spiritRoom("Spirit Room", "Spirit Room Description\n", false);
+	Room hydraRoom("Hydra Room", "Hydra Room Description\n", false);
+	Room devilRoom("Devil Room", "Devil Room Description\n", false);
 
 	// Set room objects with their appropriate monsters
 	skeletonRoom.setMonster(skeleton);
@@ -183,18 +201,24 @@ int main()
 	dragonRoom.setMonster(dragon);
 	reaperRoom.setMonster(reaper);
 	mimicRoom.setMonster(mimic);
+	spiritRoom.setMonster(spirit);
+	hydraRoom.setMonster(hydra);
+	devilRoom.setMonster(devil);
 
 	// Set up all of the rooms to their correct orientations of each other.
-	//input room order: left, up , right, down
+	// Input room order: left, up , right, down
 	startingSteps.setOrientations(nullRoom, startingRoom, nullRoom, nullRoom);
 	startingRoom.setOrientations(nullRoom, skeletonRoom, nullRoom, startingSteps);
 	skeletonRoom.setOrientations(hellhoundRoom, chimeraRoom, archDemonRoom, startingRoom);
 	hellhoundRoom.setOrientations(nullRoom, reaperRoom, skeletonRoom, nullRoom);
 	chimeraRoom.setOrientations(reaperRoom, dragonRoom, mimicRoom, skeletonRoom);
 	archDemonRoom.setOrientations(skeletonRoom, mimicRoom, nullRoom, nullRoom);
-	dragonRoom.setOrientations(nullRoom, nullRoom, nullRoom, chimeraRoom);
+	dragonRoom.setOrientations(nullRoom, spiritRoom, nullRoom, chimeraRoom);
 	reaperRoom.setOrientations(nullRoom, nullRoom, chimeraRoom, hellhoundRoom);
 	mimicRoom.setOrientations(chimeraRoom, nullRoom, nullRoom, archDemonRoom);
+	spiritRoom.setOrientations(nullRoom, nullRoom, hydraRoom, dragonRoom);
+	hydraRoom.setOrientations(hydraRoom, devilRoom, nullRoom, nullRoom);
+	devilRoom.setOrientations(nullRoom, nullRoom, nullRoom, hydraRoom);
 
 	// Set up all room objects with their correct inventories
 	startingSteps.setInventory(startingStepsInventory);
@@ -206,6 +230,9 @@ int main()
 	dragonRoom.setInventory(dragonRoomInventory);
 	reaperRoom.setInventory(reaperRoomInventory);
 	mimicRoom.setInventory(mimicRoomInventory);
+	spiritRoom.setInventory(spiritRoomInventory);
+	hydraRoom.setInventory(hydraRoomInventory);
+	devilRoom.setInventory(devilRoomInventory);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Start of the introduction
@@ -380,6 +407,15 @@ int main()
 			case Parser::SLAM:
 				roomPointer->pickupAttack(console, "slam", &inBattle);
 				break;
+			case Parser::SHADOWBALL:
+				roomPointer->pickupAttack(console, "shadowball", &inBattle);
+				break;
+			case Parser::ERUPTION:
+				roomPointer->pickupAttack(console, "eruption", &inBattle);
+				break;
+			case Parser::OVERHEAT:
+				roomPointer->pickupAttack(console, "overheat", &inBattle);
+				break;
 			case Parser::ERROR2:
 				parser.incorrectItemCommand(console);
 				break;
@@ -427,6 +463,15 @@ int main()
 				break;
 			case Parser::SLAM:
 				roomPointer->useAttack(console, "slam", &inBattle, parserOutput);
+				break;
+			case Parser::SHADOWBALL:
+				roomPointer->useAttack(console, "shadowball", &inBattle, parserOutput);
+				break;
+			case Parser::ERUPTION:
+				roomPointer->useAttack(console, "eruption", &inBattle, parserOutput);
+				break;
+			case Parser::OVERHEAT:
+				roomPointer->useAttack(console, "overheat", &inBattle, parserOutput);
 				break;
 			case Parser::ERROR2:
 				parser.incorrectItemCommand(console);
@@ -476,6 +521,15 @@ int main()
 			case Parser::SLAM:
 				roomPointer->dropAttack(console, "slam", &inBattle);
 				break;
+			case Parser::SHADOWBALL:
+				roomPointer->dropAttack(console, "shadowball", &inBattle);
+				break;
+			case Parser::ERUPTION:
+				roomPointer->dropAttack(console, "eruption", &inBattle);
+				break;
+			case Parser::OVERHEAT:
+				roomPointer->dropAttack(console, "overheat", &inBattle);
+				break;
 			case Parser::ERROR2:
 				parser.incorrectItemCommand(console);
 				break;
@@ -505,6 +559,15 @@ int main()
 				break;
 			case Parser::MIMIC:
 				roomPointer->battleMonster(console, "mimic", &inBattle);
+				break;
+			case Parser::SPIRIT:
+				roomPointer->battleMonster(console, "spirit", &inBattle);
+				break;
+			case Parser::HYDRA:
+				roomPointer->battleMonster(console, "hydra", &inBattle);
+				break;
+			case Parser::DEVIL:
+				roomPointer->battleMonster(console, "devil", &inBattle);
 				break;
 			case Parser::ERROR2:
 				parser.incorrectMonsterCommand(console);
