@@ -68,7 +68,8 @@ int main()
 	Item burnHeal("burnheal", 0, 2);
 
 	// Non health items
-	Item devilskey("devilskey", 0, 0);
+	Item dragonkey("dragonkey", 0, 0);
+	Item devilkey("devilkey", 0, 0);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of attack objects
@@ -128,7 +129,8 @@ int main()
 	startingRoomInventory.addItem(blueberry);
 	startingRoomInventory.addItem(paralysisHeal);
 	startingRoomInventory.addItem(burnHeal);
-	hellhoundRoomInventory.addItem(devilskey);
+	hellhoundRoomInventory.addItem(dragonkey);
+	dragonRoomInventory.addItem(devilkey);
 
 	// Add attacks to player
 	playerInventory.addAttack(console, punch);
@@ -190,8 +192,8 @@ int main()
 	Room reaperRoom("Reaper Room", "Reaper Room Decription.\n", false);
 	Room mimicRoom("Mimic Room", "Mimic Room Description\n", false);
 	Room spiritRoom("Spirit Room", "Spirit Room Description\n", false);
-	Room hydraRoom("Hydra Room", "Hydra Room Description\n", false);
-	Room devilRoom("Devil Room", "Devil Room Description\n", false);
+	Room hydraRoom("Hydra Room", "Hydra Room Description\n", true); // door between HydraRoom and DevilRoom is locked
+	Room devilRoom("Devil Room", "Devil Room Description\n", false); 
 
 	// Set room objects with their appropriate monsters
 	skeletonRoom.setMonster(skeleton);
@@ -310,7 +312,7 @@ int main()
 	{
 		// Get input from the user and parse it into a suitable form
 		userInputString = console.getUserInput("\nWhat would you like to do: ");
-		parserOutput = parser.parseInput(userInputString);   // parserOutput is a pointer to memory created on the heap
+		parserOutput = parser.parseInput(userInputString);
 
 		switch (parserOutput->command1)
 		{
@@ -371,8 +373,11 @@ int main()
 			case Parser::BLUEBERRY:
 				roomPointer->pickupItem(console, "blueberry", &inBattle);
 				break;
-			case Parser::DEVILSKEY:
-				roomPointer->pickupItem(console, "devilskey", &inBattle);
+			case Parser::DRAGONKEY:
+				roomPointer->pickupItem(console, "dragonkey", &inBattle);
+				break;
+			case Parser::DEVILKEY:
+				roomPointer->pickupItem(console, "devilkey", &inBattle);
 				break;
 			case Parser::PARALYSISHEAL:
 				roomPointer->pickupItem(console, "paralysisheal", &inBattle);
@@ -428,8 +433,11 @@ int main()
 			case Parser::BLUEBERRY:
 				roomPointer->getPlayer()->useHealthItem(console, "blueberry");
 				break;
-			case Parser::DEVILSKEY:
-				roomPointer->useKey(console, "devilskey", &inBattle);
+			case Parser::DRAGONKEY:
+				roomPointer->useKey1(console, "dragonkey", &inBattle);
+				break;
+			case Parser::DEVILKEY:
+				roomPointer->useKey2(console, "devilkey", &inBattle);
 				break;
 			case Parser::PARALYSISHEAL:
 				roomPointer->healStatusEffect(console);
@@ -485,8 +493,11 @@ int main()
 			case Parser::BLUEBERRY:
 				roomPointer->dropItem(console, "blueberry", &inBattle);
 				break;
-			case Parser::DEVILSKEY:
+			case Parser::DRAGONKEY:
 				roomPointer->dropItem(console, "devilskey", &inBattle);
+				break;
+			case Parser::DEVILKEY:
+				roomPointer->dropItem(console, "devilkey", &inBattle);
 				break;
 			case Parser::PARALYSISHEAL:
 				roomPointer->dropItem(console, "paralysisheal", &inBattle);

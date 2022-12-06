@@ -83,5 +83,6 @@ public:
 	// Functions related to the usage of doors
 	void lockDoor();
 	void unlockDoor();
-	void useKey(GameUI console, std::string key, bool* inBattle);
+	void useKey1(GameUI console, std::string key, bool* inBattle);
+	void useKey2(GameUI console, std::string key, bool* inBattle);
 };

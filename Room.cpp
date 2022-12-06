@@ -1019,13 +1019,14 @@ void Room::unlockDoor()
 }
 
 // Tries to use the key to unlock the door
-void Room::useKey(GameUI console, std::string key, bool* inBattle)
+void Room::useKey1(GameUI console, std::string key, bool* inBattle)
 {
 	// Error messages
 	std::string inBattleText = "Sorry this funcionality is not allowed while in battle.\n";
 	std::string openingDoorText = "You have opened the door to The " + getUpRoom()->getName() + ".\n";
 	std::string doorIsAlreadyOpenText = "Sorry the door is already open, no need to use the key.\n";
 	std::string itemNotInInventoryText = "Sorry you do not currently have that item in your posession.\n";
+	std::string wrongKey = "Sorry that key does not work on this door. Gotta find another one.\n";
 
 	// Check to make sure the player is not in battle before trying to use the key
 	if (*inBattle == false)
@@ -1033,19 +1034,81 @@ void Room::useKey(GameUI console, std::string key, bool* inBattle)
 		// Make sure the user has the item in their inventory before trying to use it.
 		if (player->getInventory()->searchItemInventory(key) == true)
 		{
-			// If the upRoom door is locked, then you are allowed to use the key
-			if (getUpRoomLocked() == true)
+			// Make sure the room is the correct one
+			if (upRoom->getName() == "Dragon Room")
 			{
-				// Unlock the door that is locked
-				unlockDoor();
+				// If the upRoom door is locked, then you are allowed to use the key
+				if (getUpRoomLocked() == true)
+				{
+					// Unlock the door that is locked
+					unlockDoor();
 
-				// Let the user know that they unlocked the door
-				console.writeOutput(openingDoorText);
+					// Let the user know that they unlocked the door
+					console.writeOutput(openingDoorText);
+				}
+				else
+				{
+					// Tell the user that the key cannot be used on an open door
+					console.writeOutput(doorIsAlreadyOpenText);
+				}
 			}
 			else
 			{
-				// Tell the user that the key cannot be used on an open door
-				console.writeOutput(doorIsAlreadyOpenText);
+				// Tell the user that the key cannot be used on this door (wrong door)
+				console.writeOutput(wrongKey);
+			}
+		}
+		else
+		{
+			// Tell the user that the item is not in their inventory
+			console.writeOutput(itemNotInInventoryText);
+		}
+	}
+	else
+	{
+		// The player cannot use the key to open the door when in battle
+		console.writeOutput(inBattleText);
+	}
+}
+
+// Tries to use the key to unlock the door
+void Room::useKey2(GameUI console, std::string key, bool* inBattle)
+{
+	// Error messages
+	std::string inBattleText = "Sorry this funcionality is not allowed while in battle.\n";
+	std::string openingDoorText = "You have opened the door to The " + getUpRoom()->getName() + ".\n";
+	std::string doorIsAlreadyOpenText = "Sorry the door is already open, no need to use the key.\n";
+	std::string itemNotInInventoryText = "Sorry you do not currently have that item in your posession.\n";
+	std::string wrongKey = "Sorry that key does not work on this door. Gotta find another one.\n";
+
+	// Check to make sure the player is not in battle before trying to use the key
+	if (*inBattle == false)
+	{
+		// Make sure the user has the item in their inventory before trying to use it.
+		if (player->getInventory()->searchItemInventory(key) == true)
+		{
+			// Make sure the room is the correct one
+			if (upRoom->getName() == "Devil Room")
+			{
+				// If the upRoom door is locked, then you are allowed to use the key
+				if (getUpRoomLocked() == true)
+				{
+					// Unlock the door that is locked
+					unlockDoor();
+
+					// Let the user know that they unlocked the door
+					console.writeOutput(openingDoorText);
+				}
+				else
+				{
+					// Tell the user that the key cannot be used on an open door
+					console.writeOutput(doorIsAlreadyOpenText);
+				}
+			}
+			else
+			{
+				// Tell the user that the key cannot be used on this door (wrong door)
+				console.writeOutput(wrongKey);
 			}
 		}
 		else

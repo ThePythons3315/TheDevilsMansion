@@ -32,8 +32,6 @@ std::string battleHelpText =
 "\t- use [attack/item name]\t-> Lets the player use an attack/item in their inventory.\n";
 
 
-
-
 Parser::Parser()
 {
 	// Null constructor
@@ -149,9 +147,13 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = FIREBALL;
 			}
-			else if (command2 == "devilskey")
+			else if (command2 == "dragonkey")
 			{
-				parsedInput->command2 = DEVILSKEY;
+				parsedInput->command2 = DRAGONKEY;
+			}
+			else if (command2 == "devilkey")
+			{
+				parsedInput->command2 = DEVILKEY;
 			}
 			else if (command2 == "slash")
 			{
@@ -222,9 +224,13 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = FIREBALL;
 			}
-			else if (command2 == "devilskey")
+			else if (command2 == "dragonkey")
 			{
-				parsedInput->command2 = DEVILSKEY;
+				parsedInput->command2 = DRAGONKEY;
+			}
+			else if (command2 == "devilkey")
+			{
+				parsedInput->command2 = DEVILKEY;
 			}
 			else if (command2 == "slash")
 			{
@@ -295,9 +301,13 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = FIREBALL;
 			}
-			else if (command2 == "devilskey")
+			else if (command2 == "dragonkey")
 			{
-				parsedInput->command2 = DEVILSKEY;
+				parsedInput->command2 = DRAGONKEY;
+			}
+			else if (command2 == "devilkey")
+			{
+				parsedInput->command2 = DEVILKEY;
 			}
 			else if (command2 == "slash")
 			{
