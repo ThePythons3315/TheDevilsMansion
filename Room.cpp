@@ -1088,28 +1088,38 @@ void Room::battleMonster(GameUI console, std::string monsterName, bool* inBattle
 	std::string monsterAlreadyDeafeatedText = "The " + monster->getName() + " has already been defeated, you cannot go into battle with it you moron.\n";
 	std::string enteringBattleText = player->getName() + " is now going into battle with the " + monster->getName() + ".\n";
 	std::string monsterNotInRoom = "That monster is not in this room you fool, you cannot go into battle with it.\n";
+	std::string noAttacks = "How you gonna battle a monster with no attacks.\nYou stupid, go find some and pick em up.\n";
 
-	// Make sure the correct monster is in the current room before turning inBattle to true
-	if (monster->getName() == monsterName)
+	// Make sure the player has an attack before entering battle
+	if (player->getInventory()->getAttackInventorySize() > 0)
 	{
-		// If the monster is in the room and not already defeated, enter battle
-		if (monster->getHealth() <= 0)
+		// Make sure the correct monster is in the current room before turning inBattle to true
+		if (monster->getName() == monsterName)
 		{
-			// Tell the user that the monster in the room was already defeated
-			console.outputByCharacter(monsterAlreadyDeafeatedText);
+			// If the monster is in the room and not already defeated, enter battle
+			if (monster->getHealth() <= 0)
+			{
+				// Tell the user that the monster in the room was already defeated
+				console.outputByCharacter(monsterAlreadyDeafeatedText);
+			}
+			else
+			{
+				// Let the player enter battle with the monster
+				console.changeToBattleColors();
+				console.outputByCharacter(enteringBattleText);
+				*inBattle = true;
+			}
 		}
 		else
 		{
-			// Let the player enter battle with the monster
-			console.changeToBattleColors();
-			console.outputByCharacter(enteringBattleText);
-			*inBattle = true;
+			// Tell the user that the monster they are trying to battle is not in the current room
+			console.outputByCharacter(monsterNotInRoom);
 		}
 	}
 	else
 	{
-		// Tell the user that the monster they are trying to battle is not in the current room
-		console.outputByCharacter(monsterNotInRoom);
+		// Cannot enter battle because the player has no attacks
+		console.outputByCharacter(noAttacks);
 	}
 }
 

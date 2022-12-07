@@ -62,16 +62,8 @@ int main()
 							  "You can just type `help` to see them for yourself.\n\n"
 							  "That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
 							  "...The devil zoomed away\n\n";
-	std::string playerWon = "\n-----------------------------------------\n"
-							"-----------------------------------------\n"
-							"----------------You Won------------------\n"
-							"-----------------------------------------\n"
-							"-----------------------------------------\n";
-	std::string playerLost = "\n-----------------------------------------\n"
-							 "-----------------------------------------\n"
-							 "----------------You Lost-----------------\n"
-							 "-----------------------------------------\n"
-							 "-----------------------------------------\n";
+	std::string playerWon = "You have won.\n";
+	std::string playerLost = "You have lost.\n";
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of item objects
@@ -97,20 +89,20 @@ int main()
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Player attacks
-	Attack punch("punch", "Throws a wicked punch.", -20, 95, 0, 0);
-	Attack kick("kick", "Performs a flamboyant kick.", -100, 95, 0, 0);
+	Attack punch("punch", "Throws a wicked punch.", -15, 100, 0, 0);
+	Attack kick("kick", "Performs a flamboyant kick.", -20, 90, 0, 0);
 
 	// Monster attacks
-	Attack bowshot("bowshot", "Shoots an arrow at the opponent.", -20, 95, 0, 0);
-	Attack bite("bite", "Puts them chompers to good use.", -10, 95, 1, 20);
-	Attack firebreath("firebreath", "You should probably invest in toothpaste cause your breath stank.", -20, 95, 2, 20);
-	Attack flamethrower("flamethrower", "Shoots fire out ya mouth.", -20, 95, 2, 20);
-	Attack fireball("fireball", "You literally throw a ball of fire.", -20, 95, 2, 20);
-	Attack slash("slash", "Your hand is pretty sharp, might as well swing it at the opponent.", -20, 95, 0, 0);
-	Attack slam("slam", "You use your fat ass to put the opponent into the ground.", -20, 80, 1, 20);
-	Attack shadowball("shadowball", "IDK how it works, but a ball of shadows is definitely thrown.", -20, 80, 1, 20);
-	Attack eruption("eruption", "The earth shakes with excitement, also it hurts the opponent.", -20, 80, 2, 20);
-	Attack overheat("overheat", "Is it hot in here? Nah it's just you. Somehow this hurts the opponent.", -20, 80, 2, 20);
+	Attack bowshot("bowshot", "Shoots an arrow at the opponent.", -20, 90, 0, 0);
+	Attack bite("bite", "Puts them chompers to good use.", -15, 85, 1, 20);
+	Attack firebreath("firebreath", "You should probably invest in toothpaste cause your breath stank.", -20, 80, 2, 20);
+	Attack flamethrower("flamethrower", "Shoots fire out ya mouth.", -20, 85, 2, 20);
+	Attack fireball("fireball", "You literally throw a ball of fire.", -20, 80, 2, 20);
+	Attack slash("slash", "Your hand is pretty sharp, might as well swing it at the opponent.", -25, 95, 0, 0);
+	Attack slam("slam", "You use your fat ass to put the opponent into the ground.", -20, 95, 1, 20);
+	Attack shadowball("shadowball", "IDK how it works, but a ball of shadows is definitely thrown.", -25, 90, 1, 20);
+	Attack eruption("eruption", "The earth shakes with excitement, also it hurts the opponent.", -30, 85, 2, 20);
+	Attack overheat("overheat", "Is it hot in here? Nah it's just the attacker. Somehow this hurts the opponent.", -35, 90, 2, 20);
 
 	// On the ground attacks
 	Attack longshot("longshot", "If it hits, that would be pretty dope. Only if it hits though.", -60, 20, 0, 20);
@@ -196,16 +188,16 @@ int main()
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Create the monster objects
-	Monster skeleton("skeleton", "skeleton description", 100, 100, true, 0, 20);
-	Monster hellhound("hellhound", "hellhound description", 100, 100, true, 0, 20);
-	Monster chimera("chimera", "chimera description", 100, 100, true, 0, 20);
-	Monster dragon("dragon", "dragon description", 100, 100, true, 0, 20);
-	Monster archdemon("archdemon", "archdemon description", 100, 100, true, 0, 20);
-	Monster reaper("reaper", "reaper description", 100, 100, true, 0, 20);
-	Monster mimic("mimic", "mimic description", 100, 100, true, 0, 20);
+	Monster skeleton("skeleton", "skeleton description", 60, 60, true, 0, 20);
+	Monster hellhound("hellhound", "hellhound description", 70, 70, true, 0, 20);
+	Monster chimera("chimera", "chimera description", 80, 80, true, 0, 20);
+	Monster dragon("dragon", "dragon description", 90, 90, true, 0, 20);
+	Monster archdemon("archdemon", "archdemon description", 70, 70, true, 0, 20);
+	Monster reaper("reaper", "reaper description", 80, 80, true, 0, 20);
+	Monster mimic("mimic", "mimic description", 80, 80, true, 0, 20);
 	Monster spirit("spirit", "spirit description", 100, 100, true, 0, 20);
-	Monster hydra("hydra", "hydra description", 100, 100, true, 0, 20);
-	Monster devil("devil", "devil description", 100, 100, true, 0, 20);
+	Monster hydra("hydra", "hydra description", 120, 120, true, 0, 20);
+	Monster devil("devil", "devil description", 150, 150, true, 0, 20);
 
 	// Set monster objects with their appropriate inventories
 	skeleton.setInventory(skeletonInventory);
