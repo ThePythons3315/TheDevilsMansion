@@ -680,6 +680,11 @@ void Room::battle(GameUI console, std::string attack, bool* inBattle)
 			// Drop the devilkey to the ground
 			dropMonsterItem(console, "devilkey");
 		}
+		else if (monster->getName() == "archdemon")
+		{
+			// Drop the devilkey to the ground
+			dropMonsterItem(console, "ice");
+		}
 
 		// Drop the attack the monster was using to the ground of the room
 		console.writeOutput(dropMonsterAttackText);

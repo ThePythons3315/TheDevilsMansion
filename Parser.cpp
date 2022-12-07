@@ -16,7 +16,7 @@ std::string helpText =
 "\t- quit \t\t\t\t-> Quits the application.\n"
 "2 keyword commands:\n"
 "\t- move [direction]\t\t-> Moves the player to a different room.\n"
-"\t- view [item name]\t\t-> Displays the description of the item.\n"
+"\t- view [attack/item name]\t-> Displays the description of the item.\n"
 "\t- collect [item name]\t\t-> Lets the player add an item from the room to their inventory.\n"
 "\t- use [attack/item name]\t-> Lets the player use an attack/item in their inventory.\n"
 "\t- drop [item name]\t\t-> Lets the player drop an object from their inventory.\n"
@@ -30,7 +30,7 @@ std::string battleHelpText =
 "\t- help \t\t\t\t-> Gives available commands and descriptions.\n"
 "\t- quit \t\t\t\t-> Quits the application.\n"
 "2 keyword commands:\n"
-"\t- view [item name]\t\t-> Displays the description of the item.\n"
+"\t- view [attack/item name]\t-> Displays the description of the item.\n"
 "\t- use [attack/item name]\t-> Lets the player use an attack/item in their inventory.\n";
 
 
@@ -201,6 +201,14 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = OVERHEAT;
 			}
+			else if (command2 == "longshot")
+			{
+				parsedInput->command2 = LONGSHOT;
+			}
+			else if (command2 == "oneshot")
+			{
+				parsedInput->command2 = ONESHOT;
+			}
 			else
 			{
 				parsedInput->command2 = ERROR2;
@@ -302,6 +310,14 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = OVERHEAT;
 			}
+			else if (command2 == "longshot")
+			{
+				parsedInput->command2 = LONGSHOT;
+			}
+			else if (command2 == "oneshot")
+			{
+				parsedInput->command2 = ONESHOT;
+			}
 			else
 			{
 				parsedInput->command2 = ERROR2;
@@ -402,6 +418,14 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			else if (command2 == "overheat")
 			{
 				parsedInput->command2 = OVERHEAT;
+			}
+			else if (command2 == "longshot")
+			{
+				parsedInput->command2 = LONGSHOT;
+			}
+			else if (command2 == "oneshot")
+			{
+				parsedInput->command2 = ONESHOT;
 			}
 			else
 			{
@@ -505,6 +529,62 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			else if (command2 == "devilkey")
 			{
 				parsedInput->command2 = DEVILKEY;
+			}
+			else if (command2 == "bowshot")
+			{
+				parsedInput->command2 = BOWSHOT;
+			}
+			else if (command2 == "punch")
+			{
+				parsedInput->command2 = PUNCH;
+			}
+			else if (command2 == "kick")
+			{
+				parsedInput->command2 = KICK;
+			}
+			else if (command2 == "bite")
+			{
+				parsedInput->command2 = BITE;
+			}
+			else if (command2 == "firebreath")
+			{
+				parsedInput->command2 = FIREBREATH;
+			}
+			else if (command2 == "flamethrower")
+			{
+				parsedInput->command2 = FLAMETHROWER;
+			}
+			else if (command2 == "fireball")
+			{
+				parsedInput->command2 = FIREBALL;
+			}
+			else if (command2 == "slash")
+			{
+				parsedInput->command2 = SLASH;
+			}
+			else if (command2 == "slam")
+			{
+				parsedInput->command2 = SLAM;
+			}
+			else if (command2 == "shadowball")
+			{
+				parsedInput->command2 = SHADOWBALL;
+			}
+			else if (command2 == "eruption")
+			{
+				parsedInput->command2 = ERUPTION;
+			}
+			else if (command2 == "overheat")
+			{
+				parsedInput->command2 = OVERHEAT;
+			}
+			else if (command2 == "longshot")
+			{
+				parsedInput->command2 = LONGSHOT;
+			}
+			else if (command2 == "oneshot")
+			{
+				parsedInput->command2 = ONESHOT;
 			}
 			else
 			{

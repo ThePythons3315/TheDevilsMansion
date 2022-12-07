@@ -96,18 +96,25 @@ int main()
 	// Section of attack objects
 	///////////////////////////////////////////////////////////////////////////////////////////
 
+	// Player attacks
 	Attack punch("punch", -20, 95, 0, 0);
 	Attack kick("kick", -100, 95, 0, 0);
+
+	// Monster attacks
 	Attack bowshot("bowshot", -20, 95, 0, 0);
-	Attack bite("bite", -20, 95, 1, 95);
-	Attack firebreath("firebreath", -20, 95, 2, 95);
-	Attack flamethrower("flamethrower", -20, 95, 2, 95);
-	Attack fireball("fireball", -20, 95, 2, 95);
+	Attack bite("bite", -20, 95, 1, 20);
+	Attack firebreath("firebreath", -20, 95, 2, 20);
+	Attack flamethrower("flamethrower", -20, 95, 2, 20);
+	Attack fireball("fireball", -20, 95, 2, 20);
 	Attack slash("slash", -20, 95, 0, 0);
-	Attack slam("slam", -20, 80, 0, 0);
-	Attack shadowball("shadowball", -20, 80, 0, 0);
-	Attack eruption("eruption", -20, 80, 0, 0);
-	Attack overheat("overheat", -20, 80, 0, 0);
+	Attack slam("slam", -20, 80, 1, 20);
+	Attack shadowball("shadowball", -20, 80, 1, 20);
+	Attack eruption("eruption", -20, 80, 2, 20);
+	Attack overheat("overheat", -20, 80, 2, 20);
+
+	// On the ground attacks
+	Attack longshot("longshot", -60, 20, 0, 20);
+	Attack oneshot("oneshot", -300, 1, 0, 20);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of inventory objects
@@ -126,6 +133,9 @@ int main()
 	Inventory spiritRoomInventory;
 	Inventory hydraRoomInventory;
 	Inventory devilRoomInventory;
+	Inventory treasureRoomInventory1;
+	Inventory treasureRoomInventory2;
+	Inventory treasureRoomInventory3;
 
 	// Monster inventories
 	Inventory skeletonInventory;
@@ -148,10 +158,18 @@ int main()
 
 	// Add items to room inventories
 	startingRoomInventory.addItem(blueberry);
+	treasureRoomInventory1.addItem(cookie);
+	treasureRoomInventory2.addItem(brownie);
+	treasureRoomInventory3.addItem(burger);
+
+	// Add attacks to room inventories
+	treasureRoomInventory2.addAttack(console, longshot);
+	treasureRoomInventory3.addAttack(console, oneshot);
 
 	// Add items to monster inventories
 	hellhoundInventory.addItem(dragonkey);
 	spiritInventory.addItem(devilkey);
+	archDemonInventory.addItem(ice);
 
 	// Add attacks to player
 	playerInventory.addAttack(console, punch);
@@ -215,6 +233,9 @@ int main()
 	Room spiritRoom("Spirit Room", "Spirit Room Description\n", false);
 	Room hydraRoom("Hydra Room", "Hydra Room Description\n", true); // door between HydraRoom and DevilRoom is locked
 	Room devilRoom("Devil Room", "Devil Room Description\n", false); 
+	Room treasureRoom1("Treasure Room", "Treasure Room Description.\n", false);
+	Room treasureRoom2("Treasure Room", "Treasure Room Description.\n", false);
+	Room treasureRoom3("Treasure Room", "Treasure Room Description.\n", false);
 
 	// Set room objects with their appropriate monsters
 	skeletonRoom.setMonster(skeleton);
@@ -233,15 +254,18 @@ int main()
 	startingSteps.setOrientations(nullRoom, startingRoom, nullRoom, nullRoom);
 	startingRoom.setOrientations(nullRoom, skeletonRoom, nullRoom, startingSteps);
 	skeletonRoom.setOrientations(hellhoundRoom, chimeraRoom, archDemonRoom, startingRoom);
-	hellhoundRoom.setOrientations(nullRoom, reaperRoom, skeletonRoom, nullRoom);
+	hellhoundRoom.setOrientations(treasureRoom1, reaperRoom, skeletonRoom, nullRoom);
 	chimeraRoom.setOrientations(reaperRoom, dragonRoom, mimicRoom, skeletonRoom);
 	archDemonRoom.setOrientations(skeletonRoom, mimicRoom, nullRoom, nullRoom);
 	dragonRoom.setOrientations(nullRoom, spiritRoom, nullRoom, chimeraRoom);
 	reaperRoom.setOrientations(nullRoom, nullRoom, chimeraRoom, hellhoundRoom);
-	mimicRoom.setOrientations(chimeraRoom, nullRoom, nullRoom, archDemonRoom);
-	spiritRoom.setOrientations(nullRoom, nullRoom, hydraRoom, dragonRoom);
+	mimicRoom.setOrientations(chimeraRoom, nullRoom, treasureRoom2, archDemonRoom);
+	spiritRoom.setOrientations(treasureRoom3, nullRoom, hydraRoom, dragonRoom);
 	hydraRoom.setOrientations(spiritRoom, devilRoom, nullRoom, nullRoom);
 	devilRoom.setOrientations(nullRoom, nullRoom, nullRoom, hydraRoom);
+	treasureRoom1.setOrientations(nullRoom, nullRoom, hellhoundRoom, nullRoom);
+	treasureRoom2.setOrientations(mimicRoom, nullRoom, nullRoom, nullRoom);
+	treasureRoom3.setOrientations(nullRoom, nullRoom, spiritRoom, nullRoom);
 
 	// Set up all room objects with their correct inventories
 	startingSteps.setInventory(startingStepsInventory);
@@ -256,6 +280,9 @@ int main()
 	spiritRoom.setInventory(spiritRoomInventory);
 	hydraRoom.setInventory(hydraRoomInventory);
 	devilRoom.setInventory(devilRoomInventory);
+	treasureRoom1.setInventory(treasureRoomInventory1);
+	treasureRoom2.setInventory(treasureRoomInventory2);
+	treasureRoom3.setInventory(treasureRoomInventory3);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Start of the introduction
@@ -460,6 +487,12 @@ int main()
 			case Parser::OVERHEAT:
 				roomPointer->pickupAttack(console, "overheat", &inBattle);
 				break;
+			case Parser::LONGSHOT:
+				roomPointer->pickupAttack(console, "longshot", &inBattle);
+				break;
+			case Parser::ONESHOT:
+				roomPointer->pickupAttack(console, "oneshot", &inBattle);
+				break;
 			case Parser::ERROR2:
 				parser.incorrectItemCommand(console);
 				break;
@@ -538,6 +571,12 @@ int main()
 			case Parser::OVERHEAT:
 				roomPointer->useAttack(console, "overheat", &inBattle, parserOutput);
 				break;
+			case Parser::LONGSHOT:
+				roomPointer->useAttack(console, "longshot", &inBattle, parserOutput);
+				break;
+			case Parser::ONESHOT:
+				roomPointer->useAttack(console, "oneshot", &inBattle, parserOutput);
+				break;
 			case Parser::ERROR2:
 				parser.incorrectItemCommand(console);
 				break;
@@ -580,14 +619,14 @@ int main()
 			case Parser::DEVILKEY:
 				roomPointer->dropItem(console, "devilkey", &inBattle);
 				break;
-			case Parser::BOWSHOT:
-				roomPointer->dropAttack(console, "bowshot", &inBattle);
-				break;
 			case Parser::PUNCH:
 				roomPointer->dropAttack(console, "punch", &inBattle);
 				break;
 			case Parser::KICK:
 				roomPointer->dropAttack(console, "kick", &inBattle);
+				break;
+			case Parser::BOWSHOT:
+				roomPointer->dropAttack(console, "bowshot", &inBattle);
 				break;
 			case Parser::BITE:
 				roomPointer->dropAttack(console, "bite", &inBattle);
@@ -615,6 +654,12 @@ int main()
 				break;
 			case Parser::OVERHEAT:
 				roomPointer->dropAttack(console, "overheat", &inBattle);
+				break;
+			case Parser::LONGSHOT:
+				roomPointer->dropAttack(console, "longshot", &inBattle);
+				break;
+			case Parser::ONESHOT:
+				roomPointer->dropAttack(console, "oneshot", &inBattle);
 				break;
 			case Parser::ERROR2:
 				parser.incorrectItemCommand(console);
@@ -696,6 +741,48 @@ int main()
 				break;
 			case Parser::DEVILKEY:
 				devilkey.viewItemDescription(console);
+				break;
+			case Parser::PUNCH:
+				punch.displayAttackStats(console);
+				break;
+			case Parser::KICK:
+				kick.displayAttackStats(console);
+				break;
+			case Parser::BOWSHOT:
+				bowshot.displayAttackStats(console);
+				break;
+			case Parser::BITE:
+				bite.displayAttackStats(console);
+				break;
+			case Parser::FIREBREATH:
+				firebreath.displayAttackStats(console);
+				break;
+			case Parser::FLAMETHROWER:
+				flamethrower.displayAttackStats(console);
+				break;
+			case Parser::FIREBALL:
+				fireball.displayAttackStats(console);
+				break;
+			case Parser::SLASH:
+				slash.displayAttackStats(console);
+				break;
+			case Parser::SLAM:
+				slam.displayAttackStats(console);
+				break;
+			case Parser::SHADOWBALL:
+				shadowball.displayAttackStats(console);
+				break;
+			case Parser::ERUPTION:
+				eruption.displayAttackStats(console);
+				break;
+			case Parser::OVERHEAT:
+				overheat.displayAttackStats(console);
+				break;
+			case Parser::LONGSHOT:
+				longshot.displayAttackStats(console);
+				break;
+			case Parser::ONESHOT:
+				oneshot.displayAttackStats(console);
 				break;
 			case Parser::ERROR2:
 				parser.incorrectMonsterCommand(console);
