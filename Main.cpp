@@ -519,19 +519,19 @@ int main()
 				roomPointer->getPlayer()->useHealthItem(console, "burger");
 				break;
 			case Parser::ADVIL:
-				roomPointer->healStatusEffect(console);
+				roomPointer->healStatusEffect(console, advil.getStatusEffect());
 				break;
 			case Parser::DAYQUIL:
-				roomPointer->healStatusEffect(console);
+				roomPointer->healStatusEffect(console, dayquil.getStatusEffect());
 				break;
 			case Parser::ICE:
-				roomPointer->healStatusEffect(console);
+				roomPointer->healStatusEffect(console, ice.getStatusEffect());
 				break;
 			case Parser::ICEPACK:
-				roomPointer->healStatusEffect(console);
+				roomPointer->healStatusEffect(console, icepack.getStatusEffect());
 				break;
 			case Parser::SMOOTHIE:
-				roomPointer->healStatusEffect(console);
+				roomPointer->healStatusEffect(console, smoothie.getStatusEffect());
 				break;
 			case Parser::DRAGONKEY:
 				roomPointer->useKey1(console, "dragonkey", &inBattle);
@@ -787,6 +787,36 @@ int main()
 				break;
 			case Parser::ONESHOT:
 				oneshot.displayAttackStats(console);
+				break;
+			case Parser::SKELETON:
+				skeleton.viewMonster(console, &inBattle);
+				break;
+			case Parser::HELLHOUND:
+				hellhound.viewMonster(console, &inBattle);
+				break;
+			case Parser::CHIMERA:
+				chimera.viewMonster(console, &inBattle);
+				break;
+			case Parser::DRAGON:
+				dragon.viewMonster(console, &inBattle);
+				break;
+			case Parser::ARCHDEMON:
+				archdemon.viewMonster(console, &inBattle);
+				break;
+			case Parser::REAPER:
+				reaper.viewMonster(console, &inBattle);
+				break;
+			case Parser::MIMIC:
+				mimic.viewMonster(console, &inBattle);
+				break;
+			case Parser::SPIRIT:
+				spirit.viewMonster(console, &inBattle);
+				break;
+			case Parser::HYDRA:
+				hydra.viewMonster(console, &inBattle);
+				break;
+			case Parser::DEVIL:
+				devil.viewMonster(console, &inBattle);
 				break;
 			case Parser::ERROR2:
 				parser.incorrectMonsterCommand(console);

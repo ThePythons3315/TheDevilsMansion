@@ -137,11 +137,11 @@ void Room::printRoomInfo(GameUI console, bool* inBattle)
 	// Text messages to the user
 	std::string extraNewline = "\n";
 	std::string roomInfo = "Room's information includes:\n\n";
-	std::string roomName = "Room Name: " + name + "\n\n";
+	std::string roomName = "Room Name: " + name + ".\n\n";
 	std::string roomDescription = description + "\n";
-	std::string monsterDeadText = "Monster In Room: dead.\n\n";
-	std::string monsterInRoom = "Monster In Room: " + monster->getName() + ".\n\n";
-	std::string noMonsterInRoom = "Monster In Room: no monster in room.\n\n";
+	std::string monsterDeadText = "Monster In Room: dead.\n";
+	std::string monsterInRoom = "Monster In Room: " + monster->getName() + ".\n";
+	std::string noMonsterInRoom = "Monster In Room: None.\n";
 	std::string inBattleErrorText = "Sorry this funcionality is not allowed while in battle.\n";
 
 	// Do not print the room's information if the player is in battle
@@ -151,6 +151,12 @@ void Room::printRoomInfo(GameUI console, bool* inBattle)
 		console.writeOutput(roomInfo);
 		console.writeOutput(roomName);
 		console.writeOutput(roomDescription);
+
+		// Redisplay the room's items and attacks
+		inventory->displayItemInventory(console, "Room");
+		console.writeOutput(extraNewline);
+		inventory->displayAttackInventory(console, "Room");
+		console.writeOutput(extraNewline);
 
 		// If there is a monster in the room, display they are there
 		if (monster->getName() != "")
@@ -173,11 +179,6 @@ void Room::printRoomInfo(GameUI console, bool* inBattle)
 			// Display that there is no monster in the room
 			console.writeOutput(noMonsterInRoom);
 		}
-
-		// Redisplay the room's items and attacks
-		inventory->displayItemInventory(console, "Room");
-		console.writeOutput(extraNewline);
-		inventory->displayAttackInventory(console, "Room");
 	}
 	else
 	{
@@ -195,6 +196,7 @@ void Room::printBasicRoom(GameUI console, std::string direction)
 	if (direction == "left")
 	{
 		// Print the description of the room
+		console.writeOutput(extraNewline);
 		console.writeOutput(leftRoom->getDescription());
 		console.writeOutput(extraNewline);
 
@@ -209,6 +211,7 @@ void Room::printBasicRoom(GameUI console, std::string direction)
 	else if (direction == "up")
 	{
 		// Print the description of the room
+		console.writeOutput(extraNewline);
 		console.writeOutput(upRoom->getDescription());
 		console.writeOutput(extraNewline);
 
@@ -223,6 +226,7 @@ void Room::printBasicRoom(GameUI console, std::string direction)
 	else if (direction == "right")
 	{
 		// Print the description of the room
+		console.writeOutput(extraNewline);
 		console.writeOutput(rightRoom->getDescription());
 		console.writeOutput("\n");
 
@@ -237,6 +241,7 @@ void Room::printBasicRoom(GameUI console, std::string direction)
 	else if (direction == "down")
 	{
 		// Print the description of the room
+		console.writeOutput(extraNewline);
 		console.writeOutput(downRoom->getDescription());
 		console.writeOutput(extraNewline);
 
@@ -1011,14 +1016,14 @@ void Room::playerGetsStatus(GameUI console)
 }
 
 // Heals the player from any status effect they have
-void Room::healStatusEffect(GameUI console)
+void Room::healStatusEffect(GameUI console, int status)
 {
 	// Text message to the user
 	std::string healedMessage = "The player has been healed from their status effect.\n";
 	std::string paralyzeMessage = "The player is not paralyzed, this item cannot be used.\n";
 	std::string burnMessage = "The player is not burned, this item cannot be used.\n";
 
-	// Check if the player is paralyzed before healing them
+	// Check if the player is has a status effect before healing them
 	if (player->checkParalyzed() == true || player->checkBurned() == true)
 	{
 		// Set the player to not have a status effect
@@ -1033,12 +1038,12 @@ void Room::healStatusEffect(GameUI console)
 	else
 	{
 		// Output the correct error message based on the status effect
-		if (player->checkParalyzed() == true)
+		if (status == 1)
 		{
 			// Paralyzed message
 			console.writeOutput(paralyzeMessage);
 		}
-		else
+		else if (status == 2)
 		{
 			// Burned message
 			console.writeOutput(burnMessage);

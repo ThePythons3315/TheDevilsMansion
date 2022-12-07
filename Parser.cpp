@@ -7,31 +7,31 @@
 // Text that will display what commands are available and their descriptions
 std::string helpText =
 "1 keyword commands:\n"
-"\t- inventory \t\t\t-> Shows the player's current inventory.\n"
-"\t- health \t\t\t-> Shows the player's current health.\n"
-"\t- room \t\t\t\t-> Redisplays the current room.\n"
-"\t- player \t\t\t-> Shows all of the player's attributes.\n"
-"\t- attacks \t\t\t-> Shows the player's current attacks.\n"
-"\t- help \t\t\t\t-> Gives available commands and descriptions.\n"
-"\t- quit \t\t\t\t-> Quits the application.\n"
+"\t- inventory \t\t\t\t-> Shows the player's current inventory.\n"
+"\t- health \t\t\t\t-> Shows the player's current health.\n"
+"\t- room \t\t\t\t\t-> Redisplays the current room.\n"
+"\t- player \t\t\t\t-> Shows all of the player's attributes.\n"
+"\t- attacks \t\t\t\t-> Shows the player's current attacks.\n"
+"\t- help \t\t\t\t\t-> Gives available commands and descriptions.\n"
+"\t- quit \t\t\t\t\t-> Quits the application.\n"
 "2 keyword commands:\n"
-"\t- move [direction]\t\t-> Moves the player to a different room.\n"
-"\t- view [attack/item name]\t-> Displays the description of the item.\n"
-"\t- collect [item name]\t\t-> Lets the player add an item from the room to their inventory.\n"
-"\t- use [attack/item name]\t-> Lets the player use an attack/item in their inventory.\n"
-"\t- drop [item name]\t\t-> Lets the player drop an object from their inventory.\n"
-"\t- battle [monster name]\t\t-> Lets the player go into battle with a monster.\n";
+"\t- move [direction]\t\t\t-> Moves the player to a different room.\n"
+"\t- view [attack/item/monster name]\t-> Displays the description of the item.\n"
+"\t- collect [item name]\t\t\t-> Lets the player add an item from the room to their inventory.\n"
+"\t- use [attack/item name]\t\t-> Lets the player use an attack/item in their inventory.\n"
+"\t- drop [item name]\t\t\t-> Lets the player drop an object from their inventory.\n"
+"\t- battle [monster name]\t\t\t-> Lets the player go into battle with a monster.\n";
 
 std::string battleHelpText =
 "1 keyword commands:\n"
-"\t- inventory \t\t\t-> Shows the player's current inventory.\n"
-"\t- health \t\t\t-> Shows the player's current health.\n"
-"\t- attacks \t\t\t-> Shows the player's current attacks.\n"
-"\t- help \t\t\t\t-> Gives available commands and descriptions.\n"
-"\t- quit \t\t\t\t-> Quits the application.\n"
+"\t- inventory \t\t\t\t-> Shows the player's current inventory.\n"
+"\t- health \t\t\t\t-> Shows the player's current health.\n"
+"\t- attacks \t\t\t\t-> Shows the player's current attacks.\n"
+"\t- help \t\t\t\t\t-> Gives available commands and descriptions.\n"
+"\t- quit \t\t\t\t\t-> Quits the application.\n"
 "2 keyword commands:\n"
-"\t- view [attack/item name]\t-> Displays the description of the item.\n"
-"\t- use [attack/item name]\t-> Lets the player use an attack/item in their inventory.\n";
+"\t- view [attack/item/monster name]\t-> Displays the description of the item.\n"
+"\t- use [attack/item name]\t\t-> Lets the player use an attack/item in their inventory.\n";
 
 
 Parser::Parser()
@@ -585,6 +585,46 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			else if (command2 == "oneshot")
 			{
 				parsedInput->command2 = ONESHOT;
+			}
+			else if (command2 == "skeleton")
+			{
+				parsedInput->command2 = SKELETON;
+			}
+			else if (command2 == "hellhound")
+			{
+			parsedInput->command2 = HELLHOUND;
+			}
+			else if (command2 == "chimera")
+			{
+			parsedInput->command2 = CHIMERA;
+			}
+			else if (command2 == "dragon")
+			{
+			parsedInput->command2 = DRAGON;
+			}
+			else if (command2 == "archdemon")
+			{
+			parsedInput->command2 = ARCHDEMON;
+			}
+			else if (command2 == "reaper")
+			{
+			parsedInput->command2 = REAPER;
+			}
+			else if (command2 == "mimic")
+			{
+			parsedInput->command2 = MIMIC;
+			}
+			else if (command2 == "spirit")
+			{
+			parsedInput->command2 = SPIRIT;
+			}
+			else if (command2 == "hydra")
+			{
+			parsedInput->command2 = HYDRA;
+			}
+			else if (command2 == "devil")
+			{
+			parsedInput->command2 = DEVIL;
 			}
 			else
 			{

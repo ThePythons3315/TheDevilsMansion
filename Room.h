@@ -79,7 +79,7 @@ public:
 	// Status effect related functions
 	void monsterGetsStatus(GameUI console, std::string attack);
 	void playerGetsStatus(GameUI console);
-	void healStatusEffect(GameUI console);
+	void healStatusEffect(GameUI console, int status);
 
 	// Functions related to the usage of doors
 	void lockDoor();

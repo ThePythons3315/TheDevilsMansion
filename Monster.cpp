@@ -145,6 +145,45 @@ void Monster::printMonsterInRoom(GameUI console)
 	}
 }
 
+// Displays the apprropriate attributes of the monster when using the view command
+void Monster::viewMonster(GameUI console, bool* inBattle)
+{
+	// Text messages to the user
+	std::string monsterName = "Monster Name: " + name + ".\n\n";
+	std::string monsterDescription = description + "\n\n";
+	std::string monsterHealth = "The " + name + "'s health: " + std::to_string(health) + ".\n";
+	std::string monsterStatus = "\nStatus Effect: ";
+
+	// Display the monster's information
+	console.writeOutput(monsterName);
+	console.writeOutput(monsterDescription);
+	console.writeOutput(monsterHealth);
+
+	// If in battle, also print out whether the monster has a status condition or not
+	if (*inBattle == true)
+	{
+		// Add the status condition to the string
+		if (statusEffect == 0)
+		{
+			// No status effect
+			monsterStatus += "None.\n";
+		}
+		else if (statusEffect == 1)
+		{
+			// Monster is paralyzed
+			monsterStatus += "Paralyzed.\n";
+		}
+		else if (statusEffect == 2)
+		{
+			// Monster is burned
+			monsterStatus += "Burned.\n";
+		}
+
+		// Display the status condition
+		console.writeOutput(monsterStatus);
+	}
+}
+
 // Change the monster's health value
 void Monster::changeHealth(GameUI console, int _health)
 {

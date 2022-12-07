@@ -41,11 +41,12 @@ public:
 	int getStatusEffect();
 	int getStatusEffectHitChance();
 
-	// Prints all of the player's attributes to the screen - mainly for testing.
+	// Prints all of the mosnter's attributes to the screen - mainly for testing.
 	void printMonsterInfo(GameUI console);
 	void printMonsterInRoom(GameUI console);
+	void viewMonster(GameUI console, bool* inBattle);
 
-	// Lets the player heal from an item
+	// Lets us change the monster's health
 	void changeHealth(GameUI console, int _health);
 	void displayHealth(GameUI console);
 
