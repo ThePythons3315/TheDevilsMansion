@@ -56,6 +56,7 @@ public:
 	void printRoomInfo(GameUI console, bool* inBattle);
 	void printBasicRoom(GameUI console, std::string direction);
 	void printPlayerAttributes(GameUI console, bool* inBattle);
+	void showMap(GameUI console, bool* inBattle);
 
 	// Move the player in the direction the user wants to go to
 	void moveRoom(GameUI console, Room** currentRoom, std::string direction, bool* inBattle);

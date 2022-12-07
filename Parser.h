@@ -10,7 +10,7 @@ public:
 	enum MainCommandMenu
 	{
 		// 1 word command
-		HELP, MOVE, COLLECT, USE, DROP, INVENTORY, HEALTH,
+		HELP, MOVE, COLLECT, USE, DROP, INVENTORY, HEALTH, MAP,
 
 		// 2 word commands
 		BATTLE, ATTACKS, QUIT, ROOM, PLAYER, VIEW, ERROR1

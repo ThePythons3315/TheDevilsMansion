@@ -7,6 +7,7 @@
 // Text that will display what commands are available and their descriptions
 std::string helpText =
 "1 keyword commands:\n"
+"\t- map \t\t\t\t\t-> Shows the current location of the player.\n"
 "\t- inventory \t\t\t\t-> Shows the player's current inventory.\n"
 "\t- health \t\t\t\t-> Shows the player's current health.\n"
 "\t- room \t\t\t\t\t-> Redisplays the current room.\n"
@@ -60,6 +61,8 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 
 		if (command1 == "help")
 			parsedInput->command1 = HELP;
+		else if (command1 == "map")
+			parsedInput->command1 = MAP;
 		else if (command1 == "inventory")
 			parsedInput->command1 = INVENTORY;
 		else if (command1 == "health")

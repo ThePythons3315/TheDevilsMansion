@@ -238,8 +238,8 @@ int main()
 	Room hydraRoom("Hydra Room", "Hydra Room Description\n", true); // door between HydraRoom and DevilRoom is locked
 	Room devilRoom("Devil Room", "Devil Room Description\n", false); 
 	Room treasureRoom1("Treasure Room", "Treasure Room Description.\n", false);
-	Room treasureRoom2("Treasure Room", "Treasure Room Description.\n", false);
-	Room treasureRoom3("Treasure Room", "Treasure Room Description.\n", false);
+	Room treasureRoom2("Valuables Room", "Treasure Room Description.\n", false);
+	Room treasureRoom3("Riches Room", "Treasure Room Description.\n", false);
 
 	// Set room objects with their appropriate monsters
 	skeletonRoom.setMonster(skeleton);
@@ -353,13 +353,9 @@ int main()
 	console.writeOutput(endOfIntro);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////
-
-	///////////////////////////////////////////////////////////////////////////////////////////
 	// Start the main loop of the game. The main loop will continuously ask the user for input.
 	// The user input will be used to run the game and progress throughout the game.
 	///////////////////////////////////////////////////////////////////////////////////////////
-
 	do
 	{
 		// Get input from the user and parse it into a suitable form
@@ -373,6 +369,9 @@ int main()
 			///////////////////////////////////////////////////////////////////////////////////////////
 		case Parser::INVENTORY:
 			roomPointer->getPlayer()->getInventory()->displayItemInventory(console, "Player");
+			break;
+		case Parser::MAP:
+			roomPointer->showMap(console, &inBattle);
 			break;
 		case Parser::HEALTH:
 			roomPointer->getPlayer()->displayBothHealth(console);
