@@ -4,14 +4,16 @@
 Attack::Attack()
 {
 	name = "";
+	description = "";
 	damage = 0;
 	hitChance = 0;
 	statusEffect = 0;
 	statusEffectHitChance = 0;
 }
-Attack::Attack(std::string _name, int _damage, int _hitChance, int _statusEffect, int _statusEffectHitChance)
+Attack::Attack(std::string _name, std::string _description, int _damage, int _hitChance, int _statusEffect, int _statusEffectHitChance)
 {
 	name = _name;
+	description = _description;
 	damage = _damage;
 	hitChance = _hitChance;
 	statusEffect = _statusEffect;
@@ -22,6 +24,10 @@ Attack::Attack(std::string _name, int _damage, int _hitChance, int _statusEffect
 void Attack::setName(std::string _name)
 {
 	name = _name;
+}
+void Attack::setDescription(std::string _description)
+{
+	description = _description;
 }
 void Attack::setDamage(int _damage)
 {
@@ -45,6 +51,10 @@ std::string Attack::getName()
 {
 	return name;
 }
+std::string Attack::getDescription()
+{
+	return description;
+}
 int Attack::getDamage()
 {
 	return damage;
@@ -63,10 +73,21 @@ int Attack::getStatusEffectHitChance()
 }
 
 // Displays the stats of the attack
+void Attack::displayAttack(GameUI console)
+{
+	// Text messages to the user
+	std::string attackName = name;
+
+	// Display the attack's stats
+	console.writeOutput(attackName);
+}
+
+// Displays the stats of the attack
 void Attack::displayAttackStats(GameUI console)
 {
 	// Text messages to the user
 	std::string attackName = name + ":\n";
+	std::string attackDescription = "-Description: " + description + "\n";
 	std::string attackDamage = "-Damage: " + std::to_string(damage * -1) + ".\n";
 	std::string attackHitChance = "-Hit Chance: " + std::to_string(int(hitChance)) + "%.\n";
 	std::string status = "-Status Effect: None.\n";
@@ -86,6 +107,7 @@ void Attack::displayAttackStats(GameUI console)
 	
 	// Display the attack's stats
 	console.writeOutput(attackName);
+	console.writeOutput(attackDescription);
 	console.writeOutput(attackDamage);
 	console.writeOutput(attackHitChance);
 	console.writeOutput(status);

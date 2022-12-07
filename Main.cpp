@@ -20,11 +20,11 @@ int main()
 	// as attributes in creating other objects
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	GameUI console;    // UI encapsulation - rather than directly writing to console - ToDo fix issues in parser class
-	Parser parser;      // command parser - pass it a string - parser knows command format & returns struct
+	GameUI console; // UI encapsulation - rather than directly writing to console
+	Parser parser; // command parser - pass it a string - parser knows command format & returns struct
 	Parser::InputStruct* parserOutput; // struct of commands that will tell the main loop what to do
 	Room* roomPointer = nullptr; // Pointer variable that will point to the current room the player is in
-	std::string userInputString;   // raw user input - retrived from UI & redirected to parser for processing
+	std::string userInputString; // raw user input - retrived from UI & redirected to parser for processing
 	bool inBattle = false; // variable will be set to true when the player enters battle against a monster
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -32,7 +32,7 @@ int main()
 	///////////////////////////////////////////////////////////////////////////////////////////
 	std::string versionText = "Welcome to The Devil's Mansion version 4.01\n\n";
 	std::string getCharacterNameText = "Hello there you fabulous person, please enter the name you would like your character to have: ";
-	std::string thanksText = "\nThanks for playing The Devils Mansion.\n";
+	std::string thanksText = "Thanks for playing The Devils Mansion.\n";
 	std::string playerLostText = "\nThe Devil has reappeared.\n"
 								 "He has the widest grin stuck on his face.\n\n"
 								 "Ha Ha Ha Ha Ha...... Another one bites the dust.\n"
@@ -86,7 +86,7 @@ int main()
 	Item dayquil("dayquil", "A healing item that gets rid of your paralysis status effect.", 0, 1);
 	Item ice("ice", "A healing item that gets rid of your burn status effect.", 0, 2);
 	Item icepack("icepack", "A healing item that gets rid of your burn status effect.", 0, 2);
-	Item smoothie("icepack", "A healing item that gets rid of your burn status effect.", 0, 2);
+	Item smoothie("smoothie", "A healing item that gets rid of your burn status effect.", 0, 2);
 
 	// Non health items
 	Item dragonkey("dragonkey", "It is a key shaped like a dragon.", 0, 0);
@@ -97,24 +97,24 @@ int main()
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Player attacks
-	Attack punch("punch", -20, 95, 0, 0);
-	Attack kick("kick", -100, 95, 0, 0);
+	Attack punch("punch", "Throws a wicked punch.", -20, 95, 0, 0);
+	Attack kick("kick", "Performs a flamboyant kick.", -100, 95, 0, 0);
 
 	// Monster attacks
-	Attack bowshot("bowshot", -20, 95, 0, 0);
-	Attack bite("bite", -20, 95, 1, 20);
-	Attack firebreath("firebreath", -20, 95, 2, 20);
-	Attack flamethrower("flamethrower", -20, 95, 2, 20);
-	Attack fireball("fireball", -20, 95, 2, 20);
-	Attack slash("slash", -20, 95, 0, 0);
-	Attack slam("slam", -20, 80, 1, 20);
-	Attack shadowball("shadowball", -20, 80, 1, 20);
-	Attack eruption("eruption", -20, 80, 2, 20);
-	Attack overheat("overheat", -20, 80, 2, 20);
+	Attack bowshot("bowshot", "Shoots an arrow at the opponent.", -20, 95, 0, 0);
+	Attack bite("bite", "Puts them chompers to good use.", -20, 95, 1, 20);
+	Attack firebreath("firebreath", "You should probably invest in toothpaste cause your breath stank.", -20, 95, 2, 20);
+	Attack flamethrower("flamethrower", "Shoots fire out ya mouth.", -20, 95, 2, 20);
+	Attack fireball("fireball", "You literally throw a ball of fire.", -20, 95, 2, 20);
+	Attack slash("slash", "Your hand is pretty sharp, might as well swing it at the opponent.", -20, 95, 0, 0);
+	Attack slam("slam", "You use your fat ass to put the opponent into the ground.", -20, 80, 1, 20);
+	Attack shadowball("shadowball", "IDK how it works, but a ball of shadows is definitely thrown.", -20, 80, 1, 20);
+	Attack eruption("eruption", "The earth shakes with excitement, also it hurts the opponent.", -20, 80, 2, 20);
+	Attack overheat("overheat", "Is it hot in here? Nah it's just you. Somehow this hurts the opponent.", -20, 80, 2, 20);
 
 	// On the ground attacks
-	Attack longshot("longshot", -60, 20, 0, 20);
-	Attack oneshot("oneshot", -300, 1, 0, 20);
+	Attack longshot("longshot", "If it hits, that would be pretty dope. Only if it hits though.", -60, 20, 0, 20);
+	Attack oneshot("oneshot", "Might as well buy a lottery ticket, but it will kill anything if it hits.", -300, 1, 0, 20);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of inventory objects
@@ -161,6 +161,10 @@ int main()
 	treasureRoomInventory1.addItem(cookie);
 	treasureRoomInventory2.addItem(brownie);
 	treasureRoomInventory3.addItem(burger);
+	reaperRoomInventory.addItem(advil);
+	mimicRoomInventory.addItem(dayquil);
+	dragonRoomInventory.addItem(icepack);
+	hydraRoomInventory.addItem(smoothie);
 
 	// Add attacks to room inventories
 	treasureRoomInventory2.addAttack(console, longshot);
@@ -803,9 +807,15 @@ int main()
 
 	} while (parserOutput->command1 != Parser::QUIT);
 
+	// Change the console color back to white: in case the player quits while in battle
+	console.changeToNormalColors();
+
 	// When the devil dies, end the loop
 	if (devil.getAlive() == false)
 	{
+		// Change the ending text to red cause you died
+		console.changeToBattleColors();
+
 		// Output the end of game rant
 		console.writeOutput(endOfGame);
 		console.writeOutput(playerWon);
@@ -822,5 +832,5 @@ int main()
 	console.writeOutput(thanksText);
 
 	// Sleep for 10 seconds so the window doesn't automatically go away
-	Sleep(5000);
+	Sleep(10000);
 }

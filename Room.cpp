@@ -138,7 +138,7 @@ void Room::printRoomInfo(GameUI console, bool* inBattle)
 	std::string extraNewline = "\n";
 	std::string roomInfo = "Room's information includes:\n\n";
 	std::string roomName = "Room Name: " + name + "\n\n";
-	std::string roomDescription = "Room Description: " + description + "\n";
+	std::string roomDescription = description + "\n";
 	std::string monsterDeadText = "Monster In Room: dead.\n\n";
 	std::string monsterInRoom = "Monster In Room: " + monster->getName() + ".\n\n";
 	std::string noMonsterInRoom = "Monster In Room: no monster in room.\n\n";
@@ -705,11 +705,11 @@ void Room::useAttack(GameUI console, std::string attack, bool* inBattle, Parser:
 	std::string doNotHaveAttackMessage = "Sorry you do not currently have access to that attack.\n";
 
 	// Only run the battle sequence if the player is currently in battle
-	if (*inBattle == true)
+	if (player->getInventory()->searchAttackInventory(attack) != false)
 	{
 		// If the player has the attack in their inventory, they can use it. Otherwise tell them
 		// that they do not have access to that attack
-		if (player->getInventory()->searchAttackInventory(attack) != false)
+		if (*inBattle == true)
 		{
 			// Run the sequence of attacks
 			battle(console, attack, inBattle);
@@ -724,13 +724,13 @@ void Room::useAttack(GameUI console, std::string attack, bool* inBattle, Parser:
 		else
 		{
 			// Tell the user that they currently do not have this attack
-			console.writeOutput(doNotHaveAttackMessage);
+			console.writeOutput(notInBattleMessage);
 		}
 	}
 	else
 	{
 		// Tell the user they cannot use attacks when not in battle
-		console.writeOutput(notInBattleMessage);
+		console.writeOutput(doNotHaveAttackMessage);
 	}
 }
 
@@ -1072,6 +1072,7 @@ void Room::useKey1(GameUI console, std::string key, bool* inBattle)
 	std::string doorIsAlreadyOpenText = "Sorry the door is already open, no need to use the key.\n";
 	std::string itemNotInInventoryText = "Sorry you do not currently have that item in your posession.\n";
 	std::string wrongKey = "Sorry that key does not work on this door. Gotta find another one.\n";
+	std::string doorNotLocked = "Come on bro. There ain't no lock on this door, just move.\n";
 
 	// Check to make sure the player is not in battle before trying to use the key
 	if (*inBattle == false)
@@ -1079,28 +1080,37 @@ void Room::useKey1(GameUI console, std::string key, bool* inBattle)
 		// Make sure the user has the item in their inventory before trying to use it.
 		if (player->getInventory()->searchItemInventory(key) == true)
 		{
-			// Make sure the room is the correct one
-			if (upRoom->getName() == "Dragon Room")
+			// Make sure a key can actually be used because the door is locked
+			if (upRoomLocked == true)
 			{
-				// If the upRoom door is locked, then you are allowed to use the key
-				if (getUpRoomLocked() == true)
+				// Make sure the room is the correct one
+				if (upRoom->getName() == "Dragon Room")
 				{
-					// Unlock the door that is locked
-					unlockDoor();
+					// If the upRoom door is locked, then you are allowed to use the key
+					if (getUpRoomLocked() == true)
+					{
+						// Unlock the door that is locked
+						unlockDoor();
 
-					// Let the user know that they unlocked the door
-					console.writeOutput(openingDoorText);
+						// Let the user know that they unlocked the door
+						console.writeOutput(openingDoorText);
+					}
+					else
+					{
+						// Tell the user that the key cannot be used on an open door
+						console.writeOutput(doorIsAlreadyOpenText);
+					}
 				}
 				else
 				{
-					// Tell the user that the key cannot be used on an open door
-					console.writeOutput(doorIsAlreadyOpenText);
+					// Tell the user that the key cannot be used on this door (wrong door)
+					console.writeOutput(wrongKey);
 				}
 			}
 			else
 			{
-				// Tell the user that the key cannot be used on this door (wrong door)
-				console.writeOutput(wrongKey);
+				// Tell the user that the door is not locked so they don't need to use a key
+				console.writeOutput(doorNotLocked);
 			}
 		}
 		else
@@ -1125,6 +1135,7 @@ void Room::useKey2(GameUI console, std::string key, bool* inBattle)
 	std::string doorIsAlreadyOpenText = "Sorry the door is already open, no need to use the key.\n";
 	std::string itemNotInInventoryText = "Sorry you do not currently have that item in your posession.\n";
 	std::string wrongKey = "Sorry that key does not work on this door. Gotta find another one.\n";
+	std::string doorNotLocked = "Come on bro. There ain't no lock on this door, just move.\n";
 
 	// Check to make sure the player is not in battle before trying to use the key
 	if (*inBattle == false)
@@ -1132,28 +1143,37 @@ void Room::useKey2(GameUI console, std::string key, bool* inBattle)
 		// Make sure the user has the item in their inventory before trying to use it.
 		if (player->getInventory()->searchItemInventory(key) == true)
 		{
-			// Make sure the room is the correct one
-			if (upRoom->getName() == "Devil Room")
+			// Make sure a key can actually be used because the door is locked
+			if (upRoomLocked == true)
 			{
-				// If the upRoom door is locked, then you are allowed to use the key
-				if (getUpRoomLocked() == true)
+				// Make sure the room is the correct one
+				if (upRoom->getName() == "Devil Room")
 				{
-					// Unlock the door that is locked
-					unlockDoor();
+					// If the upRoom door is locked, then you are allowed to use the key
+					if (getUpRoomLocked() == true)
+					{
+						// Unlock the door that is locked
+						unlockDoor();
 
-					// Let the user know that they unlocked the door
-					console.writeOutput(openingDoorText);
+						// Let the user know that they unlocked the door
+						console.writeOutput(openingDoorText);
+					}
+					else
+					{
+						// Tell the user that the key cannot be used on an open door
+						console.writeOutput(doorIsAlreadyOpenText);
+					}
 				}
 				else
 				{
-					// Tell the user that the key cannot be used on an open door
-					console.writeOutput(doorIsAlreadyOpenText);
+					// Tell the user that the key cannot be used on this door (wrong door)
+					console.writeOutput(wrongKey);
 				}
 			}
 			else
 			{
-				// Tell the user that the key cannot be used on this door (wrong door)
-				console.writeOutput(wrongKey);
+				// Tell the user that the door is not locked so they don't need to use a key
+				console.writeOutput(doorNotLocked);
 			}
 		}
 		else

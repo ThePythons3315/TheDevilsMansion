@@ -93,8 +93,12 @@ void Player::printPlayerInfo(GameUI console)
 	console.writeOutput(playerInfo);
 	console.writeOutput(playerName);
 
-	// Show the player's inventory
+	// Show the player's item inventory
 	inventory->displayItemInventory(console, "Player");
+	console.writeOutput(extraNewline);
+
+	// Show the player's attack iventory
+	inventory->displayAttackInventory(console, "Player");
 
 	// Show the player's health
 	console.writeOutput(extraNewline);

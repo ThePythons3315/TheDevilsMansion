@@ -144,7 +144,7 @@ void Inventory::displayItemInventory(GameUI console, std::string _type)
 {
 	// Strings that will be passed to the console and printed out
 	std::string promptMessage = _type + "'s Item Inventory:\n";
-	std::string errorMessage = "There are no items to be found.\n";
+	std::string errorMessage = "No items.\n";
 	std::string itemName;
 
 	// Iterator that can be used to go through a list that holds pointers to item objects
@@ -181,9 +181,9 @@ void Inventory::displayItemInventory(GameUI console, std::string _type)
 void Inventory::displayAttackInventory(GameUI console, std::string _type)
 {
 	// Strings that will be passed to the console and printed out
+	std::string extraNewline = "\n";
 	std::string promptMessage = _type + "'s Attack Inventory:\n";
-	std::string errorMessage = "There are no attacks to be found.\n";
-	//std::string attackName;
+	std::string errorMessage = "No items.\n";
 
 	// Iterator that can be used to go through a list that holds pointers to attack objects
 	std::list<Attack*>::iterator itr;
@@ -203,11 +203,10 @@ void Inventory::displayAttackInventory(GameUI console, std::string _type)
 			// Get the item the iterator is pointing too
 			attackPointer = *itr;
 
-
-			attackPointer->displayAttackStats(console);
-			// Get the name of the attack and print it to the screen
-			//attackName = "-" + attackPointer->getName() + ".\n";
-			//console.writeOutput(attackName);
+			// Display the attack name
+			console.writeOutput("-");
+			attackPointer->displayAttack(console);
+			console.writeOutput(extraNewline);
 		}
 	}
 	else
