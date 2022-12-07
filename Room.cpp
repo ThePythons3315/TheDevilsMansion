@@ -142,7 +142,7 @@ void Room::printRoomInfo(GameUI console, bool* inBattle)
 	std::string monsterDeadText = "Monster In Room: dead.\n";
 	std::string monsterInRoom = "Monster In Room: " + monster->getName() + ".\n";
 	std::string noMonsterInRoom = "Monster In Room: None.\n";
-	std::string inBattleErrorText = "Sorry this funcionality is not allowed while in battle.\n";
+	std::string inBattleErrorText = "This funcionality is not allowed while in battle.\n";
 
 	// Do not print the room's information if the player is in battle
 	if (*inBattle == false)
@@ -258,20 +258,43 @@ void Room::printBasicRoom(GameUI console, std::string direction)
 // Display the player's attributes to the screen as long as the player is not in battle
 void Room::printPlayerAttributes(GameUI console, bool* inBattle)
 {
-	// Error message
-	std::string errorMessage = "Sorry this funcionality is not allowed while in battle.\n";
+	// Text messages for the user
+	std::string extraNewline = "\n";
+	std::string playerInfo = "Player's information includes:\n\n";
+	std::string playerName = "Player Name: " + player->getName() + ".\n\n";
+	std::string roomName = "Current Room: " + name + ".\n\n";
+	std::string playerInBattle = player->getName() + " is currently in battle with: " + monster->getName() + ".\n\n";
+	std::string notInBattle = player->getName() + " is not in battle with a monster.\n\n";
 
-	// The player is not allowed to redisplay the player's attributes while in battle
-	if (*inBattle == false)
+	// Show player's name
+	console.writeOutput(playerInfo);
+	console.writeOutput(playerName);
+
+	// Show the room the player is currently in
+	console.writeOutput(roomName);
+
+	// Display if the player is in battle or not
+	if (*inBattle == true)
 	{
-		// Display player's attributes
-		player->printPlayerInfo(console);
+		// Is in battle
+		console.writeOutput(playerInBattle);
 	}
 	else
 	{
-		// Display error message that the player's attributes cannot be displayed while in battle
-		console.writeOutput(errorMessage);
+		// Is not in battle
+		console.writeOutput(notInBattle);
 	}
+
+	// Show the player's item inventory
+	player->getInventory()->displayItemInventory(console, "Player");
+	console.writeOutput(extraNewline);
+
+	// Show the player's attack iventory
+	player->getInventory()->displayAttackInventory(console, "Player");
+
+	// Show the player's health
+	console.writeOutput(extraNewline);
+	player->displayBothHealth(console);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -283,9 +306,9 @@ void Room::printPlayerAttributes(GameUI console, bool* inBattle)
 void Room::moveRoom(GameUI console, Room** currentRoom, std::string direction, bool* inBattle)
 {
 	// Error messages
-	std::string doorLockedErrorMessage = "Sorry, that door is currently locked.\nPerhaps you need some kind of key to open it.\n";
-	std::string noRoomErrorMessage = "There is no room in this direction.\nPlease try and move another way.\n";
-	std::string inBattleErrorMessage = "Sorry this funcionality is not allowed while in battle.\n";
+	std::string doorLockedErrorMessage = "That door is currently locked dumbass.\nGo look for a key to open it.\n";
+	std::string noRoomErrorMessage = "There is no room in this direction dumbass.\nTry and move another way.\n";
+	std::string inBattleErrorMessage = "This funcionality is not allowed while in battle.\n";
 
 	// As long as the player is not in battle, the player can move to a new room
 	if (*inBattle == false)
@@ -329,7 +352,17 @@ void Room::moveRoom(GameUI console, Room** currentRoom, std::string direction, b
 		}
 		else if (direction == "down" && downRoom->getName() != "")
 		{
-			console.writeOutput("You are now in the " + downRoom->getName() + ".\n");
+			// Change the grammar of our sentence if moving to the starting steps
+			if (downRoom->getName() == "Starting Steps")
+			{
+				// Use at for starting steps
+				console.writeOutput("You are now at the " + downRoom->getName() + ".\n");
+			}
+			else
+			{
+				// Use in for all other rooms
+				console.writeOutput("You are now in the " + downRoom->getName() + ".\n");
+			}
 			downRoom->setPlayer(*player);
 			player = new Player();
 			*currentRoom = &*downRoom;
@@ -359,8 +392,8 @@ void Room::pickupItem(GameUI console, std::string item, bool* inBattle)
 	// Text messages to the user
 	std::string extraNewline = "\n";
 	std::string pickUpItemText = "You have picked up a " + item + "\n";
-	std::string itemNotInRoomText = "That item is not in the current room.\nPlease try a different room or check your inventory.\n";
-	std::string inBattleErrorMessage = "Sorry this funcionality is not allowed while in battle.\n";
+	std::string itemNotInRoomText = "Are you dumb? That item is not in the current room.\nTry a different room or check your inventory.\n";
+	std::string inBattleErrorMessage = "This funcionality is not allowed while in battle.\n";
 
 	// If the player is currently in battle, they cannot pick up any items
 	if (*inBattle == false)
@@ -406,10 +439,9 @@ void Room::pickupAttack(GameUI console, std::string attack, bool* inBattle)
 	std::string extraNewline = "\n";
 	std::string pickUpAttackText = "You have picked up the attack: " + attack + "\n";
 	std::string tooManyAttacksText = "The player already has 4 attacks, which is the maximum amount of attacks allowed.\n"
-		"Please drop an attack before trying to pick one up.\n";
-	std::string itemNotInRoomText = "That attack is not in the current room.\n"
-		"Please try a different room or check your inventory.\n";
-	std::string inBattleErrorMessage = "Sorry this funcionality is not allowed while in battle.\n";
+									 "Drop an attack before trying to pick one up...... you imbecile.\n";
+	std::string attackNotInRoomText = "Are you dumb? That attack is not in the current room.\nTry a different room or check your inventory.\n";
+	std::string inBattleErrorMessage = "This funcionality is not allowed while in battle.\n";
 
 
 	// If the player is currently in battle, they cannot pick up any attacks
@@ -447,7 +479,7 @@ void Room::pickupAttack(GameUI console, std::string attack, bool* inBattle)
 			else
 			{
 				// If the attack is not in the inventory, then let the user know it is not being deleted
-				console.writeOutput(itemNotInRoomText);
+				console.writeOutput(attackNotInRoomText);
 			}
 		}
 	}
@@ -464,8 +496,8 @@ void Room::dropItem(GameUI console, std::string item, bool* inBattle)
 	// Text messages to the user
 	std::string extraNewline = "\n";
 	std::string dropItemText = "You have dropped a " + item + "\n";
-	std::string missingItemText = "That item is not in your item inventory.\nYou are unable to drop that item.\n";
-	std::string inBattleErrorMessage = "Sorry this funcionality is not allowed while in battle.\n";
+	std::string missingItemText = "That item ain't in your item inventory.\nYour dumbass can't drop that item.\n";
+	std::string inBattleErrorMessage = "This funcionality is not allowed while in battle.\n";
 
 	// If the player is currently in battle, they cannot drop any items
 	if (*inBattle == false)
@@ -510,8 +542,8 @@ void Room::dropAttack(GameUI console, std::string attack, bool* inBattle)
 	// Text messages to the user
 	std::string extraNewline = "\n";
 	std::string dropAttackText = "You have dropped the attack: " + attack + "\n";
-	std::string missingAttackText = "That attack is not in your attack inventory.\nYou are unable to drop that attack.\n";
-	std::string inBattleErrorMessage = "Sorry this funcionality is not allowed while in battle.\n";
+	std::string missingAttackText = "That attack is not in your attack inventory.\nYour dumbass can't drop that attack.\n";
+	std::string inBattleErrorMessage = "This funcionality is not allowed while in battle.\n";
 
 	// If the player is currently in battle, they cannot drop any items
 	if (*inBattle == false)
@@ -599,9 +631,9 @@ void Room::dropMonsterItem(GameUI console, std::string item)
 void Room::battleMonster(GameUI console, std::string monsterName, bool* inBattle)
 {
 	// Text messages to the user
-	std::string monsterAlreadyDeafeatedText = "The " + monster->getName() + " has already been defeated, you cannot go into battle with it.\n";
+	std::string monsterAlreadyDeafeatedText = "The " + monster->getName() + " has already been defeated, you cannot go into battle with it you moron.\n";
 	std::string enteringBattleText = player->getName() + " is now going into battle with the " + monster->getName() + ".\n";
-	std::string monsterNotInRoom = "That monster is not in this room, you cannot go into battle with it.\n";
+	std::string monsterNotInRoom = "That monster is not in this room you fool, you cannot go into battle with it.\n";
 
 	// Make sure the correct monster is in the current room before turning inBattle to true
 	if (monster->getName() == monsterName)
@@ -706,8 +738,8 @@ void Room::battle(GameUI console, std::string attack, bool* inBattle)
 // Performs the error checking when a player tries using an attack in battle
 void Room::useAttack(GameUI console, std::string attack, bool* inBattle, Parser::InputStruct* parserOutput)
 {
-	std::string notInBattleMessage = "Sorry you can only use attacks when in battle.\n";
-	std::string doNotHaveAttackMessage = "Sorry you do not currently have access to that attack.\n";
+	std::string notInBattleMessage = "Your dumbass can only use attacks when in battle.\n";
+	std::string doNotHaveAttackMessage = "Your sorryass does not currently have access to that attack.\n";
 
 	// Only run the battle sequence if the player is currently in battle
 	if (player->getInventory()->searchAttackInventory(attack) != false)
@@ -1072,11 +1104,11 @@ void Room::unlockDoor()
 void Room::useKey1(GameUI console, std::string key, bool* inBattle)
 {
 	// Error messages
-	std::string inBattleText = "Sorry this funcionality is not allowed while in battle.\n";
+	std::string inBattleText = "This funcionality is not allowed while in battle.\n";
 	std::string openingDoorText = "You have opened the door to The " + getUpRoom()->getName() + ".\n";
-	std::string doorIsAlreadyOpenText = "Sorry the door is already open, no need to use the key.\n";
-	std::string itemNotInInventoryText = "Sorry you do not currently have that item in your posession.\n";
-	std::string wrongKey = "Sorry that key does not work on this door. Gotta find another one.\n";
+	std::string doorIsAlreadyOpenText = "The door is already open ya dunce, no need to use the key.\n";
+	std::string itemNotInInventoryText = "You do not currently have that item in your posession ya simpleton.\n";
+	std::string wrongKey = "That key does not work on this door ya blockhead. Gotta find another one.\n";
 	std::string doorNotLocked = "Come on bro. There ain't no lock on this door, just move.\n";
 
 	// Check to make sure the player is not in battle before trying to use the key
@@ -1135,11 +1167,11 @@ void Room::useKey1(GameUI console, std::string key, bool* inBattle)
 void Room::useKey2(GameUI console, std::string key, bool* inBattle)
 {
 	// Error messages
-	std::string inBattleText = "Sorry this funcionality is not allowed while in battle.\n";
+	std::string inBattleText = "This funcionality is not allowed while in battle.\n";
 	std::string openingDoorText = "You have opened the door to The " + getUpRoom()->getName() + ".\n";
-	std::string doorIsAlreadyOpenText = "Sorry the door is already open, no need to use the key.\n";
-	std::string itemNotInInventoryText = "Sorry you do not currently have that item in your posession.\n";
-	std::string wrongKey = "Sorry that key does not work on this door. Gotta find another one.\n";
+	std::string doorIsAlreadyOpenText = "The door is already open ya ignoramus, no need to use the key.\n";
+	std::string itemNotInInventoryText = "You do not currently have that item in your posession you nincompoop.\n";
+	std::string wrongKey = "That key does not work on this door ya ninny. Gotta find another one.\n";
 	std::string doorNotLocked = "Come on bro. There ain't no lock on this door, just move.\n";
 
 	// Check to make sure the player is not in battle before trying to use the key

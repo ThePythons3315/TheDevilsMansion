@@ -111,8 +111,7 @@ void Player::useHealthItem(GameUI console, std::string item)
 	// Text messages for the user
 	std::string extraNewline = "\n";
 	std::string deleteMessage = "You are now consuming a " + item + "\n";
-	std::string errorMessage = "That item is not in the player's inventory.\n"
-		"Please try searching around for the item.\n";
+	std::string errorMessage = "Are you dumb? That item is not in the player's inventory.\nPlease try searching around for the item.\n";
 
 	// If the item is in the players's inventory, then continue with consuming it
 	if (inventory->searchItemInventory(item) == true)
@@ -152,7 +151,7 @@ void Player::changeHealth(GameUI console, int _health)
 {
 	// Text message to the user
 	std::string healthMessage = "\nUsing this item has caused your health to exceed the max health allowed to the player.\n"
-		"The player's health will be set to " + std::to_string(getMaxHealth()) + ".\n";
+								"The player's health will be set to " + std::to_string(getMaxHealth()) + ".\n";
 
 	// Update the health attribute
 	health = getHealth() + _health;

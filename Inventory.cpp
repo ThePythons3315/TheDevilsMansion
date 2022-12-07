@@ -24,7 +24,7 @@ void Inventory::addAttack(GameUI console, Attack& _attack)
 {
 	// Error message
 	std::string errorMessage = "The player already has 4 attacks, which is the maximum amount of attacks allowed.\n"
-		"Please drop an attack before tryign to pick one up.\n";
+							   "Drop an attack before trying to pick one up you useless being.\n";
 
 	// If the attack inventory has less than 4 attacks, add this attack
 	if (attackInventory.size() < 4)

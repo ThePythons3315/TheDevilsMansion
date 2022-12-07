@@ -189,7 +189,7 @@ void Monster::changeHealth(GameUI console, int _health)
 {
 	// Text message to the user
 	std::string healthMessage = "\n\tUsing this item has caused your health to exceed the max health allowed to the monster.\n"
-		"\tThe monster's health will be set to " + std::to_string(getMaxHealth()) + ".\n";
+								"\tThe monster's health will be set to " + std::to_string(getMaxHealth()) + ".\n";
 
 	// Update the health attribute
 	health = getHealth() + _health;
