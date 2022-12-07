@@ -15,4 +15,5 @@ public:
 	// Change the colors of the console and text
 	void changeToBattleColors();
 	void changeToNormalColors();
+	void changeColor(int color);
 };

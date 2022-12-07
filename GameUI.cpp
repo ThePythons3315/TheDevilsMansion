@@ -41,6 +41,8 @@ void GameUI::changeToBattleColors()
     // Change the color of the text to red
     SetConsoleTextAttribute(hConsole, 4);
 }
+
+// Change back to white text
 void GameUI::changeToNormalColors()
 {
     // Get the console object
@@ -48,4 +50,14 @@ void GameUI::changeToNormalColors()
 
     // Change the color of the text to white
     SetConsoleTextAttribute(hConsole, 7);
+}
+
+// Change to whatever text the developer wants
+void GameUI::changeColor(int color)
+{
+    // Get the console object
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    // Change the color of the text to white
+    SetConsoleTextAttribute(hConsole, color);
 }

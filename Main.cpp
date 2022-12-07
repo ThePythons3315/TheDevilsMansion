@@ -37,7 +37,7 @@ int main()
 								 "He has the widest grin stuck on his face.\n\n"
 								 "Ha Ha Ha Ha Ha...... Another one bites the dust.\n"
 								 "That was the worst attempt at getting through my mansion that I have ever seen.\n"
-								 "Have fun in the depths of hell, scum.\n";
+								 "Have fun in the depths of hell, scum.\n\n";
 	std::string askUserToMove = "Please enter `move up` to go through the door: ";
 	std::string blueberryOnFloor = "Please enter `collect blueberry` to pick up the blueberry: ";
 	std::string droppedBlueberryText = "It seems as though the devil dropped something on the ground.\n"
@@ -49,7 +49,7 @@ int main()
 	std::string endOfGame = "\nDamn........................................................\n"
 							"You actually beat my game...................................\n\n"
 							"Welp, I guess I have to send you back up.\n"
-							"Have fun up there, I better not see youa again.\n\n";
+							"Have fun up there, I better not see you again.\n\n";
 	std::string devilsSpiel = "Standing before you is the devil.\n"
 							  "The devil is a tall, crimson red, and overwhelmingly handsome man.\n\n"
 							  "Welcome to my mansion!!\n"
@@ -62,16 +62,16 @@ int main()
 							  "You can just type `help` to see them for yourself.\n\n"
 							  "That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
 							  "...The devil zoomed away\n\n";
-	std::string playerWon = "-----------------------------------------\n"
+	std::string playerWon = "\n-----------------------------------------\n"
 							"-----------------------------------------\n"
 							"----------------You Won------------------\n"
 							"-----------------------------------------\n"
-							"-----------------------------------------\n\n";
-	std::string playerLost = "-----------------------------------------\n"
+							"-----------------------------------------\n";
+	std::string playerLost = "\n-----------------------------------------\n"
 							 "-----------------------------------------\n"
 							 "----------------You Lost-----------------\n"
 							 "-----------------------------------------\n"
-							 "-----------------------------------------\n\n";
+							 "-----------------------------------------\n";
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of item objects
@@ -102,7 +102,7 @@ int main()
 
 	// Monster attacks
 	Attack bowshot("bowshot", "Shoots an arrow at the opponent.", -20, 95, 0, 0);
-	Attack bite("bite", "Puts them chompers to good use.", -20, 95, 1, 20);
+	Attack bite("bite", "Puts them chompers to good use.", -10, 95, 1, 20);
 	Attack firebreath("firebreath", "You should probably invest in toothpaste cause your breath stank.", -20, 95, 2, 20);
 	Attack flamethrower("flamethrower", "Shoots fire out ya mouth.", -20, 95, 2, 20);
 	Attack fireball("fireball", "You literally throw a ball of fire.", -20, 95, 2, 20);
@@ -842,19 +842,28 @@ int main()
 	// When the devil dies, end the loop
 	if (devil.getAlive() == false)
 	{
-		// Change the ending text to red cause you died
-		console.changeToBattleColors();
+		// Make the text green
+		console.changeColor(2);
 
 		// Output the end of game rant
-		console.writeOutput(endOfGame);
 		console.writeOutput(playerWon);
+		console.writeOutput(endOfGame);
+		
+		// Change back to white
+		console.changeToNormalColors();
 	}
 
 	// If the player died to lose the game, add extra statement telling them how they failed
 	if (player.getAlive() == false)
 	{
-		console.writeOutput(playerLostText);
+		// Change the ending text to red cause you died
+		console.changeToBattleColors();
+
 		console.writeOutput(playerLost);
+		console.writeOutput(playerLostText);
+		
+		// Change back to white
+		console.changeToNormalColors();
 	}
 
 	// Thank the user for playing the game
