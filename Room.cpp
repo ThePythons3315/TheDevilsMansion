@@ -148,15 +148,15 @@ void Room::printRoomInfo(GameUI console, bool* inBattle)
 	if (*inBattle == false)
 	{
 		// Output the basics of the room
-		console.writeOutput(roomInfo);
-		console.writeOutput(roomName);
-		console.writeOutput(roomDescription);
+		console.outputByCharacter(roomInfo);
+		console.outputByCharacter(roomName);
+		console.outputByCharacter(roomDescription);
 
 		// Redisplay the room's items and attacks
 		inventory->displayItemInventory(console, "Room");
-		console.writeOutput(extraNewline);
+		console.outputByCharacter(extraNewline);
 		inventory->displayAttackInventory(console, "Room");
-		console.writeOutput(extraNewline);
+		console.outputByCharacter(extraNewline);
 
 		// If there is a monster in the room, display they are there
 		if (monster->getName() != "")
@@ -166,24 +166,24 @@ void Room::printRoomInfo(GameUI console, bool* inBattle)
 			if (monster->getHealth() <= 0)
 			{
 				// Display that the monster is dead
-				console.writeOutput(monsterDeadText);
+				console.outputByCharacter(monsterDeadText);
 			}
 			else
 			{
 				// Display that the monster is currently in the room
-				console.writeOutput(monsterInRoom);
+				console.outputByCharacter(monsterInRoom);
 			}
 		}
 		else
 		{
 			// Display that there is no monster in the room
-			console.writeOutput(noMonsterInRoom);
+			console.outputByCharacter(noMonsterInRoom);
 		}
 	}
 	else
 	{
 		// Display that the room cannot be redisplayed while in battle
-		console.writeOutput(inBattleErrorText);
+		console.outputByCharacter(inBattleErrorText);
 	}
 }
 
@@ -196,13 +196,13 @@ void Room::printBasicRoom(GameUI console, std::string direction)
 	if (direction == "left")
 	{
 		// Print the description of the room
-		console.writeOutput(extraNewline);
-		console.writeOutput(leftRoom->getDescription());
-		console.writeOutput(extraNewline);
+		console.outputByCharacter(extraNewline);
+		console.outputByCharacter(leftRoom->getDescription());
+		console.outputByCharacter(extraNewline);
 
 		// Print the items and attacks in the room
 		leftRoom->getInventory()->displayItemInventory(console, "Room");
-		console.writeOutput(extraNewline);
+		console.outputByCharacter(extraNewline);
 		leftRoom->getInventory()->displayAttackInventory(console, "Room");
 
 		// If there is a monster in the room, then display the monster to the user
@@ -211,13 +211,13 @@ void Room::printBasicRoom(GameUI console, std::string direction)
 	else if (direction == "up")
 	{
 		// Print the description of the room
-		console.writeOutput(extraNewline);
-		console.writeOutput(upRoom->getDescription());
-		console.writeOutput(extraNewline);
+		console.outputByCharacter(extraNewline);
+		console.outputByCharacter(upRoom->getDescription());
+		console.outputByCharacter(extraNewline);
 
 		// Print the items and attacks in the room
 		upRoom->getInventory()->displayItemInventory(console, "Room");
-		console.writeOutput(extraNewline);
+		console.outputByCharacter(extraNewline);
 		upRoom->getInventory()->displayAttackInventory(console, "Room");
 
 		// If there is a monster in the room, then display the monster to the user
@@ -226,13 +226,13 @@ void Room::printBasicRoom(GameUI console, std::string direction)
 	else if (direction == "right")
 	{
 		// Print the description of the room
-		console.writeOutput(extraNewline);
-		console.writeOutput(rightRoom->getDescription());
-		console.writeOutput("\n");
+		console.outputByCharacter(extraNewline);
+		console.outputByCharacter(rightRoom->getDescription());
+		console.outputByCharacter("\n");
 
 		// Print the items and attacks in the room
 		rightRoom->getInventory()->displayItemInventory(console, "Room");
-		console.writeOutput(extraNewline);
+		console.outputByCharacter(extraNewline);
 		rightRoom->getInventory()->displayAttackInventory(console, "Room");
 
 		// If there is a monster in the room, then display the monster to the user
@@ -241,13 +241,13 @@ void Room::printBasicRoom(GameUI console, std::string direction)
 	else if (direction == "down")
 	{
 		// Print the description of the room
-		console.writeOutput(extraNewline);
-		console.writeOutput(downRoom->getDescription());
-		console.writeOutput(extraNewline);
+		console.outputByCharacter(extraNewline);
+		console.outputByCharacter(downRoom->getDescription());
+		console.outputByCharacter(extraNewline);
 
 		// Print the items in and attacks the room
 		downRoom->getInventory()->displayItemInventory(console, "Room");
-		console.writeOutput(extraNewline);
+		console.outputByCharacter(extraNewline);
 		downRoom->getInventory()->displayAttackInventory(console, "Room");
 
 		// If there is a monster in the room, then display the monster to the user
@@ -267,62 +267,40 @@ void Room::printPlayerAttributes(GameUI console, bool* inBattle)
 	std::string notInBattle = player->getName() + " is not in battle with a monster.\n\n";
 
 	// Show player's name
-	console.writeOutput(playerInfo);
-	console.writeOutput(playerName);
+	console.outputByCharacter(playerInfo);
+	console.outputByCharacter(playerName);
 
 	// Show the room the player is currently in
-	console.writeOutput(roomName);
+	console.outputByCharacter(roomName);
 
 	// Display if the player is in battle or not
 	if (*inBattle == true)
 	{
 		// Is in battle
-		console.writeOutput(playerInBattle);
+		console.outputByCharacter(playerInBattle);
 	}
 	else
 	{
 		// Is not in battle
-		console.writeOutput(notInBattle);
+		console.outputByCharacter(notInBattle);
 	}
 
 	// Show the player's item inventory
 	player->getInventory()->displayItemInventory(console, "Player");
-	console.writeOutput(extraNewline);
+	console.outputByCharacter(extraNewline);
 
 	// Show the player's attack iventory
 	player->getInventory()->displayAttackInventory(console, "Player");
 
 	// Show the player's health
-	console.writeOutput(extraNewline);
+	console.outputByCharacter(extraNewline);
 	player->displayBothHealth(console);
 }
 
+// Shows a map of the game and the current room the player is in
 void Room::showMap(GameUI console, bool* inBattle)
 {
-	std::string mainMap = " ---------------------------------------------------------------------------------------------------\n"
-								   "|  * MEANS YOU ARE IN THAT ROOM          --                                                         |\n"
-								   "|                                       |  |                                                        |\n"
-								   "|                                       |  |                                                        |\n"
-								   "|                          --     --     --                                                         |\n"
-								   "|                         |  | = |  | = |  |                                                        |\n"
-								   "|                         |  | = |  | = |  |                                                        |\n"
-								   "|                          --     --     --                                                         |\n"
-								   "|                                |  |                                                               |\n"
-								   "|                                |  |                                                               |\n"
-								   "|                          --     --     --     --                                                  |\n"
-								   "|                         |  | = |  | = |  | = |  |                                                 |\n"
-								   "|                         |  | = |  | = |  | = |  |                                                 |\n"
-								   "|                   --     --     --     --     --                                                  |\n"
-								   "|                  |  | = |  | = |  | = |  |                                                        |\n"
-								   "|                  |  | = |  | = |  | = |  |                                                        |\n"
-								   "|                   --     --     --     --                                                         |\n"
-								   "|                                |  |                                                               |\n"
-								   "|                                |  |                                                               |\n"
-								   "|                                 --                                                                |\n"
-								   "|                                |  |                                                               |\n"
-								   "|                                |  |                                                               |\n"
-								   "|                                 --                                                                |\n"
-								   " ---------------------------------------------------------------------------------------------------\n";
+	// Error message
 	std::string inBattleErrorMessage = "Why you trying to look at your map when you're in battle.\n"
 									   "Your tomfoolery does not cease to amaze me.\n";
 
@@ -769,7 +747,7 @@ void Room::showMap(GameUI console, bool* inBattle)
 	else
 	{
 		// Can't show the map cause the player is in battle
-		console.writeOutput(inBattleErrorMessage);
+		console.outputByCharacter(inBattleErrorMessage);
 	}
 }
 
@@ -793,7 +771,7 @@ void Room::moveRoom(GameUI console, Room** currentRoom, std::string direction, b
 		// in that direction to be the new current room
 		if (direction == "left" && leftRoom->getName() != "")
 		{
-			console.writeOutput("You are now in the " + leftRoom->getName() + ".\n");
+			console.outputByCharacter("You are now in the " + leftRoom->getName() + ".\n");
 			leftRoom->setPlayer(*player);
 			player = new Player();
 			*currentRoom = &*leftRoom;
@@ -805,7 +783,7 @@ void Room::moveRoom(GameUI console, Room** currentRoom, std::string direction, b
 			// Otherwise tell them that the door is locked and they need a key.
 			if (upRoomLocked == false)
 			{
-				console.writeOutput("You are now in the " + upRoom->getName() + ".\n");
+				console.outputByCharacter("You are now in the " + upRoom->getName() + ".\n");
 				upRoom->setPlayer(*player);
 				player = new Player();
 				*currentRoom = &*upRoom;
@@ -814,13 +792,13 @@ void Room::moveRoom(GameUI console, Room** currentRoom, std::string direction, b
 			else
 			{
 				// Display that the room you are trying to enter is locked
-				console.writeOutput(doorLockedErrorMessage);
+				console.outputByCharacter(doorLockedErrorMessage);
 			}
 
 		}
 		else if (direction == "right" && rightRoom->getName() != "")
 		{
-			console.writeOutput("You are now in the " + rightRoom->getName() + ".\n");
+			console.outputByCharacter("You are now in the " + rightRoom->getName() + ".\n");
 			rightRoom->setPlayer(*player);
 			player = new Player();
 			*currentRoom = &*rightRoom;
@@ -832,12 +810,12 @@ void Room::moveRoom(GameUI console, Room** currentRoom, std::string direction, b
 			if (downRoom->getName() == "Starting Steps")
 			{
 				// Use at for starting steps
-				console.writeOutput("You are now at the " + downRoom->getName() + ".\n");
+				console.outputByCharacter("You are now at the " + downRoom->getName() + ".\n");
 			}
 			else
 			{
 				// Use in for all other rooms
-				console.writeOutput("You are now in the " + downRoom->getName() + ".\n");
+				console.outputByCharacter("You are now in the " + downRoom->getName() + ".\n");
 			}
 			downRoom->setPlayer(*player);
 			player = new Player();
@@ -848,13 +826,13 @@ void Room::moveRoom(GameUI console, Room** currentRoom, std::string direction, b
 		{
 			// The direction the user entered was not a possible way to move.
 			// Let them know about this and tell them to try again in a different direction.
-			console.writeOutput(noRoomErrorMessage);
+			console.outputByCharacter(noRoomErrorMessage);
 		}
 	}
 	else
 	{
 		// Cannot move room because the player is currently in battle
-		console.writeOutput(inBattleErrorMessage);
+		console.outputByCharacter(inBattleErrorMessage);
 	}
 }
 
@@ -878,7 +856,7 @@ void Room::pickupItem(GameUI console, std::string item, bool* inBattle)
 		if (inventory->searchItemInventory(item) == true)
 		{
 			// Let the user know that they picked up the item
-			console.writeOutput(pickUpItemText);
+			console.outputByCharacter(pickUpItemText);
 
 			// Get the item from the room's inventory
 			Item* itemPointer = inventory->getItem(console, item);
@@ -890,21 +868,21 @@ void Room::pickupItem(GameUI console, std::string item, bool* inBattle)
 			inventory->removeItem(console, item);
 
 			// Redisplay the player's and room's item inventories
-			console.writeOutput(extraNewline);
+			console.outputByCharacter(extraNewline);
 			player->getInventory()->displayItemInventory(console, "Player");
-			console.writeOutput(extraNewline);
+			console.outputByCharacter(extraNewline);
 			inventory->displayItemInventory(console, "Room");
 		}
 		else
 		{
 			// If the item is not in the inventory, then let the user know it is not being deleted
-			console.writeOutput(itemNotInRoomText);
+			console.outputByCharacter(itemNotInRoomText);
 		}
 	}
 	else
 	{
 		// Cannot pick up item while in battle
-		console.writeOutput(inBattleErrorMessage);
+		console.outputByCharacter(inBattleErrorMessage);
 	}
 }
 
@@ -927,7 +905,7 @@ void Room::pickupAttack(GameUI console, std::string attack, bool* inBattle)
 		if (inventory->searchAttackInventory(attack) == true && player->getInventory()->getAttackInventorySize() < 4)
 		{
 			// Let the used know that they picked up the attack
-			console.writeOutput(pickUpAttackText);
+			console.outputByCharacter(pickUpAttackText);
 
 			// Get the attack from the room's inventory
 			Attack* attackPointer = inventory->getAttack(console, attack);
@@ -939,9 +917,9 @@ void Room::pickupAttack(GameUI console, std::string attack, bool* inBattle)
 			inventory->removeAttack(console, attack);
 
 			// Redisplay the player's and room's attack inventories
-			console.writeOutput(extraNewline);
+			console.outputByCharacter(extraNewline);
 			player->getInventory()->displayAttackInventory(console, "Player");
-			console.writeOutput(extraNewline);
+			console.outputByCharacter(extraNewline);
 			inventory->displayAttackInventory(console, "Room");
 		}
 		else
@@ -950,19 +928,19 @@ void Room::pickupAttack(GameUI console, std::string attack, bool* inBattle)
 			if (player->getInventory()->getAttackInventorySize() == 4)
 			{
 				// If there are already 4 attacks in the player's inventory
-				console.writeOutput(tooManyAttacksText);
+				console.outputByCharacter(tooManyAttacksText);
 			}
 			else
 			{
 				// If the attack is not in the inventory, then let the user know it is not being deleted
-				console.writeOutput(attackNotInRoomText);
+				console.outputByCharacter(attackNotInRoomText);
 			}
 		}
 	}
 	else
 	{
 		// Cannot pick up attack while in battle
-		console.writeOutput(inBattleErrorMessage);
+		console.outputByCharacter(inBattleErrorMessage);
 	}
 }
 
@@ -982,7 +960,7 @@ void Room::dropItem(GameUI console, std::string item, bool* inBattle)
 		if (player->getInventory()->searchItemInventory(item) == true)
 		{
 			// Let the user know they are dropping the item
-			console.writeOutput(dropItemText);
+			console.outputByCharacter(dropItemText);
 
 			// Get the item from the player's inventory
 			Item* itemPointer = player->getInventory()->getItem(console, item);
@@ -994,21 +972,21 @@ void Room::dropItem(GameUI console, std::string item, bool* inBattle)
 			player->getInventory()->removeItem(console, item);
 
 			// Redisplay the player's and room's room inventories
-			console.writeOutput(extraNewline);
+			console.outputByCharacter(extraNewline);
 			player->getInventory()->displayItemInventory(console, "Player");
-			console.writeOutput(extraNewline);
+			console.outputByCharacter(extraNewline);
 			inventory->displayItemInventory(console, "Room");
 		}
 		else
 		{
 			// If the item is not in the inventory, then let the user know it is not being deleted
-			console.writeOutput(missingItemText);
+			console.outputByCharacter(missingItemText);
 		}
 	}
 	else
 	{
 		// Cannot drop item while in battle
-		console.writeOutput(inBattleErrorMessage);
+		console.outputByCharacter(inBattleErrorMessage);
 	}
 }
 
@@ -1027,7 +1005,7 @@ void Room::dropAttack(GameUI console, std::string attack, bool* inBattle)
 		// If the item is in the players's inventory, then continue with dropping it
 		if (player->getInventory()->searchAttackInventory(attack) == true)
 		{
-			console.writeOutput(dropAttackText);
+			console.outputByCharacter(dropAttackText);
 
 			// Get the item from the player's inventory
 			Attack* attackPointer = player->getInventory()->getAttack(console, attack);
@@ -1039,21 +1017,21 @@ void Room::dropAttack(GameUI console, std::string attack, bool* inBattle)
 			player->getInventory()->removeAttack(console, attack);
 
 			// Redisplay the player's and room's attack inventories
-			console.writeOutput(extraNewline);
+			console.outputByCharacter(extraNewline);
 			player->getInventory()->displayAttackInventory(console, "Player");
-			console.writeOutput(extraNewline);
+			console.outputByCharacter(extraNewline);
 			inventory->displayAttackInventory(console, "Room");
 		}
 		else
 		{
 			// If the item is not in the inventory, then let the user know it is not being deleted
-			console.writeOutput(missingAttackText);
+			console.outputByCharacter(missingAttackText);
 		}
 	}
 	else
 	{
 		// Cannot drop attack while in battle
-		console.writeOutput(inBattleErrorMessage);
+		console.outputByCharacter(inBattleErrorMessage);
 	}
 }
 
@@ -1090,12 +1068,12 @@ void Room::dropMonsterItem(GameUI console, std::string item)
 		monster->getInventory()->removeItem(console, item);
 
 		// Display the message
-		console.writeOutput(output);
+		console.outputByCharacter(output);
 	}
 	else
 	{
 		// Display the error message
-		console.writeOutput(errorMessage);
+		console.outputByCharacter(errorMessage);
 	}
 }
 
@@ -1118,20 +1096,20 @@ void Room::battleMonster(GameUI console, std::string monsterName, bool* inBattle
 		if (monster->getHealth() <= 0)
 		{
 			// Tell the user that the monster in the room was already defeated
-			console.writeOutput(monsterAlreadyDeafeatedText);
+			console.outputByCharacter(monsterAlreadyDeafeatedText);
 		}
 		else
 		{
 			// Let the player enter battle with the monster
 			console.changeToBattleColors();
-			console.writeOutput(enteringBattleText);
+			console.outputByCharacter(enteringBattleText);
 			*inBattle = true;
 		}
 	}
 	else
 	{
 		// Tell the user that the monster they are trying to battle is not in the current room
-		console.writeOutput(monsterNotInRoom);
+		console.outputByCharacter(monsterNotInRoom);
 	}
 }
 
@@ -1153,7 +1131,7 @@ void Room::battle(GameUI console, std::string attack, bool* inBattle)
 	if (monster->getHealth() > 0)
 	{
 		// Monster attacks the player
-		console.writeOutput(extraNewline);
+		console.outputByCharacter(extraNewline);
 		monsterAttacksPlayer(console);
 
 		// If the player dies, kill the player, let the user know they have been defeated and then
@@ -1164,7 +1142,7 @@ void Room::battle(GameUI console, std::string attack, bool* inBattle)
 			player->kill();
 
 			// Let the user know the player has been defeated.
-			console.writeOutput(playerDefeatedText);
+			console.outputByCharacter(playerDefeatedText);
 
 			// Get out of the battle state
 			*inBattle = false;
@@ -1179,7 +1157,7 @@ void Room::battle(GameUI console, std::string attack, bool* inBattle)
 		monster->kill();
 
 		// Let the user know the monster has been defeated.
-		console.writeOutput(monsterDefeatedText);
+		console.outputByCharacter(monsterDefeatedText);
 
 		// Hardcoded things - I ain't dealing with right now (I am making this shit work)
 		// Drops the key when these monster's die
@@ -1200,7 +1178,7 @@ void Room::battle(GameUI console, std::string attack, bool* inBattle)
 		}
 
 		// Drop the attack the monster was using to the ground of the room
-		console.writeOutput(dropMonsterAttackText);
+		console.outputByCharacter(dropMonsterAttackText);
 		dropMonsterAttack(console);
 
 		// Get out of the battle state
@@ -1237,13 +1215,13 @@ void Room::useAttack(GameUI console, std::string attack, bool* inBattle, Parser:
 		else
 		{
 			// Tell the user that they currently do not have this attack
-			console.writeOutput(notInBattleMessage);
+			console.outputByCharacter(notInBattleMessage);
 		}
 	}
 	else
 	{
 		// Tell the user they cannot use attacks when not in battle
-		console.writeOutput(doNotHaveAttackMessage);
+		console.outputByCharacter(doNotHaveAttackMessage);
 	}
 }
 
@@ -1266,12 +1244,12 @@ void Room::playerAttacksMonster(GameUI console, std::string attack)
 	if (player->checkParalyzed() == true && hitOrMiss(player->getStatusEffectHitChance()) == true)
 	{
 		// Display that the player cannot attack
-		console.writeOutput(playerParalyzed);
+		console.outputByCharacter(playerParalyzed);
 	}
 	else
 	{
 		// Display the attack the player used to the user
-		console.writeOutput(attackPlayerUsedText);
+		console.outputByCharacter(attackPlayerUsedText);
 
 		// If the attack is going to be a hit, take hitpoints from the monster and display the 
 		// new health of the monster. Otherwise say the attack missed.
@@ -1281,7 +1259,7 @@ void Room::playerAttacksMonster(GameUI console, std::string attack)
 			monster->changeHealth(console, hitPoints);
 
 			// Output that the player's attack hit
-			console.writeOutput(attackHitText);
+			console.outputByCharacter(attackHitText);
 			
 			// Completes the check to see if the monster was paralyzed from this attack
 			monsterGetsStatus(console, attack);
@@ -1297,23 +1275,23 @@ void Room::playerAttacksMonster(GameUI console, std::string attack)
 			if (monster->getHealth() <= 0)
 			{
 				// Output the health being 0
-				console.writeOutput(monsterDiedHealthText);
+				console.outputByCharacter(monsterDiedHealthText);
 			}
 			else
 			{
 				// Output the monster's health after the player's attack has hit
-				console.writeOutput("New Monster Health: " + std::to_string(monster->getHealth()) + ".\n");
+				console.outputByCharacter("New Monster Health: " + std::to_string(monster->getHealth()) + ".\n");
 			}
 		}
 		else
 		{
 			// Let the user know that the monster's attack missed and redisplay their health
-			console.writeOutput(attackMissedText);
+			console.outputByCharacter(attackMissedText);
 			if (monster->checkParalyzed() == true)
 			{
-				console.writeOutput(monsterAlreadyParalyzed);
+				console.outputByCharacter(monsterAlreadyParalyzed);
 			}
-			console.writeOutput("Monster Health: " + std::to_string(monster->getHealth()) + ".\n");
+			console.outputByCharacter("Monster Health: " + std::to_string(monster->getHealth()) + ".\n");
 		}
 	}
 }
@@ -1338,12 +1316,12 @@ void Room::monsterAttacksPlayer(GameUI console)
 	if (monster->checkParalyzed() == true && hitOrMiss(monster->getStatusEffectHitChance()) == true)
 	{
 		// Display that the player cannot attack
-		console.writeOutput(monsterParalyzed);
+		console.outputByCharacter(monsterParalyzed);
 	}
 	else
 	{
 		// Display the attack the monster used to the user
-		console.writeOutput(attackMonsterUsedText);
+		console.outputByCharacter(attackMonsterUsedText);
 
 		// If the attack is going to be a hit, take hitpoints from the monster and display the 
 		// new health of the monster. Otherwise say the attack missed.
@@ -1353,7 +1331,7 @@ void Room::monsterAttacksPlayer(GameUI console)
 			player->changeHealth(console, hitPoints);
 
 			// Output that the player's attack hit
-			console.writeOutput(attackHitText);
+			console.outputByCharacter(attackHitText);
 
 			// Completes the check to see if the player gets a status condition from this attack
 			playerGetsStatus(console);
@@ -1370,24 +1348,24 @@ void Room::monsterAttacksPlayer(GameUI console)
 			if (player->getHealth() <= 0)
 			{
 				// Output the health being 0
-				console.writeOutput(playerDiedHealthText);
+				console.outputByCharacter(playerDiedHealthText);
 			}
 			else
 			{
 				// Output the player's health after the monster's attack has hit
-				console.writeOutput(player->getName() + "'s New Health: " + std::to_string(player->getHealth()) + ".\n");
+				console.outputByCharacter(player->getName() + "'s New Health: " + std::to_string(player->getHealth()) + ".\n");
 			}
 		}
 		else
 		{
 			// Let the user know that the monster's attack missed and redisplay their health
-			console.writeOutput(attackMissedText);
+			console.outputByCharacter(attackMissedText);
 
 			if (player->checkParalyzed() == true)
 			{
-				console.writeOutput(playerAlreadyParalyzed);
+				console.outputByCharacter(playerAlreadyParalyzed);
 			}
-			console.writeOutput(player->getName() + "'s Health: " + std::to_string(player->getHealth()) + ".\n");
+			console.outputByCharacter(player->getName() + "'s Health: " + std::to_string(player->getHealth()) + ".\n");
 		}
 	}
 }
@@ -1433,12 +1411,12 @@ void Room::monsterGetsStatus(GameUI console, std::string attack)
 	if (monster->checkParalyzed() == true)
 	{
 		// Monster has paralysis currently
-		console.writeOutput(monsterAlreadyParalyzed);
+		console.outputByCharacter(monsterAlreadyParalyzed);
 	}
 	else if (monster->checkBurned() == true)
 	{
 		// Monster has burn currently
-		console.writeOutput(monsterAlreadyBurned);
+		console.outputByCharacter(monsterAlreadyBurned);
 	}
 	// Monster has no current status condition, lets see if they get one below
 	else
@@ -1452,7 +1430,7 @@ void Room::monsterGetsStatus(GameUI console, std::string attack)
 			{
 				// Set the monster to be burned
 				monster->setStatusEffect(1);
-				console.writeOutput(monsterParalyzed);
+				console.outputByCharacter(monsterParalyzed);
 			}
 		} // Check to see if the attack has the burn effect
 		else if (status == 2)
@@ -1463,7 +1441,7 @@ void Room::monsterGetsStatus(GameUI console, std::string attack)
 			{
 				// Set the monster to be burned
 				monster->setStatusEffect(2);
-				console.writeOutput(monsterBurned);
+				console.outputByCharacter(monsterBurned);
 			}
 		}
 	}
@@ -1487,12 +1465,12 @@ void Room::playerGetsStatus(GameUI console)
 	if (player->checkParalyzed() == true)
 	{
 		// Player has paralysis currently
-		console.writeOutput(playerAlreadyParalyzed);
+		console.outputByCharacter(playerAlreadyParalyzed);
 	}
 	else if (player->checkBurned() == true)
 	{
 		// Player has burn currently
-		console.writeOutput(playerAlreadyBurned);
+		console.outputByCharacter(playerAlreadyBurned);
 	}
 	// Player has no current status condition, lets see if they get one below
 	else
@@ -1506,7 +1484,7 @@ void Room::playerGetsStatus(GameUI console)
 			{
 				// Set the player to be burned
 				player->setStatusEffect(1);
-				console.writeOutput(playerParalyzed);
+				console.outputByCharacter(playerParalyzed);
 			}
 		} // Check to see if the attack has the burn effect
 		else if (status == 2)
@@ -1517,7 +1495,7 @@ void Room::playerGetsStatus(GameUI console)
 			{
 				// Set the player to be burned
 				player->setStatusEffect(2);
-				console.writeOutput(playerBurned);
+				console.outputByCharacter(playerBurned);
 			}
 		}
 	}
@@ -1541,7 +1519,7 @@ void Room::healStatusEffect(GameUI console, int status)
 		player->getInventory()->removeItem(console, "paralysisheal");
 
 		// Display that they were healed
-		console.writeOutput(healedMessage);
+		console.outputByCharacter(healedMessage);
 	}
 	else
 	{
@@ -1549,12 +1527,12 @@ void Room::healStatusEffect(GameUI console, int status)
 		if (status == 1)
 		{
 			// Paralyzed message
-			console.writeOutput(paralyzeMessage);
+			console.outputByCharacter(paralyzeMessage);
 		}
 		else if (status == 2)
 		{
 			// Burned message
-			console.writeOutput(burnMessage);
+			console.outputByCharacter(burnMessage);
 		}
 		
 	}	
@@ -1606,36 +1584,36 @@ void Room::useKey1(GameUI console, std::string key, bool* inBattle)
 						unlockDoor();
 
 						// Let the user know that they unlocked the door
-						console.writeOutput(openingDoorText);
+						console.outputByCharacter(openingDoorText);
 					}
 					else
 					{
 						// Tell the user that the key cannot be used on an open door
-						console.writeOutput(doorIsAlreadyOpenText);
+						console.outputByCharacter(doorIsAlreadyOpenText);
 					}
 				}
 				else
 				{
 					// Tell the user that the key cannot be used on this door (wrong door)
-					console.writeOutput(wrongKey);
+					console.outputByCharacter(wrongKey);
 				}
 			}
 			else
 			{
 				// Tell the user that the door is not locked so they don't need to use a key
-				console.writeOutput(doorNotLocked);
+				console.outputByCharacter(doorNotLocked);
 			}
 		}
 		else
 		{
 			// Tell the user that the item is not in their inventory
-			console.writeOutput(itemNotInInventoryText);
+			console.outputByCharacter(itemNotInInventoryText);
 		}
 	}
 	else
 	{
 		// The player cannot use the key to open the door when in battle
-		console.writeOutput(inBattleText);
+		console.outputByCharacter(inBattleText);
 	}
 }
 
@@ -1669,35 +1647,35 @@ void Room::useKey2(GameUI console, std::string key, bool* inBattle)
 						unlockDoor();
 
 						// Let the user know that they unlocked the door
-						console.writeOutput(openingDoorText);
+						console.outputByCharacter(openingDoorText);
 					}
 					else
 					{
 						// Tell the user that the key cannot be used on an open door
-						console.writeOutput(doorIsAlreadyOpenText);
+						console.outputByCharacter(doorIsAlreadyOpenText);
 					}
 				}
 				else
 				{
 					// Tell the user that the key cannot be used on this door (wrong door)
-					console.writeOutput(wrongKey);
+					console.outputByCharacter(wrongKey);
 				}
 			}
 			else
 			{
 				// Tell the user that the door is not locked so they don't need to use a key
-				console.writeOutput(doorNotLocked);
+				console.outputByCharacter(doorNotLocked);
 			}
 		}
 		else
 		{
 			// Tell the user that the item is not in their inventory
-			console.writeOutput(itemNotInInventoryText);
+			console.outputByCharacter(itemNotInInventoryText);
 		}
 	}
 	else
 	{
 		// The player cannot use the key to open the door when in battle
-		console.writeOutput(inBattleText);
+		console.outputByCharacter(inBattleText);
 	}
 }

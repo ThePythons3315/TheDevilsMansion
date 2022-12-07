@@ -90,18 +90,18 @@ void Player::printPlayerInfo(GameUI console)
 	std::string playerName = "Player Name: " + name + "\n\n";
 
 	// Show player's name
-	console.writeOutput(playerInfo);
-	console.writeOutput(playerName);
+	console.outputByCharacter(playerInfo);
+	console.outputByCharacter(playerName);
 
 	// Show the player's item inventory
 	inventory->displayItemInventory(console, "Player");
-	console.writeOutput(extraNewline);
+	console.outputByCharacter(extraNewline);
 
 	// Show the player's attack iventory
 	inventory->displayAttackInventory(console, "Player");
 
 	// Show the player's health
-	console.writeOutput(extraNewline);
+	console.outputByCharacter(extraNewline);
 	displayBothHealth(console);
 }
 
@@ -117,7 +117,7 @@ void Player::useHealthItem(GameUI console, std::string item)
 	if (inventory->searchItemInventory(item) == true)
 	{
 		// Display that the item is being used
-		console.writeOutput(deleteMessage);
+		console.outputByCharacter(deleteMessage);
 
 		// Get the item from the player's inventory
 		Item* itemPointer = inventory->getItem(console, item);
@@ -129,20 +129,20 @@ void Player::useHealthItem(GameUI console, std::string item)
 		changeHealth(console, itemHealth);
 
 		// Show the player's new health to the user
-		console.writeOutput(extraNewline);
+		console.outputByCharacter(extraNewline);
 		displayHealth(console);
 
 		// Remove the item from the room's inventory
 		inventory->removeItem(console, item);
 
 		// Display the player's inventory now that the item as been used
-		console.writeOutput(extraNewline);
+		console.outputByCharacter(extraNewline);
 		inventory->displayItemInventory(console, "Player");
 	}
 	else
 	{
 		// Display the item is not in the inventory
-		console.writeOutput(errorMessage);
+		console.outputByCharacter(errorMessage);
 	}
 }
 
@@ -160,7 +160,7 @@ void Player::changeHealth(GameUI console, int _health)
 	if (health > maxHealth)
 	{
 		// Tell the player that their health will be placed at the max allowed health
-		console.writeOutput(healthMessage);
+		console.outputByCharacter(healthMessage);
 
 		// Set the health attribute to the maxHealth attributes value
 		health = maxHealth;
@@ -178,13 +178,13 @@ void Player::displayHealth(GameUI console)
 	if (health < maxHealth)
 	{
 		// Display both healths
-		console.writeOutput(playersHealth);
-		console.writeOutput(playersMaxHealth);
+		console.outputByCharacter(playersHealth);
+		console.outputByCharacter(playersMaxHealth);
 	}
 	else
 	{
 		// Display only health of the player
-		console.writeOutput(playersHealth);
+		console.outputByCharacter(playersHealth);
 	}
 }
 
@@ -196,8 +196,8 @@ void Player::displayBothHealth(GameUI console)
 	std::string playersMaxHealth = getName() + "'s Max Health: " + std::to_string(getMaxHealth()) + ".\n";
 
 	// Display both healths
-	console.writeOutput(playersHealth);
-	console.writeOutput(playersMaxHealth);
+	console.outputByCharacter(playersHealth);
+	console.outputByCharacter(playersMaxHealth);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -249,7 +249,7 @@ void Player::performBurn(GameUI console)
 	health = health - damage;
 
 	// Display that the burn has taken affect
-	console.writeOutput(outputMessage);
+	console.outputByCharacter(outputMessage);
 }
 
 

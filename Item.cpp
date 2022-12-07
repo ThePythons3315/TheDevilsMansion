@@ -60,6 +60,6 @@ void Item::viewItemDescription(GameUI console)
 	std::string outputDescription = "-" + description + "\n";
 
 	// Display the messages about the item
-	console.writeOutput(outputName);
-	console.writeOutput(outputDescription);
+	console.outputByCharacter(outputName);
+	console.outputByCharacter(outputDescription);
 }

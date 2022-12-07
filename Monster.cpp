@@ -99,18 +99,18 @@ void Monster::printMonsterInfo(GameUI console)
 	std::string monsterDescription = "Monster Description: " + description + "\n";
 
 	// Display basic monster info
-	console.writeOutput(header);
-	console.writeOutput(monsterName);
-	console.writeOutput(monsterDescription);
+	console.outputByCharacter(header);
+	console.outputByCharacter(monsterName);
+	console.outputByCharacter(monsterDescription);
 
 	// Show the monster's inventory
-	console.writeOutput(extraNewline);
+	console.outputByCharacter(extraNewline);
 	inventory->displayItemInventory(console, "Monster");
 
 	// Show the monster's health
-	console.writeOutput(extraNewline);
+	console.outputByCharacter(extraNewline);
 	displayHealth(console);
-	console.writeOutput(extraNewline);
+	console.outputByCharacter(extraNewline);
 }
 
 // Print only the monster's name 
@@ -129,19 +129,19 @@ void Monster::printMonsterInRoom(GameUI console)
 		if (health <= 0)
 		{
 			// Display that the monster has already been defeated if they have been
-			console.writeOutput(defeatedMessage);
+			console.outputByCharacter(defeatedMessage);
 		}
 		else
 		{
 			// Print if there are any monsters in the room or not
-			console.writeOutput(inFrontOfMessage);
-			console.writeOutput(healthMessage);
+			console.outputByCharacter(inFrontOfMessage);
+			console.outputByCharacter(healthMessage);
 		}
 	}
 	else
 	{
 		// Display that there is no monster in the current room
-		console.writeOutput(noMonsterInRoom);
+		console.outputByCharacter(noMonsterInRoom);
 	}
 }
 
@@ -155,9 +155,9 @@ void Monster::viewMonster(GameUI console, bool* inBattle)
 	std::string monsterStatus = "\nStatus Effect: ";
 
 	// Display the monster's information
-	console.writeOutput(monsterName);
-	console.writeOutput(monsterDescription);
-	console.writeOutput(monsterHealth);
+	console.outputByCharacter(monsterName);
+	console.outputByCharacter(monsterDescription);
+	console.outputByCharacter(monsterHealth);
 
 	// If in battle, also print out whether the monster has a status condition or not
 	if (*inBattle == true)
@@ -180,7 +180,7 @@ void Monster::viewMonster(GameUI console, bool* inBattle)
 		}
 
 		// Display the status condition
-		console.writeOutput(monsterStatus);
+		console.outputByCharacter(monsterStatus);
 	}
 }
 
@@ -198,7 +198,7 @@ void Monster::changeHealth(GameUI console, int _health)
 	if (health > maxHealth)
 	{
 		// Tell the player that their health will be placed at the max allowed health
-		console.writeOutput(healthMessage);
+		console.outputByCharacter(healthMessage);
 
 		// Set the health attribute to the maxHealth attributes value
 		health = maxHealth;
@@ -212,7 +212,7 @@ void Monster::displayHealth(GameUI console)
 	std::string healthMessage = "\Monster's Health: " + std::to_string(getHealth()) + ".\n";
 
 	// Display the health of the monster
-	console.writeOutput(healthMessage);
+	console.outputByCharacter(healthMessage);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -264,7 +264,7 @@ void Monster::performBurn(GameUI console)
 	health = health - damage;
 
 	// Display that the burn has taken affect
-	console.writeOutput(outputMessage);
+	console.outputByCharacter(outputMessage);
 }
 
 // Turns the monster's alive variable to false - meaning they were killed.

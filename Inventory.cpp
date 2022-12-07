@@ -35,7 +35,7 @@ void Inventory::addAttack(GameUI console, Attack& _attack)
 	else
 	{
 		// Tell the user that they can't pickup the attack because they already have 4 attacks
-		console.writeOutput(errorMessage);
+		console.outputByCharacter(errorMessage);
 	}
 }
 
@@ -70,7 +70,7 @@ Item* Inventory::getItem(GameUI console, std::string item)
 	else
 	{
 		// Display that the item is not in the inventory
-		console.writeOutput(errorMessage);
+		console.outputByCharacter(errorMessage);
 	}
 }
 
@@ -99,7 +99,7 @@ Attack* Inventory::getAttack(GameUI console)
 	else
 	{
 		// Display that the item is not in the inventory
-		console.writeOutput(errorMessage);
+		console.outputByCharacter(errorMessage);
 	}
 }
 
@@ -135,7 +135,7 @@ Attack* Inventory::getAttack(GameUI console, std::string attack)
 	else
 	{
 		// Display that the attack is not in the inventory
-		console.writeOutput(errorMessage);
+		console.outputByCharacter(errorMessage);
 	}
 }
 
@@ -154,7 +154,7 @@ void Inventory::displayItemInventory(GameUI console, std::string _type)
 	Item* itemPointer;
 
 	// Header text
-	console.writeOutput(promptMessage);
+	console.outputByCharacter(promptMessage);
 
 	// Display an error message if there are no items in the list
 	if (itemInventory.size() != 0)
@@ -167,13 +167,13 @@ void Inventory::displayItemInventory(GameUI console, std::string _type)
 
 			// Get the name of the item and print it to the screen
 			itemName = "-" + itemPointer->getName() + ".\n";
-			console.writeOutput(itemName);
+			console.outputByCharacter(itemName);
 		}
 	}
 	else
 	{
 		// Display that there are no items currently in the list
-		console.writeOutput(errorMessage);
+		console.outputByCharacter(errorMessage);
 	}
 }
 
@@ -192,7 +192,7 @@ void Inventory::displayAttackInventory(GameUI console, std::string _type)
 	Attack* attackPointer;
 
 	// Header text
-	console.writeOutput(promptMessage);
+	console.outputByCharacter(promptMessage);
 
 	// Display an error message if there are no attacks in the list
 	if (attackInventory.size() != 0)
@@ -204,15 +204,15 @@ void Inventory::displayAttackInventory(GameUI console, std::string _type)
 			attackPointer = *itr;
 
 			// Display the attack name
-			console.writeOutput("-");
+			console.outputByCharacter("-");
 			attackPointer->displayAttack(console);
-			console.writeOutput(extraNewline);
+			console.outputByCharacter(extraNewline);
 		}
 	}
 	else
 	{
 		// Display that there are no attacks currently in the list
-		console.writeOutput(errorMessage);
+		console.outputByCharacter(errorMessage);
 	}
 }
 
@@ -249,7 +249,7 @@ void Inventory::removeItem(GameUI console, std::string item)
 	else
 	{
 		// Display that the item is not in the inventory
-		console.writeOutput(errorMessage);
+		console.outputByCharacter(errorMessage);
 	}
 }
 
@@ -286,7 +286,7 @@ void Inventory::removeAttack(GameUI console, std::string attack)
 	else
 	{
 		// Display that the attack is not in the inventory
-		console.writeOutput(errorMessage);
+		console.outputByCharacter(errorMessage);
 	}
 }
 

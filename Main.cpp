@@ -293,7 +293,7 @@ int main()
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Print the current version of the game
-	console.writeOutput(versionText);
+	console.outputByCharacter(versionText);
 
 	// Get the player's	name from the user, this name will be used throughout the game
 	do {
@@ -320,7 +320,7 @@ int main()
 										"Someone should really dust in here.\n\n";
 	
 	// Display the starting description to the screen
-	console.writeOutput(startingDescription);
+	console.outputByCharacter(startingDescription);
 
 	// Once the user enters `move up`, send them into the starting room and have the devil 
 	// give his little spiel about how the game works and runs.
@@ -331,13 +331,13 @@ int main()
 
 	// Move into the starting room
 	roomPointer = &startingRoom;
-	console.writeOutput(movedStartingRoomText);
+	console.outputByCharacter(movedStartingRoomText);
 
 	// Display the devil's spiel
-	console.writeOutput(devilsSpiel);
+	console.outputByCharacter(devilsSpiel);
 
 	// Let the player know the devil dropped a blueberry on the ground
-	console.writeOutput(droppedBlueberryText);
+	console.outputByCharacter(droppedBlueberryText);
 
 	// Let the player see there is a blueberry on the ground.
 	do {
@@ -350,7 +350,7 @@ int main()
 
 	// Show the end of the introduction statement, the player is on there own for 
 	// the most part from now on.
-	console.writeOutput(endOfIntro);
+	console.outputByCharacter(endOfIntro);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Start the main loop of the game. The main loop will continuously ask the user for input.
@@ -846,8 +846,8 @@ int main()
 		console.changeColor(2);
 
 		// Output the end of game rant
-		console.writeOutput(playerWon);
-		console.writeOutput(endOfGame);
+		console.outputByCharacter(playerWon);
+		console.outputByCharacter(endOfGame);
 		
 		// Change back to white
 		console.changeToNormalColors();
@@ -859,15 +859,15 @@ int main()
 		// Change the ending text to red cause you died
 		console.changeToBattleColors();
 
-		console.writeOutput(playerLost);
-		console.writeOutput(playerLostText);
+		console.outputByCharacter(playerLost);
+		console.outputByCharacter(playerLostText);
 		
 		// Change back to white
 		console.changeToNormalColors();
 	}
 
 	// Thank the user for playing the game
-	console.writeOutput(thanksText);
+	console.outputByCharacter(thanksText);
 
 	// Sleep for 10 seconds so the window doesn't automatically go away
 	Sleep(10000);

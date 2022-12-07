@@ -30,6 +30,19 @@ int GameUI::writeOutput(std::string output)
     return(0);
 }
 
+// Writes output to the console character by character
+int GameUI::outputByCharacter(std::string output)
+{
+    // Loop through the string and print a character every 20 milliseconds
+    for (int i = 0; i < output.size(); i++)
+    {
+        std::cout << output[i];
+        Sleep(18);
+    }
+
+    return(0);
+}
+
 // Change the colors of the console and text
 void GameUI::changeToBattleColors()
 {

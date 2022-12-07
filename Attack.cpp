@@ -79,7 +79,7 @@ void Attack::displayAttack(GameUI console)
 	std::string attackName = name;
 
 	// Display the attack's stats
-	console.writeOutput(attackName);
+	console.outputByCharacter(attackName);
 }
 
 // Displays the stats of the attack
@@ -106,10 +106,10 @@ void Attack::displayAttackStats(GameUI console)
 	}
 	
 	// Display the attack's stats
-	console.writeOutput(attackName);
-	console.writeOutput(attackDescription);
-	console.writeOutput(attackDamage);
-	console.writeOutput(attackHitChance);
-	console.writeOutput(status);
-	console.writeOutput(statusHitChance);
+	console.outputByCharacter(attackName);
+	console.outputByCharacter(attackDescription);
+	console.outputByCharacter(attackDamage);
+	console.outputByCharacter(attackHitChance);
+	console.outputByCharacter(status);
+	console.outputByCharacter(statusHitChance);
 }
