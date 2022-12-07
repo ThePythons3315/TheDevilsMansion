@@ -97,12 +97,12 @@ void Attack::displayAttackStats(GameUI console)
 	if (statusEffect == 1)
 	{
 		status = "-Status Effect: Paralysis.\n";
-		statusHitChance = "-Status Effect Hit Chance: " + std::to_string(statusEffectHitChance) + ".\n";
+		statusHitChance = "-Status Effect Hit Chance: " + std::to_string(statusEffectHitChance) + "%.\n";
 	}
 	else if (statusEffect == 2)
 	{
 		status = "-Status Effect: Burn.\n";
-		statusHitChance = "-Status Effect Hit Chance: " + std::to_string(statusEffectHitChance) + ".\n";
+		statusHitChance = "-Status Effect Hit Chance: " + std::to_string(statusEffectHitChance) + "%.\n";
 	}
 	
 	// Display the attack's stats

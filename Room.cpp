@@ -366,7 +366,7 @@ void Room::showMap(GameUI console, bool* inBattle)
 
 			console.writeOutput(Map);
 		}
-		else if (name == "Skeleton Room")
+		else if (name == "Room Of Unlucky Souls")
 		{
 			std::string Map = " ---------------------------------------------------------------------------------------------------\n"
 				"|  # MEANS YOU ARE IN THAT ROOM          --                                                         |\n"
@@ -395,7 +395,7 @@ void Room::showMap(GameUI console, bool* inBattle)
 
 			console.writeOutput(Map);
 		}
-		else if (name == "Hellhound Room")
+		else if (name == "Room Of The Devil's Most Loyal Friend")
 		{
 			std::string Map = " ---------------------------------------------------------------------------------------------------\n"
 				"|  # MEANS YOU ARE IN THAT ROOM          --                                                         |\n"
@@ -453,7 +453,7 @@ void Room::showMap(GameUI console, bool* inBattle)
 
 			console.writeOutput(Map);
 		}
-		else if (name == "Reaper Room")
+		else if (name == "Room of Death")
 		{
 			std::string Map = " ---------------------------------------------------------------------------------------------------\n"
 				"|  # MEANS YOU ARE IN THAT ROOM          --                                                         |\n"
@@ -482,7 +482,7 @@ void Room::showMap(GameUI console, bool* inBattle)
 
 			console.writeOutput(Map);
 		}
-		else if (name == "Chimera Room")
+		else if (name == "Room of Weird")
 		{
 			std::string Map = " ---------------------------------------------------------------------------------------------------\n"
 				"|  # MEANS YOU ARE IN THAT ROOM          --                                                         |\n"
@@ -511,7 +511,7 @@ void Room::showMap(GameUI console, bool* inBattle)
 
 			console.writeOutput(Map);
 		}
-		else if (name == "Mimic Room")
+		else if (name == "Room of Mirrors")
 		{
 		std::string Map = " ---------------------------------------------------------------------------------------------------\n"
 			"|  # MEANS YOU ARE IN THAT ROOM          --                                                         |\n"
@@ -540,7 +540,7 @@ void Room::showMap(GameUI console, bool* inBattle)
 
 		console.writeOutput(Map);
 		}
-		else if (name == "ArchDemon Room")
+		else if (name == "Room Of Demonic Magic")
 		{
 			std::string Map = " ---------------------------------------------------------------------------------------------------\n"
 				"|  # MEANS YOU ARE IN THAT ROOM          --                                                         |\n"
@@ -598,7 +598,7 @@ void Room::showMap(GameUI console, bool* inBattle)
 
 			console.writeOutput(Map);
 		}
-		else if (name == "Dragon Room")
+		else if (name == "Room of Gold")
 		{
 			std::string Map = " ---------------------------------------------------------------------------------------------------\n"
 				"|  # MEANS YOU ARE IN THAT ROOM          --                                                         |\n"
@@ -627,7 +627,7 @@ void Room::showMap(GameUI console, bool* inBattle)
 
 			console.writeOutput(Map);
 		}
-		else if (name == "Spirit Room")
+		else if (name == "Room of Ghouls")
 		{
 			std::string Map = " ---------------------------------------------------------------------------------------------------\n"
 				"|  # MEANS YOU ARE IN THAT ROOM          --                                                         |\n"
@@ -685,7 +685,7 @@ void Room::showMap(GameUI console, bool* inBattle)
 
 			console.writeOutput(Map);
 		}
-		else if (name == "Hydra Room")
+		else if (name == "Room of Snakes")
 		{
 			std::string Map = " ---------------------------------------------------------------------------------------------------\n"
 				"|  # MEANS YOU ARE IN THAT ROOM          --                                                         |\n"
@@ -714,7 +714,7 @@ void Room::showMap(GameUI console, bool* inBattle)
 
 			console.writeOutput(Map);
 		}
-		else if (name == "Devil Room")
+		else if (name == "Room of The Devil")
 		{
 			std::string Map = " ---------------------------------------------------------------------------------------------------\n"
 				"|  # MEANS YOU ARE IN THAT ROOM          --                                                         |\n"
@@ -1089,38 +1089,50 @@ void Room::battleMonster(GameUI console, std::string monsterName, bool* inBattle
 	std::string enteringBattleText = player->getName() + " is now going into battle with the " + monster->getName() + ".\n";
 	std::string monsterNotInRoom = "That monster is not in this room you fool, you cannot go into battle with it.\n";
 	std::string noAttacks = "How you gonna battle a monster with no attacks.\nYou stupid, go find some and pick em up.\n";
+	std::string alreadyInBattle = "You're already in battle, why is your stupid head tryna go into battle again?\n";
 
-	// Make sure the player has an attack before entering battle
-	if (player->getInventory()->getAttackInventorySize() > 0)
+	// Make sure the player is not already in battle before entering battle
+	if (*inBattle == false)
 	{
-		// Make sure the correct monster is in the current room before turning inBattle to true
-		if (monster->getName() == monsterName)
+		// Make sure the player has an attack before entering battle
+		if (player->getInventory()->getAttackInventorySize() > 0)
 		{
-			// If the monster is in the room and not already defeated, enter battle
-			if (monster->getHealth() <= 0)
+			// Make sure the correct monster is in the current room before turning inBattle to true
+			if (monster->getName() == monsterName)
 			{
-				// Tell the user that the monster in the room was already defeated
-				console.outputByCharacter(monsterAlreadyDeafeatedText);
+				// If the monster is in the room and not already defeated, enter battle
+				if (monster->getHealth() <= 0)
+				{
+					// Tell the user that the monster in the room was already defeated
+					console.outputByCharacter(monsterAlreadyDeafeatedText);
+				}
+				else
+				{
+					// Let the player enter battle with the monster
+					console.changeToBattleColors();
+					console.outputByCharacter(enteringBattleText);
+					*inBattle = true;
+				}
 			}
 			else
 			{
-				// Let the player enter battle with the monster
-				console.changeToBattleColors();
-				console.outputByCharacter(enteringBattleText);
-				*inBattle = true;
+				// Tell the user that the monster they are trying to battle is not in the current room
+				console.outputByCharacter(monsterNotInRoom);
 			}
 		}
 		else
 		{
-			// Tell the user that the monster they are trying to battle is not in the current room
-			console.outputByCharacter(monsterNotInRoom);
+			// Cannot enter battle because the player has no attacks
+			console.outputByCharacter(noAttacks);
 		}
 	}
 	else
 	{
-		// Cannot enter battle because the player has no attacks
-		console.outputByCharacter(noAttacks);
+		// Tell the user they can't enter battle twice
+		console.outputByCharacter(alreadyInBattle);
 	}
+
+	
 }
 
 // Performs a singular round of battle. 1 player attack and 1 monster attack (if needed)
@@ -1512,7 +1524,7 @@ void Room::playerGetsStatus(GameUI console)
 }
 
 // Heals the player from any status effect they have
-void Room::healStatusEffect(GameUI console, int status)
+void Room::healStatusEffect(GameUI console, int status, std::string item)
 {
 	// Text message to the user
 	std::string healedMessage = "The player has been healed from their status effect.\n";
@@ -1526,7 +1538,7 @@ void Room::healStatusEffect(GameUI console, int status)
 		player->setStatusEffect(0);
 
 		// Remove the item from the player
-		player->getInventory()->removeItem(console, "paralysisheal");
+		player->getInventory()->removeItem(console, item);
 
 		// Display that they were healed
 		console.outputByCharacter(healedMessage);
@@ -1585,7 +1597,7 @@ void Room::useKey1(GameUI console, std::string key, bool* inBattle)
 			if (upRoomLocked == true)
 			{
 				// Make sure the room is the correct one
-				if (upRoom->getName() == "Dragon Room")
+				if (upRoom->getName() == "Room of Gold")
 				{
 					// If the upRoom door is locked, then you are allowed to use the key
 					if (getUpRoomLocked() == true)
@@ -1648,7 +1660,7 @@ void Room::useKey2(GameUI console, std::string key, bool* inBattle)
 			if (upRoomLocked == true)
 			{
 				// Make sure the room is the correct one
-				if (upRoom->getName() == "Devil Room")
+				if (upRoom->getName() == "Room of The Devil")
 				{
 					// If the upRoom door is locked, then you are allowed to use the key
 					if (getUpRoomLocked() == true)

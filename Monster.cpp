@@ -118,7 +118,7 @@ void Monster::printMonsterInRoom(GameUI console)
 {
 	// Text messages to the user
 	std::string defeatedMessage = "\n" + name + " has already been defeated.\n";
-	std::string inFrontOfMessage = "\nIn front of you there is a " + name;
+	std::string inFrontOfMessage = "\nIn front of you stands a " + name + ".\n";
 	std::string healthMessage = "\nThe " + name + "'s health is currently " + std::to_string(health) + ".\n";
 	std::string noMonsterInRoom = "\nThere is currently no monster in this room to battle.\n";
 
@@ -135,7 +135,7 @@ void Monster::printMonsterInRoom(GameUI console)
 		{
 			// Print if there are any monsters in the room or not
 			console.outputByCharacter(inFrontOfMessage);
-			console.outputByCharacter(healthMessage);
+			//console.outputByCharacter(healthMessage);
 		}
 	}
 	else

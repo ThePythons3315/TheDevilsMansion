@@ -70,10 +70,10 @@ int main()
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Health items
-	Item blueberry("blueberry", "A flavorful fruit that replenishes you with 30 health.", 30, 0);
-	Item cookie("cookie", "A sweet treat that replenishes you with 40 health.", 40, 0);
-	Item brownie("brownie", "A sweet treat that replenishes you with 50 health.", 50, 0);
-	Item burger("burger", "A juciy creation from god that replenishes you with 60 health.", 60, 0);
+	Item blueberry("blueberry", "A flavorful fruit that replenishes you with 50 health.", 50, 0);
+	Item cookie("cookie", "A sweet treat that replenishes you with 60 health.", 60, 0);
+	Item brownie("brownie", "A sweet treat that replenishes you with 70 health.", 70, 0);
+	Item burger("burger", "A juicy creation from god that replenishes you with 80 health.", 80, 0);
 	Item advil("advil", "A healing item that gets rid of your paralysis status effect.", 0, 1);
 	Item dayquil("dayquil", "A healing item that gets rid of your paralysis status effect.", 0, 1);
 	Item ice("ice", "A healing item that gets rid of your burn status effect.", 0, 2);
@@ -188,16 +188,26 @@ int main()
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Create the monster objects
-	Monster skeleton("skeleton", "skeleton description", 60, 60, true, 0, 20);
-	Monster hellhound("hellhound", "hellhound description", 70, 70, true, 0, 20);
-	Monster chimera("chimera", "chimera description", 80, 80, true, 0, 20);
-	Monster dragon("dragon", "dragon description", 90, 90, true, 0, 20);
-	Monster archdemon("archdemon", "archdemon description", 70, 70, true, 0, 20);
-	Monster reaper("reaper", "reaper description", 80, 80, true, 0, 20);
-	Monster mimic("mimic", "mimic description", 80, 80, true, 0, 20);
-	Monster spirit("spirit", "spirit description", 100, 100, true, 0, 20);
-	Monster hydra("hydra", "hydra description", 120, 120, true, 0, 20);
-	Monster devil("devil", "devil description", 150, 150, true, 0, 20);
+	Monster skeleton("skeleton", "All of his bones aren't even connected, they're just floating near each other.\n"
+								 "I guess gravity doesn't make sense down here.", 60, 60, true, 0, 20);
+	Monster hellhound("hellhound", "I guess dogs are the devil's best friend too.\n"
+								   "The hellhound looks like a great dane, but with fire.", 70, 70, true, 0, 20);
+	Monster chimera("chimera", "This thing is u to the g to the l to the y, ugly.\n"
+							   "It's like a lion, but with a goat, and throw in a little snake too.", 80, 80, true, 0, 20);
+	Monster dragon("dragon", "Whatever you think a dragon looks like, double the scariness.\n"
+							 "This thing's like 40 feet tall and its scales shimmer with your fear.", 90, 90, true, 0, 20);
+	Monster archdemon("archdemon", "Why is this dude not wearing any clothes?\n"
+								   "I guess cause a human mixed with a dragon type of creature doesn't wear pants.", 70, 70, true, 0, 20);
+	Monster reaper("reaper", "Where the hell is his scythe?\n"
+							 "Ope.... apparently he can pull it out of his dark cloak.", 80, 80, true, 0, 20);
+	Monster mimic("mimic", "Its like looking in a mirror.\n"
+						   "Perhaps you should start moisturizing, them wrinkles getting out of control.", 80, 80, true, 0, 20);
+	Monster spirit("spirit", "This thing looks like it uses the elevator a lot.\n"
+							 "Cause elevators lift spirits. (get it? get it? I'll see myself out).", 100, 100, true, 0, 20);
+	Monster hydra("hydra", "There is at least 3 heads on this snake monster thing.\n"
+						   "But definitely less than 276 heads. So it's somewhere in that range.", 120, 120, true, 0, 20);
+	Monster devil("devil", "Ya know the devil described himself as overwhelmingly handsome earlier.\n"
+						   "But I am just not seeing it. He ugly ugly.", 150, 150, true, 0, 20);
 
 	// Set monster objects with their appropriate inventories
 	skeleton.setInventory(skeletonInventory);
@@ -217,21 +227,38 @@ int main()
 
 	// Create the room objects
 	Room nullRoom("", "", false);
-	Room startingSteps("Starting Steps", "Starting Steps Description.\n", false);
-	Room startingRoom("Starting Room", "Starting Room Description.\n", false);
-	Room skeletonRoom("Skeleton Room", "Skeleton Room Description.\n", false);
-	Room hellhoundRoom("Hellhound Room", "Hellhound Room Description.\n", false);
-	Room chimeraRoom("Chimera Room", "Chimera Room Description.\n", true); // door between ChimeraRoom and DragonRoom is locked
-	Room archDemonRoom("ArchDemon Room", "ArchDemon Room Description.\n", false);
-	Room dragonRoom("Dragon Room", "Dragon Room Description.\n", false);
-	Room reaperRoom("Reaper Room", "Reaper Room Decription.\n", false);
-	Room mimicRoom("Mimic Room", "Mimic Room Description\n", false);
-	Room spiritRoom("Spirit Room", "Spirit Room Description\n", false);
-	Room hydraRoom("Hydra Room", "Hydra Room Description\n", true); // door between HydraRoom and DevilRoom is locked
-	Room devilRoom("Devil Room", "Devil Room Description\n", false); 
-	Room treasureRoom1("Treasure Room", "Treasure Room Description.\n", false);
-	Room treasureRoom2("Valuables Room", "Treasure Room Description.\n", false);
-	Room treasureRoom3("Riches Room", "Treasure Room Description.\n", false);
+	Room startingSteps("Starting Steps", "The starting steps lead up to a large and tall mansion in front of you.\n"
+										 "The mansion is dark, mysterious and gives you a chill you did not think possible.\n", false);
+	Room startingRoom("Starting Room", "The starting room is a large open dark room with spider webs everywhere.\n"
+									   "Someone should really dust in here.\n", false);
+	Room skeletonRoom("Room Of Unlucky Souls", "The feeling of dread comes over you as you hear screams.\n"
+											   "Shattered bones are scattered across the floor.\n", false);
+	Room hellhoundRoom("Room Of The Devil's Most Loyal Friend", "The room is filled with lava all around the perimeter.\n"
+																"Someone should really do something about that.\n", false);
+	Room chimeraRoom("Room of Weird", "The walls are covered with pictures of you.\n"
+									  "Haha... get it? Cause you're a weird ****.\n", true); // door between ChimeraRoom and DragonRoom is locked
+	Room archDemonRoom("Room Of Demonic Magic", "Demonic magic is creeping down your spine.\n"
+												"You think some kind of demon lives here???\n", false);
+	Room dragonRoom("Room of Gold", "There is literally gold everywhere in this room.\n"
+									"It is really unfortunate you can't take any of it.\n", false);
+	Room reaperRoom("Room of Death", "The room brings an eerie silence.\n"
+									 "Is this what death feels like?\n", false);
+	Room mimicRoom("Room of Mirrors", "Every inch of the room is covered by a mirror.\n"
+									  "You have never felt so popular, yet so alone.\n", false);
+	Room spiritRoom("Room of Ghouls", "The shrieks of those below you can be heard from this room\n"
+									  "They should really invest in some acoustic foam.\n", false);
+	Room hydraRoom("Room of Snakes", "There are some really sneaky looking snakes in this room.\n"
+									 "Most of them are garden snakes though. Should'nt they be like cobras or something?\n", 
+									 true); // door between HydraRoom and DevilRoom is locked
+	Room devilRoom("Room of The Devil", "This looks to be the last room in the mansion.\n"
+										"It is warm, but not too warm. And it is decorated beautifully.\n"
+										"There is even a bed in the corner. Wait does The Devil sleep in here?\n", false); 
+	Room treasureRoom1("Treasure Room", "Huh. This room is actually pretty nice.\n"
+										"It even feels like its air conditioned.\n", false);
+	Room treasureRoom2("Valuables Room", "Damn there is some nice stuff in here.\n"
+										 "They even got a sweet treat for me.\n", false);
+	Room treasureRoom3("Riches Room", "Did the dragon not know about this room?\n"
+									  "There is like way more gold in here then he had in his room.\n", false);
 
 	// Set room objects with their appropriate monsters
 	skeletonRoom.setMonster(skeleton);
@@ -293,7 +320,7 @@ int main()
 	} while (userInputString == "");
 
 	// Create the main player object and set the starting steps as their current room
-	Player player(userInputString, 200, 200, true, 0, 50);
+	Player player(userInputString, 250, 250, true, 0, 25);
 	player.setInventory(playerInventory);
 
 	// Set the current room pointer to the starting room which is also initialized with the player
@@ -510,19 +537,19 @@ int main()
 				roomPointer->getPlayer()->useHealthItem(console, "burger");
 				break;
 			case Parser::ADVIL:
-				roomPointer->healStatusEffect(console, advil.getStatusEffect());
+				roomPointer->healStatusEffect(console, advil.getStatusEffect(), "advil");
 				break;
 			case Parser::DAYQUIL:
-				roomPointer->healStatusEffect(console, dayquil.getStatusEffect());
+				roomPointer->healStatusEffect(console, dayquil.getStatusEffect(), "dayquil");
 				break;
 			case Parser::ICE:
-				roomPointer->healStatusEffect(console, ice.getStatusEffect());
+				roomPointer->healStatusEffect(console, ice.getStatusEffect(), "ice");
 				break;
 			case Parser::ICEPACK:
-				roomPointer->healStatusEffect(console, icepack.getStatusEffect());
+				roomPointer->healStatusEffect(console, icepack.getStatusEffect(), "icepack");
 				break;
 			case Parser::SMOOTHIE:
-				roomPointer->healStatusEffect(console, smoothie.getStatusEffect());
+				roomPointer->healStatusEffect(console, smoothie.getStatusEffect(), "smoothie");
 				break;
 			case Parser::DRAGONKEY:
 				roomPointer->useKey1(console, "dragonkey", &inBattle);
