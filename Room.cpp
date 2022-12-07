@@ -557,6 +557,35 @@ void Room::dropMonsterAttack(GameUI console)
 	monster->getInventory()->removeAttack(console, monster->getInventory()->getAttack(console)->getName());
 }
 
+// Drops the attack the monster was holding to the ground
+void Room::dropMonsterItem(GameUI console, std::string item)
+{
+	// Text message to the user
+	std::string output = "The " + monster->getName() + " dropped a " + item + " to the ground.\n\n";
+	std::string errorMessage = "The monster is not holding any items to drop.\n";
+
+	// If the monster has an item... do this shit
+	if (monster->getInventory()->getItemInventorySize() == 1)
+	{
+		// Get the item from the monster's inventory
+		Item* itemPointer = monster->getInventory()->getItem(console, item);
+
+		// Add the item to the room's inventory
+		inventory->addItem(*itemPointer);
+
+		// Remove the item from the monster's inventory
+		monster->getInventory()->removeItem(console, item);
+
+		// Display the message
+		console.writeOutput(output);
+	}
+	else
+	{
+		// Display the error message
+		console.writeOutput(errorMessage);
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Functions used for battle
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -638,6 +667,19 @@ void Room::battle(GameUI console, std::string attack, bool* inBattle)
 
 		// Let the user know the monster has been defeated.
 		console.writeOutput(monsterDefeatedText);
+
+		// Hardcoded things - I ain't dealing with right now (I am making this shit work)
+		// Drops the key when these monster's die
+		if (monster->getName() == "hellhound")
+		{
+			// Drop the dragonkey to the ground
+			dropMonsterItem(console, "dragonkey");
+		}
+		else if (monster->getName() == "spirit")
+		{
+			// Drop the devilkey to the ground
+			dropMonsterItem(console, "devilkey");
+		}
 
 		// Drop the attack the monster was using to the ground of the room
 		console.writeOutput(dropMonsterAttackText);
@@ -999,8 +1041,6 @@ void Room::healStatusEffect(GameUI console)
 		
 	}	
 }
-
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Functions related to the usage of doors

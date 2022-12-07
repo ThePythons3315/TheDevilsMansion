@@ -16,6 +16,7 @@ std::string helpText =
 "\t- quit \t\t\t\t-> Quits the application.\n"
 "2 keyword commands:\n"
 "\t- move [direction]\t\t-> Moves the player to a different room.\n"
+"\t- view [item name]\t\t-> Displays the description of the item.\n"
 "\t- collect [item name]\t\t-> Lets the player add an item from the room to their inventory.\n"
 "\t- use [attack/item name]\t-> Lets the player use an attack/item in their inventory.\n"
 "\t- drop [item name]\t\t-> Lets the player drop an object from their inventory.\n"
@@ -29,6 +30,7 @@ std::string battleHelpText =
 "\t- help \t\t\t\t-> Gives available commands and descriptions.\n"
 "\t- quit \t\t\t\t-> Quits the application.\n"
 "2 keyword commands:\n"
+"\t- view [item name]\t\t-> Displays the description of the item.\n"
 "\t- use [attack/item name]\t-> Lets the player use an attack/item in their inventory.\n";
 
 
@@ -111,13 +113,45 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = BLUEBERRY;
 			}
-			else if (command2 == "paralysisheal")
+			else if (command2 == "cookie")
 			{
-				parsedInput->command2 = PARALYSISHEAL;
+				parsedInput->command2 = COOKIE;
 			}
-			else if (command2 == "burnheal")
+			else if (command2 == "brownie")
 			{
-				parsedInput->command2 = BURNHEAL;
+				parsedInput->command2 = BROWNIE;
+			}
+			else if (command2 == "burger")
+			{
+				parsedInput->command2 = BURGER;
+			}
+			else if (command2 == "advil")
+			{
+				parsedInput->command2 = ADVIL;
+			}
+			else if (command2 == "dayquil")
+			{
+				parsedInput->command2 = DAYQUIL;
+			}
+			else if (command2 == "ice")
+			{
+				parsedInput->command2 = ICE;
+			}
+			else if (command2 == "icepack")
+			{
+				parsedInput->command2 = ICEPACK;
+			}
+			else if (command2 == "smoothie")
+			{
+				parsedInput->command2 = SMOOTHIE;
+			}
+			else if (command2 == "dragonkey")
+			{
+				parsedInput->command2 = DRAGONKEY;
+			}
+			else if (command2 == "devilkey")
+			{
+				parsedInput->command2 = DEVILKEY;
 			}
 			else if (command2 == "bowshot")
 			{
@@ -146,14 +180,6 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			else if (command2 == "fireball")
 			{
 				parsedInput->command2 = FIREBALL;
-			}
-			else if (command2 == "dragonkey")
-			{
-				parsedInput->command2 = DRAGONKEY;
-			}
-			else if (command2 == "devilkey")
-			{
-				parsedInput->command2 = DEVILKEY;
 			}
 			else if (command2 == "slash")
 			{
@@ -188,13 +214,45 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = BLUEBERRY;
 			}
-			else if (command2 == "paralysisheal")
+			else if (command2 == "cookie")
 			{
-				parsedInput->command2 = PARALYSISHEAL;
+				parsedInput->command2 = COOKIE;
 			}
-			else if (command2 == "burnheal")
+			else if (command2 == "brownie")
 			{
-				parsedInput->command2 = BURNHEAL;
+				parsedInput->command2 = BROWNIE;
+			}
+			else if (command2 == "burger")
+			{
+				parsedInput->command2 = BURGER;
+			}
+			else if (command2 == "advil")
+			{
+				parsedInput->command2 = ADVIL;
+			}
+			else if (command2 == "dayquil")
+			{
+				parsedInput->command2 = DAYQUIL;
+			}
+			else if (command2 == "ice")
+			{
+				parsedInput->command2 = ICE;
+			}
+			else if (command2 == "icepack")
+			{
+				parsedInput->command2 = ICEPACK;
+			}
+			else if (command2 == "smoothie")
+			{
+				parsedInput->command2 = SMOOTHIE;
+			}
+			else if (command2 == "dragonkey")
+			{
+				parsedInput->command2 = DRAGONKEY;
+			}
+			else if (command2 == "devilkey")
+			{
+				parsedInput->command2 = DEVILKEY;
 			}
 			else if (command2 == "punch")
 			{
@@ -223,14 +281,6 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			else if (command2 == "fireball")
 			{
 				parsedInput->command2 = FIREBALL;
-			}
-			else if (command2 == "dragonkey")
-			{
-				parsedInput->command2 = DRAGONKEY;
-			}
-			else if (command2 == "devilkey")
-			{
-				parsedInput->command2 = DEVILKEY;
 			}
 			else if (command2 == "slash")
 			{
@@ -265,13 +315,45 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			{
 				parsedInput->command2 = BLUEBERRY;
 			}
-			else if (command2 == "paralysisheal")
+			else if (command2 == "cookie")
 			{
-				parsedInput->command2 = PARALYSISHEAL;
+				parsedInput->command2 = COOKIE;
 			}
-			else if (command2 == "burnheal")
+			else if (command2 == "brownie")
 			{
-				parsedInput->command2 = BURNHEAL;
+				parsedInput->command2 = BROWNIE;
+			}
+			else if (command2 == "burger")
+			{
+				parsedInput->command2 = BURGER;
+			}
+			else if (command2 == "advil")
+			{
+				parsedInput->command2 = ADVIL;
+			}
+			else if (command2 == "dayquil")
+			{
+				parsedInput->command2 = DAYQUIL;
+			}
+			else if (command2 == "ice")
+			{
+				parsedInput->command2 = ICE;
+			}
+			else if (command2 == "icepack")
+			{
+				parsedInput->command2 = ICEPACK;
+			}
+			else if (command2 == "smoothie")
+			{
+				parsedInput->command2 = SMOOTHIE;
+			}
+			else if (command2 == "dragonkey")
+			{
+				parsedInput->command2 = DRAGONKEY;
+			}
+			else if (command2 == "devilkey")
+			{
+				parsedInput->command2 = DEVILKEY;
 			}
 			else if (command2 == "bowshot")
 			{
@@ -300,14 +382,6 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			else if (command2 == "fireball")
 			{
 				parsedInput->command2 = FIREBALL;
-			}
-			else if (command2 == "dragonkey")
-			{
-				parsedInput->command2 = DRAGONKEY;
-			}
-			else if (command2 == "devilkey")
-			{
-				parsedInput->command2 = DEVILKEY;
 			}
 			else if (command2 == "slash")
 			{
@@ -378,6 +452,59 @@ Parser::InputStruct* Parser::parseInput(std::string userString)
 			else if (command2 == "devil")
 			{
 				parsedInput->command2 = DEVIL;
+			}
+			else
+			{
+				parsedInput->command2 = ERROR2;
+			}
+		}
+		else if (command1 == "view")
+		{
+			parsedInput->command1 = VIEW;
+
+			if (command2 == "blueberry")
+			{
+				parsedInput->command2 = BLUEBERRY;
+			}
+			else if (command2 == "cookie")
+			{
+				parsedInput->command2 = COOKIE;
+			}
+			else if (command2 == "brownie")
+			{
+				parsedInput->command2 = BROWNIE;
+			}
+			else if (command2 == "burger")
+			{
+				parsedInput->command2 = BURGER;
+			}
+			else if (command2 == "advil")
+			{
+				parsedInput->command2 = ADVIL;
+			}
+			else if (command2 == "dayquil")
+			{
+				parsedInput->command2 = DAYQUIL;
+			}
+			else if (command2 == "ice")
+			{
+				parsedInput->command2 = ICE;
+			}
+			else if (command2 == "icepack")
+			{
+				parsedInput->command2 = ICEPACK;
+			}
+			else if (command2 == "smoothie")
+			{
+				parsedInput->command2 = SMOOTHIE;
+			}
+			else if (command2 == "dragonkey")
+			{
+				parsedInput->command2 = DRAGONKEY;
+			}
+			else if (command2 == "devilkey")
+			{
+				parsedInput->command2 = DEVILKEY;
 			}
 			else
 			{

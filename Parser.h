@@ -9,17 +9,30 @@ public:
 	// Primary commands that will run the game
 	enum MainCommandMenu
 	{
+		// 1 word command
 		HELP, MOVE, COLLECT, USE, DROP, INVENTORY, HEALTH,
-		BATTLE, ATTACKS, QUIT, ROOM, PLAYER, ERROR1
+
+		// 2 word commands
+		BATTLE, ATTACKS, QUIT, ROOM, PLAYER, VIEW, ERROR1
 	};
 	// Secondary Commands that can be used along side certain primary commands
 	enum SecondaryCommandMenu
 	{
+		// Movement 
 		LEFT, UP, RIGHT, DOWN,
+
+		// Monsters
 		SKELETON, HELLHOUND, CHIMERA, DRAGON, ARCHDEMON, REAPER, MIMIC, SPIRIT, HYDRA, DEVIL,
-		BLUEBERRY, DRAGONKEY, DEVILKEY, PARALYSISHEAL, BURNHEAL,
+
+		// Items
+		BLUEBERRY, COOKIE, BROWNIE, BURGER, ADVIL, DAYQUIL, ICE, ICEPACK, SMOOTHIE, DRAGONKEY, DEVILKEY,
+
+		// Attack
 		BOWSHOT, PUNCH, KICK, BITE, FIREBREATH, FLAMETHROWER, FIREBALL, SHADOWBALL, ERUPTION, OVERHEAT, 
-		SLASH, SLAM, ERROR2
+		SLASH, SLAM, 
+		
+		// Error
+		ERROR2
 	};
 
 	// Struct of commands that will be filled when user input is parsed

@@ -34,10 +34,10 @@ int main()
 	std::string getCharacterNameText = "Hello there you fabulous person, please enter the name you would like your character to have: ";
 	std::string thanksText = "\nThanks for playing The Devils Mansion.\n";
 	std::string playerLostText = "\nThe Devil has reappeared.\n"
-		"He has the widest grin stuck on his face.\n\n"
-		"Ha Ha Ha Ha Ha...... Another one bites the dust.\n"
-		"That was the worst attempt at getting through my mansion that I have ever seen.\n"
-		"Have fun in the depths of hell, scum.\n";
+								 "He has the widest grin stuck on his face.\n\n"
+								 "Ha Ha Ha Ha Ha...... Another one bites the dust.\n"
+								 "That was the worst attempt at getting through my mansion that I have ever seen.\n"
+								 "Have fun in the depths of hell, scum.\n";
 	std::string askUserToMove = "Please enter `move up` to go through the door: ";
 	std::string blueberryOnFloor = "Please enter `collect blueberry` to pick up the blueberry: ";
 	std::string droppedBlueberryText = "It seems as though the devil dropped something on the ground.\n"
@@ -78,13 +78,19 @@ int main()
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Health items
-	Item blueberry("blueberry", 100, 0);
-	Item paralysisHeal("paralysisheal", 0, 1);
-	Item burnHeal("burnheal", 0, 2);
+	Item blueberry("blueberry", "A flavorful fruit that replenishes you with 30 health.", 30, 0);
+	Item cookie("cookie", "A sweet treat that replenishes you with 40 health.", 40, 0);
+	Item brownie("brownie", "A sweet treat that replenishes you with 50 health.", 50, 0);
+	Item burger("burger", "A juciy creation from god that replenishes you with 60 health.", 60, 0);
+	Item advil("advil", "A healing item that gets rid of your paralysis status effect.", 0, 1);
+	Item dayquil("dayquil", "A healing item that gets rid of your paralysis status effect.", 0, 1);
+	Item ice("ice", "A healing item that gets rid of your burn status effect.", 0, 2);
+	Item icepack("icepack", "A healing item that gets rid of your burn status effect.", 0, 2);
+	Item smoothie("icepack", "A healing item that gets rid of your burn status effect.", 0, 2);
 
 	// Non health items
-	Item dragonkey("dragonkey", 0, 0);
-	Item devilkey("devilkey", 0, 0);
+	Item dragonkey("dragonkey", "It is a key shaped like a dragon.", 0, 0);
+	Item devilkey("devilkey", "It is a key shaped like the devil.", 0, 0);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of attack objects
@@ -142,10 +148,10 @@ int main()
 
 	// Add items to room inventories
 	startingRoomInventory.addItem(blueberry);
-	startingRoomInventory.addItem(paralysisHeal);
-	startingRoomInventory.addItem(burnHeal);
-	hellhoundRoomInventory.addItem(dragonkey);
-	dragonRoomInventory.addItem(devilkey);
+
+	// Add items to monster inventories
+	hellhoundInventory.addItem(dragonkey);
+	spiritInventory.addItem(devilkey);
 
 	// Add attacks to player
 	playerInventory.addAttack(console, punch);
@@ -388,17 +394,35 @@ int main()
 			case Parser::BLUEBERRY:
 				roomPointer->pickupItem(console, "blueberry", &inBattle);
 				break;
+			case Parser::COOKIE:
+				roomPointer->pickupItem(console, "cookie", &inBattle);
+				break;
+			case Parser::BROWNIE:
+				roomPointer->pickupItem(console, "brownie", &inBattle);
+				break;
+			case Parser::BURGER:
+				roomPointer->pickupItem(console, "burger", &inBattle);
+				break;
+			case Parser::ADVIL:
+				roomPointer->pickupItem(console, "advil", &inBattle);
+				break;
+			case Parser::DAYQUIL:
+				roomPointer->pickupItem(console, "dayquil", &inBattle);
+				break;
+			case Parser::ICE:
+				roomPointer->pickupItem(console, "ice", &inBattle);
+				break;
+			case Parser::ICEPACK:
+				roomPointer->pickupItem(console, "icepack", &inBattle);
+				break;
+			case Parser::SMOOTHIE:
+				roomPointer->pickupItem(console, "smoothie", &inBattle);
+				break;
 			case Parser::DRAGONKEY:
 				roomPointer->pickupItem(console, "dragonkey", &inBattle);
 				break;
 			case Parser::DEVILKEY:
 				roomPointer->pickupItem(console, "devilkey", &inBattle);
-				break;
-			case Parser::PARALYSISHEAL:
-				roomPointer->pickupItem(console, "paralysisheal", &inBattle);
-				break;
-			case Parser::BURNHEAL:
-				roomPointer->pickupItem(console, "burnheal", &inBattle);
 				break;
 			case Parser::BOWSHOT:
 				roomPointer->pickupAttack(console, "bowshot", &inBattle);
@@ -448,17 +472,35 @@ int main()
 			case Parser::BLUEBERRY:
 				roomPointer->getPlayer()->useHealthItem(console, "blueberry");
 				break;
+			case Parser::COOKIE:
+				roomPointer->getPlayer()->useHealthItem(console, "cookie");
+				break;
+			case Parser::BROWNIE:
+				roomPointer->getPlayer()->useHealthItem(console, "brownie");
+				break;
+			case Parser::BURGER:
+				roomPointer->getPlayer()->useHealthItem(console, "burger");
+				break;
+			case Parser::ADVIL:
+				roomPointer->healStatusEffect(console);
+				break;
+			case Parser::DAYQUIL:
+				roomPointer->healStatusEffect(console);
+				break;
+			case Parser::ICE:
+				roomPointer->healStatusEffect(console);
+				break;
+			case Parser::ICEPACK:
+				roomPointer->healStatusEffect(console);
+				break;
+			case Parser::SMOOTHIE:
+				roomPointer->healStatusEffect(console);
+				break;
 			case Parser::DRAGONKEY:
 				roomPointer->useKey1(console, "dragonkey", &inBattle);
 				break;
 			case Parser::DEVILKEY:
 				roomPointer->useKey2(console, "devilkey", &inBattle);
-				break;
-			case Parser::PARALYSISHEAL:
-				roomPointer->healStatusEffect(console);
-				break;
-			case Parser::BURNHEAL:
-				roomPointer->healStatusEffect(console);
 				break;
 			case Parser::PUNCH:
 				roomPointer->useAttack(console, "punch", &inBattle, parserOutput);
@@ -508,17 +550,35 @@ int main()
 			case Parser::BLUEBERRY:
 				roomPointer->dropItem(console, "blueberry", &inBattle);
 				break;
+			case Parser::COOKIE:
+				roomPointer->dropItem(console, "cookie", &inBattle);
+				break;
+			case Parser::BROWNIE:
+				roomPointer->dropItem(console, "brownie", &inBattle);
+				break;
+			case Parser::BURGER:
+				roomPointer->dropItem(console, "burger", &inBattle);
+				break;
+			case Parser::ADVIL:
+				roomPointer->dropItem(console, "advil", &inBattle);
+				break;
+			case Parser::DAYQUIL:
+				roomPointer->dropItem(console, "dayquil", &inBattle);
+				break;
+			case Parser::ICE:
+				roomPointer->dropItem(console, "ice", &inBattle);
+				break;
+			case Parser::ICEPACK:
+				roomPointer->dropItem(console, "icepack", &inBattle);
+				break;
+			case Parser::SMOOTHIE:
+				roomPointer->dropItem(console, "smoothie", &inBattle);
+				break;
 			case Parser::DRAGONKEY:
-				roomPointer->dropItem(console, "devilskey", &inBattle);
+				roomPointer->dropItem(console, "dragonkey", &inBattle);
 				break;
 			case Parser::DEVILKEY:
 				roomPointer->dropItem(console, "devilkey", &inBattle);
-				break;
-			case Parser::PARALYSISHEAL:
-				roomPointer->dropItem(console, "paralysisheal", &inBattle);
-				break;
-			case Parser::BURNHEAL:
-				roomPointer->dropItem(console, "burnheal", &inBattle);
 				break;
 			case Parser::BOWSHOT:
 				roomPointer->dropAttack(console, "bowshot", &inBattle);
@@ -601,6 +661,48 @@ int main()
 			}
 			break;
 
+		case Parser::VIEW:
+			switch (parserOutput->command2)
+			{
+			case Parser::BLUEBERRY:
+				blueberry.viewItemDescription(console);
+				break;
+			case Parser::COOKIE:
+				cookie.viewItemDescription(console);
+				break;
+			case Parser::BROWNIE:
+				brownie.viewItemDescription(console);
+				break;
+			case Parser::BURGER:
+				burger.viewItemDescription(console);
+				break;
+			case Parser::ADVIL:
+				advil.viewItemDescription(console);
+				break;
+			case Parser::DAYQUIL:
+				dayquil.viewItemDescription(console);
+				break;
+			case Parser::ICE:
+				ice.viewItemDescription(console);
+				break;
+			case Parser::ICEPACK:
+				icepack.viewItemDescription(console);
+				break;
+			case Parser::SMOOTHIE:
+				smoothie.viewItemDescription(console);
+				break;
+			case Parser::DRAGONKEY:
+				dragonkey.viewItemDescription(console);
+				break;
+			case Parser::DEVILKEY:
+				devilkey.viewItemDescription(console);
+				break;
+			case Parser::ERROR2:
+				parser.incorrectMonsterCommand(console);
+				break;
+			}
+			break;
+
 		default:
 			parser.incorrectMainCommand(console, &inBattle);
 			break;
@@ -633,5 +735,5 @@ int main()
 	console.writeOutput(thanksText);
 
 	// Sleep for 10 seconds so the window doesn't automatically go away
-	Sleep(10000);
+	Sleep(5000);
 }

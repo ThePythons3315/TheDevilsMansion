@@ -66,6 +66,7 @@ public:
 	void dropItem(GameUI console, std::string item, bool* inBattle);
 	void dropAttack(GameUI console, std::string attack, bool* inBattle);
 	void dropMonsterAttack(GameUI console);
+	void dropMonsterItem(GameUI console, std::string item);
 
 	// Functions used for battle
 	void battleMonster(GameUI console, std::string monsterName, bool* inBattle);

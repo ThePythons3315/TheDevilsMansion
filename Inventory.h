@@ -17,6 +17,9 @@ public:
 	// Constructor
 	Inventory();
 
+	// Returns the size of the itemInventory
+	int getItemInventorySize();
+
 	// Adds an item object to the item inventory list
 	void addItem(Item& _item);
 	void addAttack(GameUI console, Attack& _attack);

@@ -6,6 +6,12 @@ Inventory::Inventory()
 	// Null constructor
 }
 
+// Returns the size of the itemInventory
+int Inventory::getItemInventorySize()
+{
+	return itemInventory.size();
+}
+
 // Adds an item object to the item inventory list
 void Inventory::addItem(Item& _item)
 {
