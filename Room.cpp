@@ -1309,6 +1309,15 @@ void Room::playerAttacksMonster(GameUI console, std::string attack)
 		{
 			// Let the user know that the monster's attack missed and redisplay their health
 			console.outputByCharacter(attackMissedText);
+
+			// If the monster is burned.... Take the burn damage away
+			if (monster->getStatusEffect() == 2)
+			{
+				// Take an extra 5 hp from the monster
+				monster->performBurn(console);
+			}
+
+			// Check is the player is paralyzed
 			if (monster->checkParalyzed() == true)
 			{
 				console.outputByCharacter(monsterAlreadyParalyzed);
@@ -1365,7 +1374,6 @@ void Room::monsterAttacksPlayer(GameUI console)
 				player->performBurn(console);
 			}
 
-
 			// If the player's health reaches 0 or below, output that they died with 0 health left
 			if (player->getHealth() <= 0)
 			{
@@ -1383,6 +1391,14 @@ void Room::monsterAttacksPlayer(GameUI console)
 			// Let the user know that the monster's attack missed and redisplay their health
 			console.outputByCharacter(attackMissedText);
 
+			// If the monster is burned.... Take the burn damage away
+			if (player->getStatusEffect() == 2)
+			{
+				// Take an extra 5 hp from the monster
+				player->performBurn(console);
+			}
+
+			// Check is the player is paralyzed
 			if (player->checkParalyzed() == true)
 			{
 				console.outputByCharacter(playerAlreadyParalyzed);
