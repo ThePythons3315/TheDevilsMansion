@@ -265,6 +265,7 @@ void Room::printPlayerAttributes(GameUI console, bool* inBattle)
 	std::string roomName = "Current Room: " + name + ".\n\n";
 	std::string playerInBattle = player->getName() + " is currently in battle with: " + monster->getName() + ".\n\n";
 	std::string notInBattle = player->getName() + " is not in battle with a monster.\n\n";
+	std::string statusCondition = "\nStatus Condition: None\n";
 
 	// Show player's name
 	console.outputByCharacter(playerInfo);
@@ -295,6 +296,19 @@ void Room::printPlayerAttributes(GameUI console, bool* inBattle)
 	// Show the player's health
 	console.outputByCharacter(extraNewline);
 	player->displayBothHealth(console);
+
+	// Paralyzed
+	if (player->getStatusEffect() == 1)
+	{
+		statusCondition = "\nStatus Condition: Paralyzed\n";
+	}
+	else if (player->getStatusEffect() == 2)
+	{
+		statusCondition = "\nStatus Condition: Burned\n";
+	}
+
+	// Show status conditions
+	console.outputByCharacter(statusCondition);
 }
 
 // Shows a map of the game and the current room the player is in
@@ -1543,6 +1557,7 @@ void Room::playerGetsStatus(GameUI console)
 void Room::healStatusEffect(GameUI console, int status, std::string item)
 {
 	// Text message to the user
+	std::string newEndLine = "\n";
 	std::string healedMessage = "The player has been healed from their status effect.\n";
 	std::string paralyzeMessage = "The player is not paralyzed, this item cannot be used.\n";
 	std::string burnMessage = "The player is not burned, this item cannot be used.\n";
@@ -1558,6 +1573,10 @@ void Room::healStatusEffect(GameUI console, int status, std::string item)
 
 		// Display that they were healed
 		console.outputByCharacter(healedMessage);
+
+		// Show player's item inventory
+		console.outputByCharacter(newEndLine);
+		player->getInventory()->displayItemInventory(console, "Player");
 	}
 	else
 	{

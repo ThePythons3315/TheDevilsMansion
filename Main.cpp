@@ -30,7 +30,7 @@ int main()
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Section of strings that will be used throughout the game
 	///////////////////////////////////////////////////////////////////////////////////////////
-	std::string versionText = "Welcome to The Devil's Mansion version 4.01\n\n";
+	std::string versionText = "Welcome to The Devil's Mansion version 4.10.\n\n";
 	std::string getCharacterNameText = "Hello there you fabulous person, please enter the name you would like your character to have: ";
 	std::string thanksText = "Thanks for playing The Devils Mansion.\n";
 	std::string playerLostText = "\nThe Devil has reappeared.\n"
@@ -60,8 +60,8 @@ int main()
 							  "If you successfully make it out, you will have won your life back.\n\n"
 							  "Since this is a video game and everything is fake, I don't need to tell you the controls.\n"
 							  "You can just type `help` to see them for yourself.\n\n"
-							  "That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not)\n"
-							  "...The devil zoomed away\n\n";
+							  "That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not).\n"
+							  "...The devil zoomed away.\n\n";
 	std::string playerWon = "You have won.\n";
 	std::string playerLost = "You have lost.\n";
 
@@ -70,10 +70,10 @@ int main()
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 	// Health items
-	Item blueberry("blueberry", "A flavorful fruit that replenishes you with 50 health.", 50, 0);
-	Item cookie("cookie", "A sweet treat that replenishes you with 60 health.", 60, 0);
-	Item brownie("brownie", "A sweet treat that replenishes you with 70 health.", 70, 0);
-	Item burger("burger", "A juicy creation from god that replenishes you with 80 health.", 80, 0);
+	Item blueberry("blueberry", "A flavorful fruit that replenishes you with 60 health.", 60, 0);
+	Item cookie("cookie", "A sweet treat that replenishes you with 70 health.", 70, 0);
+	Item brownie("brownie", "A sweet treat that replenishes you with 80 health.", 80, 0);
+	Item burger("burger", "A juicy creation from god that replenishes you with 100 health.", 100, 0);
 	Item advil("advil", "A healing item that gets rid of your paralysis status effect.", 0, 1);
 	Item dayquil("dayquil", "A healing item that gets rid of your paralysis status effect.", 0, 1);
 	Item ice("ice", "A healing item that gets rid of your burn status effect.", 0, 2);
@@ -189,25 +189,25 @@ int main()
 
 	// Create the monster objects
 	Monster skeleton("skeleton", "All of his bones aren't even connected, they're just floating near each other.\n"
-								 "I guess gravity doesn't make sense down here.", 60, 60, true, 0, 20);
+								 "I guess gravity doesn't make sense down here.", 40, 40, true, 0, 20);
 	Monster hellhound("hellhound", "I guess dogs are the devil's best friend too.\n"
-								   "The hellhound looks like a great dane, but with fire.", 70, 70, true, 0, 20);
+								   "The hellhound looks like a great dane, but with fire.",50, 50, true, 0, 20);
 	Monster chimera("chimera", "This thing is u to the g to the l to the y, ugly.\n"
-							   "It's like a lion, but with a goat, and throw in a little snake too.", 80, 80, true, 0, 20);
+							   "It's like a lion, but with a goat, and throw in a little snake too.", 60, 60, true, 0, 20);
 	Monster dragon("dragon", "Whatever you think a dragon looks like, double the scariness.\n"
-							 "This thing's like 40 feet tall and its scales shimmer with your fear.", 90, 90, true, 0, 20);
+							 "This thing's like 40 feet tall and its scales shimmer with your fear.", 75, 75, true, 0, 20);
 	Monster archdemon("archdemon", "Why is this dude not wearing any clothes?\n"
-								   "I guess cause a human mixed with a dragon type of creature doesn't wear pants.", 70, 70, true, 0, 20);
+								   "I guess cause a human mixed with a dragon type of creature doesn't wear pants.", 50, 50, true, 0, 20);
 	Monster reaper("reaper", "Where the hell is his scythe?\n"
-							 "Ope.... apparently he can pull it out of his dark cloak.", 80, 80, true, 0, 20);
+							 "Ope.... apparently he can pull it out of his dark cloak.", 60, 60, true, 0, 20);
 	Monster mimic("mimic", "Its like looking in a mirror.\n"
-						   "Perhaps you should start moisturizing, them wrinkles getting out of control.", 80, 80, true, 0, 20);
+						   "Perhaps you should start moisturizing, them wrinkles getting out of control.", 60, 60, true, 0, 20);
 	Monster spirit("spirit", "This thing looks like it uses the elevator a lot.\n"
-							 "Cause elevators lift spirits. (get it? get it? I'll see myself out).", 100, 100, true, 0, 20);
+							 "Cause elevators lift spirits. (get it? get it? I'll see myself out).", 75, 75, true, 0, 20);
 	Monster hydra("hydra", "There is at least 3 heads on this snake monster thing.\n"
-						   "But definitely less than 276 heads. So it's somewhere in that range.", 120, 120, true, 0, 20);
+						   "But definitely less than 276 heads. So it's somewhere in that range.", 80, 80, true, 0, 20);
 	Monster devil("devil", "Ya know the devil described himself as overwhelmingly handsome earlier.\n"
-						   "But I am just not seeing it. He ugly ugly.", 150, 150, true, 0, 20);
+						   "But I am just not seeing it. He ugly ugly.", 100, 100, true, 0, 20);
 
 	// Set monster objects with their appropriate inventories
 	skeleton.setInventory(skeletonInventory);
