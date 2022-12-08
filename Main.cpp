@@ -62,7 +62,7 @@ int main()
 							  "You can just type `help` to see them for yourself.\n\n"
 							  "That is the end of my spiel. Hopefully you can figure out the rest. Good luck (not).\n"
 							  "...The devil zoomed away.\n\n";
-	std::string playerWon = "You have won.\n";
+	std::string playerWon = "\nYou have won.\n";
 	std::string playerLost = "You have lost.\n";
 
 	///////////////////////////////////////////////////////////////////////////////////////////
